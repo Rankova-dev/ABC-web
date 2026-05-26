@@ -1,21 +1,25 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import {
+  MessageCircle, Brain, Activity, BookOpen,
+  Sparkles, Mic, Users, Handshake,
+} from 'lucide-react';
 import type { Service, SpecialistId } from '@/config/specialists';
 import { getTeamForService, SERVICE_TEAM } from '@/config/specialists';
 import type { TimeSlot } from '@/lib/google-calendar';
 
 // ─── Static data ──────────────────────────────────────────────────────────────
 
-const SERVICES: { value: Service; label: string; icon: string; desc: string }[] = [
-  { value: 'logopedia',            label: 'Logopedia',              icon: '🗣️', desc: 'Voz, habla y lenguaje' },
-  { value: 'psicologia',           label: 'Psicología',             icon: '🧠', desc: 'Bienestar emocional' },
-  { value: 'neuropsicologia',      label: 'Neuropsicología',        icon: '⚡', desc: 'Evaluación cognitiva' },
-  { value: 'psicopedagogia',       label: 'Psicopedagogia',         icon: '📚', desc: 'Aprendizaje y desarrollo' },
-  { value: 'tea',                  label: 'TEA (Autismo)',           icon: '✨', desc: 'Trastorno del espectro' },
-  { value: 'rehabilitacion-voz',   label: 'Rehabilitación de Voz',  icon: '🎙️', desc: 'Patología vocal' },
-  { value: 'terapia-familiar',     label: 'Terapia Familiar',       icon: '🏡', desc: 'Relaciones y conflictos' },
-  { value: 'habilidades-sociales', label: 'Habilidades Sociales',   icon: '🤝', desc: 'Comunicación interpersonal' },
+const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: string }[] = [
+  { value: 'logopedia',            label: 'Logopedia',              icon: <MessageCircle className="w-5 h-5" />, desc: 'Voz, habla y lenguaje' },
+  { value: 'psicologia',           label: 'Psicología',             icon: <Brain          className="w-5 h-5" />, desc: 'Bienestar emocional' },
+  { value: 'neuropsicologia',      label: 'Neuropsicología',        icon: <Activity       className="w-5 h-5" />, desc: 'Evaluación cognitiva' },
+  { value: 'psicopedagogia',       label: 'Psicopedagogia',         icon: <BookOpen       className="w-5 h-5" />, desc: 'Aprendizaje y desarrollo' },
+  { value: 'tea',                  label: 'TEA (Autismo)',           icon: <Sparkles       className="w-5 h-5" />, desc: 'Trastorno del espectro' },
+  { value: 'rehabilitacion-voz',   label: 'Rehabilitación de Voz',  icon: <Mic            className="w-5 h-5" />, desc: 'Patología vocal' },
+  { value: 'terapia-familiar',     label: 'Terapia Familiar',       icon: <Users          className="w-5 h-5" />, desc: 'Relaciones y conflictos' },
+  { value: 'habilidades-sociales', label: 'Habilidades Sociales',   icon: <Handshake      className="w-5 h-5" />, desc: 'Comunicación interpersonal' },
 ];
 
 const TODAY_STR = new Date().toISOString().split('T')[0];
@@ -390,7 +394,9 @@ export default function BookingForm({ defaultService }: Props) {
                         : 'bg-cream border-gray/15 text-ink hover:border-teal/40 hover:bg-teal/5'
                     }`}
                   >
-                    <span className="text-xl mt-0.5 flex-shrink-0">{svc.icon}</span>
+                    <span className={`mt-0.5 flex-shrink-0 ${isSelected ? 'text-white' : 'text-teal'}`}>
+                      {svc.icon}
+                    </span>
                     <div className="min-w-0">
                       <p className="text-xs font-semibold leading-tight">{svc.label}</p>
                       <p className={`text-xs mt-0.5 leading-tight ${isSelected ? 'text-white/70' : 'text-gray/70'}`}>
@@ -527,7 +533,7 @@ export default function BookingForm({ defaultService }: Props) {
           {/* Recap chip */}
           {selectedServiceInfo && (
             <div className="flex items-center gap-3 bg-teal/5 border border-teal/20 rounded-xl px-4 py-3">
-              <span className="text-lg flex-shrink-0">{selectedServiceInfo.icon}</span>
+              <span className="text-teal flex-shrink-0">{selectedServiceInfo.icon}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-ink">
                   {noPreference
@@ -590,20 +596,17 @@ export default function BookingForm({ defaultService }: Props) {
                 </div>
               ) : (
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                  {availableSlots.map((slot) => {
+                  {freeSlots.map((slot) => {
                     const isSelected = selectedSlot?.start === slot.start;
                     return (
                       <button
                         key={slot.start}
                         type="button"
-                        disabled={!slot.available}
                         onClick={() => setSelectedSlot(slot)}
                         className={`py-2.5 text-sm rounded-xl border font-outfit transition-all duration-150 ${
                           isSelected
                             ? 'bg-teal text-white border-teal font-semibold scale-105 shadow-card'
-                            : slot.available
-                            ? 'bg-white border-gray/15 text-ink hover:border-teal hover:text-teal hover:bg-teal/5'
-                            : 'bg-gray/5 text-gray/25 border-gray/10 cursor-not-allowed line-through'
+                            : 'bg-white border-gray/15 text-ink hover:border-teal hover:text-teal hover:bg-teal/5'
                         }`}
                       >
                         {formatTime(slot.start)}

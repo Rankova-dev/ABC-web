@@ -7,21 +7,24 @@ export type { Service } from '@/config/specialists';
 // ─── Shared types ────────────────────────────────────────────────────────────
 
 export interface TimeSlot {
-  start: string; // ISO 8601 with timezone offset
-  end:   string;
+  start:    string;   // ISO 8601 with timezone offset
+  end:      string;
   available: boolean;
+  /** Google Calendar event ID of the "Primera consulta" availability slot.
+   *  Sent back on booking so the route can delete it atomically. */
+  eventId?: string;
 }
 
 export interface BookingRequest {
-  service:      Service;
-  specialistId: SpecialistId;
-  patientName:  string;
-  patientAge?:  number | string;
+  service:       Service;
+  specialistId:  SpecialistId;
+  patientName:   string;
+  patientAge?:   number | string;
   guardianName?: string;
-  email:        string;
-  phone:        string;
-  message?:     string;
-  selectedSlot: TimeSlot;
+  email:         string;
+  phone:         string;
+  message?:      string;
+  selectedSlot:  TimeSlot;
 }
 
 export interface BookingResult {
@@ -34,8 +37,19 @@ export interface BookingResult {
 
 const TZ = 'Europe/Madrid';
 
-/** Slot start hours (24h). Each session = 50 min; 10-min gap. */
-const SLOT_HOURS = [9, 10, 11, 12, 13, 16, 17, 18, 19] as const;
+/**
+ * Case-insensitive prefix that identifies an availability slot created by
+ * the specialist in her own Google Calendar.
+ *
+ * Valid event titles (all matched):
+ *   "Primera consulta"
+ *   "Primera consulta disponible"
+ *   "primera consulta 10h"
+ *
+ * Not matched (existing appointments, notes, etc.):
+ *   "Seguimiento Cita 1"  "NUEVA CITA — …"  etc.
+ */
+const SLOT_KEYWORD = 'primera consulta';
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 
@@ -92,35 +106,14 @@ function toMadridDateStr(date: Date): string {
   }).format(date);
 }
 
-// ─── Slot helpers ─────────────────────────────────────────────────────────────
-
-function generateCandidateSlots(dateStr: string): TimeSlot[] {
-  return SLOT_HOURS.map((hour) => ({
-    start: buildMadridISO(dateStr, hour, 0),
-    end:   buildMadridISO(dateStr, hour, 50),
-    available: true,
-  }));
-}
-
-interface BusyPeriod { start: string; end: string }
-
-function markAvailability(candidates: TimeSlot[], busy: BusyPeriod[]): TimeSlot[] {
-  return candidates.map((slot) => {
-    const slotStart = new Date(slot.start).getTime();
-    const slotEnd   = new Date(slot.end).getTime();
-    const isBusy = busy.some((b) => {
-      const busyStart = new Date(b.start).getTime();
-      const busyEnd   = new Date(b.end).getTime();
-      return slotStart < busyEnd && slotEnd > busyStart;
-    });
-    return { ...slot, available: !isBusy };
-  });
-}
-
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * Returns time slots for a given specialist and date.
+ * Returns the slots the specialist has explicitly opened for first consultations.
+ *
+ * Reads events whose title starts with SLOT_KEYWORD ("primera consulta") from
+ * the specialist's Google Calendar for the given day.
+ *
  * Falls back to mock data when credentials or calendarId are not configured.
  */
 export async function getAvailableSlots(
@@ -135,7 +128,6 @@ export async function getAvailableSlots(
   }
 
   const dateStr = toMadridDateStr(dateFrom);
-  const candidates = generateCandidateSlots(dateStr);
 
   try {
     const auth = await getCalendarAuth();
@@ -145,25 +137,34 @@ export async function getAvailableSlots(
     const dayStart = buildMadridISO(dateStr, 0, 0);
     const dayEnd   = buildMadridISO(dateStr, 23, 59);
 
-    const freebusyRes = await calendar.freebusy.query({
-      requestBody: {
-        timeMin: dayStart,
-        timeMax: dayEnd,
-        timeZone: TZ,
-        items: [{ id: calendarId }],
-      },
+    const eventsRes = await calendar.events.list({
+      calendarId,
+      timeMin:      dayStart,
+      timeMax:      dayEnd,
+      timeZone:     TZ,
+      q:            SLOT_KEYWORD,   // pre-filter by Google (case-insensitive)
+      singleEvents: true,
+      orderBy:      'startTime',
     });
 
-    const busy = freebusyRes.data.calendars?.[calendarId]?.busy ?? [];
-    return markAvailability(candidates, busy as BusyPeriod[]);
+    return (eventsRes.data.items ?? [])
+      .filter(ev => ev.summary?.toLowerCase().startsWith(SLOT_KEYWORD))
+      .map(ev => ({
+        start:     ev.start?.dateTime ?? ev.start?.date ?? '',
+        end:       ev.end?.dateTime   ?? ev.end?.date   ?? '',
+        available: true,
+        eventId:   ev.id ?? undefined,
+      }));
+
   } catch (err) {
     console.error('[GoogleCalendar] getAvailableSlots error:', err);
-    return candidates; // return all-available on error so UI isn't broken
+    return [];
   }
 }
 
 /**
- * Creates a Google Calendar event for the confirmed booking.
+ * Creates a Google Calendar event for the confirmed booking and
+ * removes the corresponding "Primera consulta" availability slot.
  */
 export async function createBooking(request: BookingRequest): Promise<BookingResult> {
   const specialist = SPECIALISTS[request.specialistId];
@@ -180,11 +181,25 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
     const { google } = await import('googleapis');
     const calendar = google.calendar({ version: 'v3', auth });
 
+    // 1. Delete the availability event so no other patient can book the same slot
+    if (request.selectedSlot.eventId) {
+      try {
+        await calendar.events.delete({
+          calendarId,
+          eventId: request.selectedSlot.eventId,
+        });
+      } catch (err) {
+        // Non-fatal: slot may have already been removed (race condition / manual deletion)
+        console.warn('[GoogleCalendar] Could not delete availability event:', err);
+      }
+    }
+
+    // 2. Create the patient appointment event
     const event = await calendar.events.insert({
       calendarId,
       sendUpdates: 'all',
       requestBody: {
-        summary: `Primera consulta — ${request.patientName}`,
+        summary:     `Primera consulta — ${request.patientName}`,
         description: buildEventDescription(request, specialist.name, specialist.role),
         start: { dateTime: request.selectedSlot.start, timeZone: TZ },
         end:   { dateTime: request.selectedSlot.end,   timeZone: TZ },
@@ -203,16 +218,14 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
     });
 
     return { success: true, eventId: event.data.id ?? undefined };
+
   } catch (err) {
     console.error('[GoogleCalendar] createBooking error:', err);
     return { success: false, error: 'No se pudo crear el evento en Google Calendar' };
   }
 }
 
-/**
- * Returns the lead specialist ID for a service (first in the team list).
- * Useful when no specific specialist has been selected.
- */
+/** Returns the lead specialist ID for a service. */
 export function getLeadSpecialist(service: Service): SpecialistId {
   return getLeadSpecialistId(service);
 }
@@ -240,21 +253,31 @@ function buildEventDescription(
   return lines.filter(Boolean).join('\n');
 }
 
+/**
+ * Mock slots for local development — simulates a specialist who has opened
+ * a handful of first-consultation slots across the week.
+ */
 function getMockSlots(from: Date): TimeSlot[] {
   const slots: TimeSlot[] = [];
   const d = new Date(from);
   d.setHours(0, 0, 0, 0);
 
+  // Realistic hours a specialist might open for first consultations
+  const CANDIDATE_HOURS = [9, 10, 11, 16, 17, 18, 19] as const;
+
   for (let day = 0; day < 7; day++) {
     const dow = d.getDay();
     if (dow !== 0 && dow !== 6) {
       const dateStr = d.toISOString().split('T')[0];
-      for (const hour of SLOT_HOURS) {
-        slots.push({
-          start: buildMadridISO(dateStr, hour, 0),
-          end:   buildMadridISO(dateStr, hour, 50),
-          available: Math.random() > 0.3,
-        });
+      for (const hour of CANDIDATE_HOURS) {
+        if (Math.random() > 0.55) {   // ~45 % of hours are open
+          slots.push({
+            start:     buildMadridISO(dateStr, hour, 0),
+            end:       buildMadridISO(dateStr, hour, 50),
+            available: true,
+            eventId:   `mock-${dateStr}-${hour}`,
+          });
+        }
       }
     }
     d.setDate(d.getDate() + 1);
