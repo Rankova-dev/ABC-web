@@ -2,6 +2,7 @@
   "nav": {
     "services": "Servicios",
     "team": "Equipo",
+    "blog": "Blog",
     "contact": "Contacto",
     "cta": "Pide tu primera cita",
     "locale_toggle": "Català",
@@ -149,7 +150,7 @@
         "a": "Sí. La coordinación con el entorno del niño es fundamental. Nos ponemos en contacto con el centro escolar cuando es necesario."
       }
     ],
-    "team_members": ["Celia Cruz", "Laia Lahoz", "Vanessa de Pedro", "Noelia Torres"]
+    "team_members": ["Laia Lahoz", "Vanessa de Pedro", "Noelia Torres"]
   },
   "psicologia": {
     "meta_title": "Psicólogo en Barcelona — Infantil, Juvenil y Adultos | ABC Centre",
@@ -199,7 +200,7 @@
         "a": "Sí. Podemos elaborar informes psicológicos cuando el proceso terapéutico lo requiera."
       }
     ],
-    "team_members": ["Laia Álvarez", "Maria Andrés", "Mª del Mar Aránega", "Margot Moreno", "Eulàlia Marquez"]
+    "team_members": ["Laia Álvarez", "Mª del Mar Aránega", "Margot Moreno", "Eulàlia Marquez"]
   },
   "neuropsicologia": {
     "meta_title": "Neuropsicólogo en Barcelona — Evaluación y Rehabilitación | ABC Centre",
@@ -322,7 +323,7 @@
         "a": "Sí. Organizamos grupos de habilidades sociales para niños con TEA en función de la edad y nivel de desarrollo."
       }
     ],
-    "team_members": ["Celia Cruz", "Laia Álvarez", "Laia Lahoz", "Vanessa de Pedro"]
+    "team_members": ["Laia Álvarez", "Laia Lahoz", "Vanessa de Pedro"]
   },
   "rehabilitacion_voz": {
     "meta_title": "Rehabilitación de Voz en Barcelona — Logopeda | ABC Centre",
@@ -363,7 +364,7 @@
         "a": "Sí. Tenemos experiencia trabajando con profesionales de la voz y adaptamos el tratamiento a las demandas vocales específicas de cada perfil."
       }
     ],
-    "team_members": ["Celia Cruz", "Laia Lahoz", "Noelia Torres"]
+    "team_members": ["Laia Lahoz", "Noelia Torres"]
   },
   "terapia_familiar": {
     "meta_title": "Terapia Familiar y de Pareja en Barcelona | ABC Centre",
@@ -401,7 +402,7 @@
         "a": "No necesariamente. La terapia de pareja puede ayudar tanto a mejorar la relación como a tomar decisiones de forma más consciente, incluyendo la separación."
       }
     ],
-    "team_members": ["Maria Andrés", "Mª del Mar Aránega", "Margot Moreno"]
+    "team_members": ["Mª del Mar Aránega", "Margot Moreno"]
   },
   "habilidades_sociales": {
     "meta_title": "Habilidades Sociales Niños y Adolescentes Barcelona | ABC Centre",
@@ -444,7 +445,7 @@
         "a": "Los grupos nuevos empiezan en septiembre y en enero. Contáctanos para informarte de las plazas disponibles."
       }
     ],
-    "team_members": ["Maria Andrés", "Silvia Marcó", "Sara Reyes"]
+    "team_members": ["Silvia Marcó", "Sara Reyes"]
   },
   "equipo": {
     "meta_title": "Nuestro Equipo — ABC Centre Barcelona",
@@ -454,7 +455,18 @@
     "intro": "En ABC Centre creemos que el éxito del proceso terapéutico se basa en la confianza, la profesionalidad y el trato humano. Por eso contamos con un equipo multidisciplinar que trabaja de forma coordinada para ofrecerte la mejor atención.",
     "directors_title": "Codirectoras",
     "team_title": "Equipo de especialistas",
-    "disciplines_title": "Nuestras disciplinas"
+    "disciplines_title": "Nuestras disciplinas",
+    "join_title": "¿Quieres trabajar con nosotras?",
+    "join_body": "Siempre estamos abiertas a incorporar nuevas especialistas al equipo.",
+    "join_cta": "Enviar candidatura →"
+  },
+  "blog": {
+    "meta_title": "Blog — ABC Centre Barcelona",
+    "meta_desc": "Artículos y recursos sobre logopedia, psicología, neuropsicología y crianza del equipo especialista de ABC Centre, Nou Barris, Barcelona.",
+    "h1": "Blog",
+    "subtitle": "Artículos y recursos del equipo de ABC Centre.",
+    "coming_soon_title": "Próximamente",
+    "coming_soon_body": "Estamos preparando artículos y recursos para ayudarte. Vuelve pronto."
   },
   "contacto": {
     "meta_title": "Contacto y Primera Cita — ABC Centre Barcelona",

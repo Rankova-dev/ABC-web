@@ -2,6 +2,7 @@
   "nav": {
     "services": "Serveis",
     "team": "Equip",
+    "blog": "Blog",
     "contact": "Contacte",
     "cta": "Demana la teva primera cita",
     "locale_toggle": "Castellano",
@@ -130,11 +131,11 @@
       "Disfàgia (trastorns de la deglució)"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Fem una avaluació inicial individualitzada per identificar les necessitats específiques de cada persona. A partir d'aquí, dissenyem un pla d'intervenció personalitzat amb objectius clars i mesurables.",
+    "approach_body": "Fem una avaluació inicial individualitzada per identificar les necessitats específiques de cada persona. A partir d'aquí, dissenyem un pla d'intervenció personalitzat amb objectius clars i mesurables. Treballem de forma coordinada amb la resta de l'equip del centre quan el cas ho requereix.",
     "faq": [
       {
         "q": "A partir de quina edat es pot fer logopèdia?",
-        "a": "La logopèdia pot començar des d'edats molt primerenques. En estimulació del llenguatge treballem amb nens a partir dels 18 mesos."
+        "a": "La logopèdia pot començar des d'edats molt primerenques. En estimulació del llenguatge treballem amb nens a partir dels 18 mesos, i en logopèdia adults no hi ha límit d'edat."
       },
       {
         "q": "Quantes sessions necessito?",
@@ -149,7 +150,7 @@
         "a": "Sí. La coordinació amb l'entorn del nen és fonamental. Ens posem en contacte amb el centre escolar quan és necessari."
       }
     ],
-    "team_members": ["Celia Cruz", "Laia Lahoz", "Vanessa de Pedro", "Noelia Torres"]
+    "team_members": ["Laia Lahoz", "Vanessa de Pedro", "Noelia Torres"]
   },
   "psicologia": {
     "meta_title": "Psicòleg a Barcelona — Infantil, Juvenil i Adults | ABC Centre",
@@ -157,7 +158,7 @@
     "h1": "Psicòleg a Barcelona — infantil, juvenil i adults",
     "subtitle": "Suport psicològic especialitzat per a nens, adolescents i adults a Nou Barris, Barcelona. També online.",
     "what_title": "Què és la psicologia clínica?",
-    "what_body": "La psicologia clínica s'ocupa de l'avaluació, diagnòstic i tractament dels problemes emocionals, conductuals i relacionals que afecten el benestar de les persones.",
+    "what_body": "La psicologia clínica s'ocupa de l'avaluació, diagnòstic i tractament dels problemes emocionals, conductuals i relacionals que afecten el benestar de les persones. A ABC Centre comptem amb psicòlogues generals sanitàries especialitzades en diferents etapes de la vida.",
     "children_title": "Psicologia infantil i juvenil",
     "children_items": [
       "Trastorns de l'estat d'ànim i emocionals",
@@ -180,7 +181,7 @@
       "Psicologia online"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Treballem des d'un enfocament integrador, adaptant les tècniques a cada persona. Fem una primera consulta d'avaluació en la qual escoltem la teva situació i acordem els objectius del procés terapèutic.",
+    "approach_body": "Treballem des d'un enfocament integrador, adaptant les tècniques a cada persona. Fem una primera consulta d'avaluació en la qual escoltem la teva situació i acordem els objectius del procés terapèutic. La confidencialitat i el respecte són la base de la nostra pràctica.",
     "faq": [
       {
         "q": "Oferiu psicologia online?",
@@ -188,14 +189,18 @@
       },
       {
         "q": "Quant dura una sessió?",
-        "a": "Les sessions tenen una durada estàndard de 50 minuts."
+        "a": "Les sessions tenen una durada estàndard de 50 minuts. Les sessions d'avaluació inicial poden ser una mica més llargues."
       },
       {
         "q": "Necessito derivació mèdica?",
-        "a": "No. Pots contactar-nos directament sense necessitat de derivació."
+        "a": "No. Pots contactar-nos directament sense necessitat de derivació. Som psicòlogues generals sanitàries amb habilitació per exercir de forma autònoma."
+      },
+      {
+        "q": "Feu informes per a l'escola o el jutjat?",
+        "a": "Sí. Podem elaborar informes psicològics quan el procés terapèutic ho requereixi."
       }
     ],
-    "team_members": ["Laia Álvarez", "Maria Andrés", "Mª del Mar Aránega", "Margot Moreno", "Eulàlia Marquez"]
+    "team_members": ["Laia Álvarez", "Mª del Mar Aránega", "Margot Moreno", "Eulàlia Marquez"]
   },
   "neuropsicologia": {
     "meta_title": "Neuropsicòleg a Barcelona — Avaluació i Rehabilitació | ABC Centre",
@@ -203,13 +208,14 @@
     "h1": "Neuropsicòleg a Barcelona — avaluació i rehabilitació cognitiva",
     "subtitle": "Avaluació i rehabilitació neuropsicològica per a nens, adolescents i adults a Nou Barris, Barcelona.",
     "what_title": "Què és la neuropsicologia?",
-    "what_body": "La neuropsicologia estudia la relació entre el cervell i el comportament. A través d'una avaluació neuropsicològica podem identificar com funcionen la memòria, l'atenció, el llenguatge i altres funcions cognitives.",
+    "what_body": "La neuropsicologia estudia la relació entre el cervell i el comportament. A través d'una avaluació neuropsicològica podem identificar com funcionen la memòria, l'atenció, el llenguatge i altres funcions cognitives, i dissenyar un programa de rehabilitació o estimulació adaptat.",
     "children_title": "Neuropsicologia infantil i juvenil",
     "children_items": [
       "Avaluació de capacitats cognitives i àrees d'aprenentatge",
       "Diagnòstic de TDAH",
       "Trastorns d'aprenentatge (dislèxia, discalcúlia)",
       "Trastorns del desenvolupament intel·lectual",
+      "Trastorns de l'aprenentatge no verbal",
       "Trastorns del llenguatge i la comunicació"
     ],
     "adults_title": "Neuropsicologia per a adults",
@@ -221,15 +227,19 @@
       "Rehabilitació neuropsicològica"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "L'avaluació neuropsicològica utilitza proves estandarditzades i validades per obtenir un perfil cognitiu detallat.",
+    "approach_body": "L'avaluació neuropsicològica utilitza proves estandarditzades i validades per obtenir un perfil cognitiu detallat. Amb els resultats elaborem un informe i un pla d'intervenció que pot incloure rehabilitació cognitiva, orientació a la família i coordinació amb altres professionals.",
     "faq": [
       {
         "q": "Quina diferència hi ha entre psicologia i neuropsicologia?",
-        "a": "La neuropsicologia se centra específicament en la relació entre el cervell i les funcions cognitives (memòria, atenció, llenguatge)."
+        "a": "La neuropsicologia se centra específicament en la relació entre el cervell i les funcions cognitives (memòria, atenció, llenguatge). Se centra a avaluar i rehabilitar aquestes funcions quan hi ha una afectació neurològica o del neurodesenvolupament."
       },
       {
         "q": "Quant dura una avaluació neuropsicològica?",
-        "a": "L'avaluació completa pot requerir entre 2 i 4 sessions segons la complexitat del cas."
+        "a": "L'avaluació completa pot requerir entre 2 i 4 sessions segons la complexitat del cas. Inclou entrevista, proves i elaboració de l'informe."
+      },
+      {
+        "q": "Podeu fer el diagnòstic de TDAH?",
+        "a": "Fem l'avaluació neuropsicològica que forma part del procés diagnòstic del TDAH. El diagnòstic final requereix coordinació amb el neuropediatra o psiquiatra."
       }
     ],
     "team_members": ["Laia Álvarez", "Silvia Marcó", "Sara Reyes"]
@@ -240,14 +250,15 @@
     "h1": "Psicopedagog a Barcelona — dislèxia, TDAH i dificultats d'aprenentatge",
     "subtitle": "Avaluació i suport educatiu per a nens i joves amb dificultats d'aprenentatge a Nou Barris, Barcelona.",
     "what_title": "Què és la psicopedagogia?",
-    "what_body": "La psicopedagogia s'encarrega d'estudiar l'aprenentatge humà i les seves dificultats. El psicopedagog avalua el rendiment acadèmic i els processos d'aprenentatge.",
+    "what_body": "La psicopedagogia s'encarrega d'estudiar l'aprenentatge humà i les seves dificultats. El psicopedagog avalua el rendiment acadèmic, els processos d'aprenentatge i els factors emocionals i cognitius que poden estar influint, i dissenya estratègies d'intervenció personalitzades.",
     "children_title": "Per a qui és?",
     "children_items": [
       "Nens amb dificultats de lectura i escriptura (dislèxia, disgrafia)",
       "Dificultats en matemàtiques (discalcúlia)",
       "TDAH amb afectació escolar",
       "Baix rendiment acadèmic sense causa aparent",
-      "Nens amb altes capacitats amb necessitats específiques"
+      "Nens amb altes capacitats amb necessitats específiques",
+      "Preparació per a proves diagnòstiques"
     ],
     "adults_title": "Coordinació amb l'entorn escolar",
     "adults_items": [
@@ -257,11 +268,15 @@
       "Adaptacions curriculars"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Fem una avaluació psicopedagògica completa que inclou l'anàlisi del rendiment acadèmic, les capacitats cognitives i els factors emocionals.",
+    "approach_body": "Fem una avaluació psicopedagògica completa que inclou l'anàlisi del rendiment acadèmic, les capacitats cognitives i els factors emocionals. A partir de l'informe, dissenyem un pla d'intervenció que pot combinar-se amb suport logopèdic o psicològic quan sigui necessari.",
     "faq": [
       {
         "q": "A quina edat es pot detectar la dislèxia?",
-        "a": "Els primers signes poden detectar-se a partir dels 5-6 anys, quan el nen comença a aprendre a llegir."
+        "a": "Els primers signes poden detectar-se a partir dels 5-6 anys, quan el nen comença a aprendre a llegir. L'avaluació formal sol fer-se a partir dels 7 anys."
+      },
+      {
+        "q": "Quina diferència hi ha entre psicopedagogia i logopèdia?",
+        "a": "La logopèdia se centra en els trastorns de la parla i el llenguatge, mentre que la psicopedagogia treballa els processos d'aprenentatge i el rendiment acadèmic. Sovint treballen de forma complementària."
       }
     ],
     "team_members": ["Carla López"]
@@ -272,15 +287,16 @@
     "h1": "Logopèdia i Psicologia per a TEA a Barcelona",
     "subtitle": "Intervenció integral i especialitzada per a persones amb TEA i les seves famílies a Nou Barris, Barcelona.",
     "what_title": "Què és el TEA?",
-    "what_body": "El Trastorn de l'Espectre Autista (TEA) és un conjunt de condicions del neurodesenvolupament que afecten la comunicació, la interacció social i el comportament.",
+    "what_body": "El Trastorn de l'Espectre Autista (TEA) és un conjunt de condicions del neurodesenvolupament que afecten la comunicació, la interacció social i el comportament. A ABC Centre oferim una intervenció integral que treballa de forma coordinada des de la logopèdia, la psicologia i les habilitats socials.",
     "children_title": "Àrees d'intervenció",
     "children_items": [
       "Diagnòstic i avaluació del TEA",
       "Logopèdia i comunicació (verbal i no verbal)",
       "Sistemes Augmentatius i Alternatius de Comunicació (SAAC)",
       "Habilitats socials (individual i en grup)",
-      "Estimulació cognitiva",
+      "Estimulació cognitiva (atenció, funcions executives, memòria)",
       "Reconeixement i expressió d'emocions",
+      "Maneig de la rigidesa i la inflexibilitat",
       "Intervenció en sensibilitat sensorial",
       "Suport psicològic al nen i a la família"
     ],
@@ -292,18 +308,22 @@
       "Gestió de situacions difícils"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Creiem en la intervenció primerenca i en un abordatge individualitzat que tingui en compte les fortaleses i necessitats úniques de cada persona.",
+    "approach_body": "Creiem en la intervenció primerenca i en un abordatge individualitzat que tingui en compte les fortaleses i necessitats úniques de cada persona. El treball en equip entre logopedes i psicòlogues ens permet oferir una atenció integral i coordinada.",
     "faq": [
       {
         "q": "A partir de quina edat ateneu casos de TEA?",
-        "a": "Treballem amb nens a partir dels 18 mesos en casos de sospita o diagnòstic primerenc."
+        "a": "Treballem amb nens a partir dels 18 mesos en casos de sospita o diagnòstic primerenc. La intervenció precoç és clau per millorar el pronòstic."
       },
       {
         "q": "Feu diagnòstic de TEA?",
-        "a": "Fem l'avaluació logopèdica i psicològica que forma part del procés diagnòstic."
+        "a": "Fem l'avaluació logopèdica i psicològica que forma part del procés diagnòstic. El diagnòstic final requereix un equip multidisciplinari que pot incloure neuropediatra."
+      },
+      {
+        "q": "Teniu grups d'habilitats socials per a TEA?",
+        "a": "Sí. Organitzem grups d'habilitats socials per a nens amb TEA en funció de l'edat i el nivell de desenvolupament."
       }
     ],
-    "team_members": ["Celia Cruz", "Laia Álvarez", "Laia Lahoz", "Vanessa de Pedro"]
+    "team_members": ["Laia Álvarez", "Laia Lahoz", "Vanessa de Pedro"]
   },
   "rehabilitacion_voz": {
     "meta_title": "Rehabilitació de la Veu a Barcelona — Logopeda | ABC Centre",
@@ -311,13 +331,14 @@
     "h1": "Rehabilitació de la Veu a Barcelona",
     "subtitle": "Tractament especialitzat dels trastorns de la veu i rehabilitació vocal per a professionals i públic general.",
     "what_title": "Què és la rehabilitació de la veu?",
-    "what_body": "La rehabilitació de la veu és la intervenció logopèdica dirigida a tractar els trastorns que afecten la producció i qualitat de la veu.",
+    "what_body": "La rehabilitació de la veu és la intervenció logopèdica dirigida a tractar els trastorns que afecten la producció i qualitat de la veu. Treballem amb persones que presenten disfònies funcionals o orgàniques, professionals de la veu i pacients derivats per ORL.",
     "children_title": "Per a qui és?",
     "children_items": [
       "Disfonia funcional (tensió, abús vocal)",
       "Nòduls, pòlips i quistes a les cordes vocals (post-cirurgia)",
       "Paràlisi de cordes vocals",
       "Veu professional (cantants, docents, actors)",
+      "Rehabilitació post-laringectomia",
       "Feminització/masculinització de la veu (persones trans)",
       "Higiene vocal i prevenció"
     ],
@@ -328,18 +349,22 @@
       "Seguiment postquirúrgic"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Fem una avaluació vocal completa que inclou història clínica, anàlisi perceptiva i, quan és possible, anàlisi acústica de la veu.",
+    "approach_body": "Fem una avaluació vocal completa que inclou història clínica, anàlisi perceptiva i, quan és possible, anàlisi acústica de la veu. A partir dels resultats dissenyem un programa de rehabilitació que treballa la tècnica vocal, la higiene i els factors que mantenen el trastorn.",
     "faq": [
       {
         "q": "Necessito derivació de l'ORL?",
-        "a": "No és imprescindible, però en els casos de patologia orgànica és recomanable la coordinació amb l'especialista ORL."
+        "a": "No és imprescindible, però en els casos de patologia orgànica (nòduls, pòlips, paràlisi) és recomanable la coordinació amb l'especialista ORL."
       },
       {
         "q": "Quantes sessions necessita la rehabilitació vocal?",
-        "a": "Depèn del tipus de trastorn. Una disfonia funcional lleu pot resoldre's en 8-12 sessions."
+        "a": "Depèn del tipus de trastorn. Una disfonia funcional lleu pot resoldre's en 8-12 sessions. Els casos de patologia orgànica poden requerir més temps."
+      },
+      {
+        "q": "Treballeu amb cantants i professors?",
+        "a": "Sí. Tenim experiència treballant amb professionals de la veu i adaptem el tractament a les demandes vocals específiques de cada perfil."
       }
     ],
-    "team_members": ["Celia Cruz", "Laia Lahoz", "Noelia Torres"]
+    "team_members": ["Laia Lahoz", "Noelia Torres"]
   },
   "terapia_familiar": {
     "meta_title": "Teràpia Familiar i de Parella a Barcelona | ABC Centre",
@@ -347,15 +372,16 @@
     "h1": "Teràpia Familiar i de Parella a Barcelona",
     "subtitle": "Acompanyament professional per millorar la comunicació i resoldre conflictes en l'entorn familiar i de parella.",
     "what_title": "Què és la teràpia familiar?",
-    "what_body": "La teràpia familiar i de parella és una modalitat d'intervenció psicològica que treballa amb el sistema familiar com a unitat.",
+    "what_body": "La teràpia familiar i de parella és una modalitat d'intervenció psicològica que treballa amb el sistema familiar com a unitat. L'objectiu és millorar la comunicació, resoldre conflictes i trobar noves formes de relacionar-se que afavoreixin el benestar de tots els membres.",
     "children_title": "Per a qui és?",
     "children_items": [
       "Parelles amb dificultats de comunicació",
       "Conflictes de parella i crisis relacionals",
       "Famílies en procés de separació o divorci",
-      "Famílies amb fills amb dificultats emocionals",
+      "Famílies amb fills amb dificultats emocionals o conductuals",
       "Situacions de dol o pèrdua en el sistema familiar",
-      "Famílies reconstituïdes"
+      "Famílies reconstituïdes",
+      "Adopció i acolliment"
     ],
     "adults_title": "Modalitats",
     "adults_items": [
@@ -365,18 +391,18 @@
       "Mediació familiar"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Treballem des d'un enfocament sistèmic i relacional, entenent que els problemes individuals sempre tenen un context familiar.",
+    "approach_body": "Treballem des d'un enfocament sistèmic i relacional, entenent que els problemes individuals sempre tenen un context familiar. Les sessions són un espai segur perquè tots els membres puguin expressar-se i ser escoltats.",
     "faq": [
       {
         "q": "Han de venir tots els membres de la família?",
-        "a": "En la primera sessió és ideal que vinguin les persones directament implicades."
+        "a": "En la primera sessió és ideal que vinguin les persones directament implicades. A partir d'aquí, el terapeuta orientarà sobre el format més adequat."
       },
       {
         "q": "La teràpia de parella és per salvar la relació?",
-        "a": "No necessàriament. La teràpia de parella pot ajudar tant a millorar la relació com a prendre decisions de forma més conscient."
+        "a": "No necessàriament. La teràpia de parella pot ajudar tant a millorar la relació com a prendre decisions de forma més conscient, incloent la separació."
       }
     ],
-    "team_members": ["Maria Andrés", "Mª del Mar Aránega", "Margot Moreno"]
+    "team_members": ["Mª del Mar Aránega", "Margot Moreno"]
   },
   "habilidades_sociales": {
     "meta_title": "Habilitats Socials Nens i Adolescents Barcelona | ABC Centre",
@@ -384,14 +410,15 @@
     "h1": "Habilitats Socials a Barcelona",
     "subtitle": "Grups terapèutics per a nens i adolescents que volen millorar les seves relacions socials i la seva comunicació.",
     "what_title": "Què són les habilitats socials?",
-    "what_body": "Les habilitats socials són el conjunt de conductes i capacitats que ens permeten relacionar-nos amb els altres de manera efectiva i satisfactòria.",
+    "what_body": "Les habilitats socials són el conjunt de conductes i capacitats que ens permeten relacionar-nos amb els altres de manera efectiva i satisfactòria. A ABC Centre treballem aquestes habilitats en format grupal, la qual cosa permet practicar-les en un entorn segur i amb iguals.",
     "children_title": "Per a qui són els grups?",
     "children_items": [
       "Nens i adolescents amb dificultats per fer amics",
       "Persones amb timidesa o ansietat social",
       "Nens amb TEA (grups específics)",
       "Adolescents amb baixa autoestima",
-      "Persones amb TDAH que afecta les relacions"
+      "Persones amb TDAH que afecta les relacions",
+      "Nens amb dificultats de comunicació"
     ],
     "adults_title": "Què treballem als grups?",
     "adults_items": [
@@ -403,7 +430,7 @@
       "Autoconeixement i autoestima"
     ],
     "approach_title": "El nostre enfocament",
-    "approach_body": "Els grups es formen per franges d'edat per tal que el treball sigui el més significatiu possible. Cada grup compta amb un màxim de 6-8 participants.",
+    "approach_body": "Els grups es formen per franges d'edat per tal que el treball sigui el més significatiu possible. Cada grup compta amb un màxim de 6-8 participants per garantir l'atenció individualitzada. Les sessions combinen dinàmiques, jocs i reflexions.",
     "faq": [
       {
         "q": "Quina edat han de tenir per participar?",
@@ -411,20 +438,35 @@
       },
       {
         "q": "Quantes persones hi ha a cada grup?",
-        "a": "Els grups tenen un màxim de 6-8 participants."
+        "a": "Els grups tenen un màxim de 6-8 participants per garantir l'atenció i el treball individualitzat."
+      },
+      {
+        "q": "Quan comencen els nous grups?",
+        "a": "Els grups nous comencen al setembre i al gener. Contacta'ns per informar-te de les places disponibles."
       }
     ],
-    "team_members": ["Maria Andrés", "Silvia Marcó", "Sara Reyes"]
+    "team_members": ["Silvia Marcó", "Sara Reyes"]
   },
   "equipo": {
     "meta_title": "El nostre Equip — ABC Centre Barcelona",
     "meta_desc": "Coneix l'equip d'especialistes d'ABC Centre: logopedes, psicòlogues i neuropsicòlogues amb anys d'experiència a Nou Barris, Barcelona.",
     "h1": "El nostre equip",
     "subtitle": "12 especialistes en logopèdia, psicologia i neuropsicologia compromeses amb el teu benestar.",
-    "intro": "A ABC Centre creiem que l'èxit del procés terapèutic es basa en la confiança, la professionalitat i el tracte humà.",
+    "intro": "A ABC Centre creiem que l'èxit del procés terapèutic es basa en la confiança, la professionalitat i el tracte humà. Per això comptem amb un equip multidisciplinari que treballa de forma coordinada per oferir-te la millor atenció.",
     "directors_title": "Codirectores",
     "team_title": "Equip d'especialistes",
-    "disciplines_title": "Les nostres disciplines"
+    "disciplines_title": "Les nostres disciplines",
+    "join_title": "Vols treballar amb nosaltres?",
+    "join_body": "Sempre estem obertes a incorporar noves especialistes a l'equip.",
+    "join_cta": "Enviar candidatura →"
+  },
+  "blog": {
+    "meta_title": "Blog — ABC Centre Barcelona",
+    "meta_desc": "Articles i recursos sobre logopèdia, psicologia, neuropsicologia i criança de l'equip especialista d'ABC Centre, Nou Barris, Barcelona.",
+    "h1": "Blog",
+    "subtitle": "Articles i recursos de l'equip d'ABC Centre.",
+    "coming_soon_title": "Pròximament",
+    "coming_soon_body": "Estem preparant articles i recursos per ajudar-te. Torna aviat."
   },
   "contacto": {
     "meta_title": "Contacte i Primera Cita — ABC Centre Barcelona",

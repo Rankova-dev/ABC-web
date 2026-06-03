@@ -132,16 +132,16 @@ export default function EquipoPage() {
       <section className="py-16 bg-teal text-center">
         <div className="max-w-xl mx-auto px-4">
           <h2 className="text-h2 font-outfit font-semibold text-white mb-4 animate-on-scroll">
-            ¿Quieres trabajar con nosotras?
+            {t('join_title')}
           </h2>
           <p className="text-white/70 font-light mb-8 animate-on-scroll">
-            Siempre estamos abiertas a incorporar nuevas especialistas al equipo.
+            {t('join_body')}
           </p>
           <a
             href="mailto:info@abccentre.es?subject=Candidatura%20espontanea"
             className="inline-flex items-center gap-2 px-8 py-4 bg-lime text-ink font-outfit font-semibold rounded-xl hover:bg-lime-dark transition-all animate-on-scroll"
           >
-            Enviar candidatura →
+            {t('join_cta')}
           </a>
         </div>
       </section>

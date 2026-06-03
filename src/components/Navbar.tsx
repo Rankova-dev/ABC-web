@@ -107,6 +107,10 @@ export default function Navbar() {
               {t('team')}
             </Link>
 
+            <Link href="/blog" className="font-outfit font-semibold text-sm text-ink hover:text-teal transition-colors">
+              {t('blog')}
+            </Link>
+
             <Link href="/contacto" className="font-outfit font-semibold text-sm text-ink hover:text-teal transition-colors">
               {t('contact')}
             </Link>
@@ -161,6 +165,9 @@ export default function Navbar() {
             </div>
             <Link href="/equipo" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('team')}
+            </Link>
+            <Link href="/blog" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
+              {t('blog')}
             </Link>
             <Link href="/contacto" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('contact')}

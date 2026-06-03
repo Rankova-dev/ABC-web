@@ -128,14 +128,14 @@ export type SpecialistId = keyof typeof SPECIALISTS;
 // ─── Mapeo servicio → equipo ──────────────────────────────────────────────────
 
 export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
-  logopedia:             ['celia_cruz',   'laia_lahoz',   'vanessa_pedro',  'noelia_torres'],
-  psicologia:            ['laia_alvarez', 'maria_andres', 'mar_aranega',    'margot_moreno', 'eulalia_marquez'],
+  logopedia:             ['laia_lahoz',   'vanessa_pedro',  'noelia_torres'],
+  psicologia:            ['laia_alvarez', 'mar_aranega',    'margot_moreno', 'eulalia_marquez'],
   neuropsicologia:       ['laia_alvarez', 'silvia_marco', 'sara_reyes'],
   psicopedagogia:        ['carla_lopez'],
-  tea:                   ['celia_cruz',   'laia_alvarez', 'laia_lahoz',     'vanessa_pedro'],
-  'rehabilitacion-voz':  ['celia_cruz',   'laia_lahoz',   'noelia_torres'],
-  'terapia-familiar':    ['maria_andres', 'mar_aranega',  'margot_moreno'],
-  'habilidades-sociales':['maria_andres', 'silvia_marco', 'sara_reyes'],
+  tea:                   ['laia_alvarez', 'laia_lahoz',     'vanessa_pedro'],
+  'rehabilitacion-voz':  ['laia_lahoz',   'noelia_torres'],
+  'terapia-familiar':    ['mar_aranega',  'margot_moreno'],
+  'habilidades-sociales':['silvia_marco', 'sara_reyes'],
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
