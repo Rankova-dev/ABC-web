@@ -1,4 +1,4 @@
-import { resolveCalendarId, SPECIALISTS, SERVICE_TEAM, getLeadSpecialistId } from '@/config/specialists';
+import { resolveCalendarId, SPECIALISTS, SERVICE_TEAM, getLeadSpecialistId, SERVICE_DURATION } from '@/config/specialists';
 import type { Service, SpecialistId } from '@/config/specialists';
 
 // Re-export types used by other files
@@ -195,13 +195,28 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
     }
 
     // 2. Create the patient appointment event
+    const durationMin = SERVICE_DURATION[request.service] ?? 45;
+    const startDate = new Date(request.selectedSlot.start);
+    const endDate = new Date(startDate.getTime() + durationMin * 60_000);
+    const endParts = new Intl.DateTimeFormat('en', {
+      timeZone: TZ,
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    }).formatToParts(endDate);
+    const ep = (type: string) => endParts.find(p => p.type === type)!.value;
+    const endDateTime = buildMadridISO(
+      `${ep('year')}-${ep('month')}-${ep('day')}`,
+      parseInt(ep('hour')),
+      parseInt(ep('minute')),
+    );
+
     const event = await calendar.events.insert({
       calendarId,
       requestBody: {
         summary:     `Primera consulta — ${request.patientName}`,
         description: buildEventDescription(request, specialist.name, specialist.role),
         start: { dateTime: request.selectedSlot.start, timeZone: TZ },
-        end:   { dateTime: request.selectedSlot.end,   timeZone: TZ },
+        end:   { dateTime: endDateTime,                timeZone: TZ },
         reminders: {
           useDefault: false,
           overrides: [

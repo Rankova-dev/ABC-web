@@ -15,7 +15,8 @@
       "rehabilitacion_voz": "Rehabilitació de la Veu",
       "terapia_familiar": "Teràpia Familiar",
       "habilidades_sociales": "Habilitats Socials"
-    }
+    },
+    "gallery": "Galeria"
   },
   "footer": {
     "tagline": "Des de 1999 ajudant-te a donar un pas endavant.",
@@ -43,10 +44,22 @@
     "audience_title": "Atenció especialitzada per a totes les edats",
     "audience_subtitle": "Tant si busques suport per al teu fill com per a tu mateix, tenim l'especialista adequat.",
     "audience_children_title": "Nens i joves",
-    "audience_children_services": ["Logopèdia infantil", "Psicologia infantil", "TEA", "Psicopedagogia", "Habilitats socials"],
+    "audience_children_services": [
+      "Logopèdia infantil",
+      "Psicologia infantil",
+      "TEA",
+      "Psicopedagogia",
+      "Habilitats socials"
+    ],
     "audience_children_cta": "Veure serveis per a nens",
     "audience_adults_title": "Adults",
-    "audience_adults_services": ["Logopèdia adults", "Psicologia adults", "Neuropsicologia", "Teràpia familiar", "Rehabilitació de la veu"],
+    "audience_adults_services": [
+      "Logopèdia adults",
+      "Psicologia adults",
+      "Neuropsicologia",
+      "Teràpia familiar",
+      "Rehabilitació de la veu"
+    ],
     "audience_adults_cta": "Veure serveis per a adults",
     "services_title": "Els nostres serveis",
     "services_subtitle": "Un centre multidisciplinari amb tot el que necessites sota un mateix sostre.",
@@ -150,7 +163,11 @@
         "a": "Sí. La coordinació amb l'entorn del nen és fonamental. Ens posem en contacte amb el centre escolar quan és necessari."
       }
     ],
-    "team_members": ["Laia Lahoz", "Vanessa de Pedro", "Noelia Torres"]
+    "team_members": [
+      "Laia Lahoz",
+      "Vanessa de Pedro",
+      "Noelia Torres"
+    ]
   },
   "psicologia": {
     "meta_title": "Psicòleg a Barcelona — Infantil, Juvenil i Adults | ABC Centre",
@@ -200,7 +217,12 @@
         "a": "Sí. Podem elaborar informes psicològics quan el procés terapèutic ho requereixi."
       }
     ],
-    "team_members": ["Laia Álvarez", "Mª del Mar Aránega", "Margot Moreno", "Eulàlia Marquez"]
+    "team_members": [
+      "Laia Álvarez",
+      "Mª del Mar Aránega",
+      "Margot Moreno",
+      "Eulàlia Marquez"
+    ]
   },
   "neuropsicologia": {
     "meta_title": "Neuropsicòleg a Barcelona — Avaluació i Rehabilitació | ABC Centre",
@@ -242,7 +264,11 @@
         "a": "Fem l'avaluació neuropsicològica que forma part del procés diagnòstic del TDAH. El diagnòstic final requereix coordinació amb el neuropediatra o psiquiatra."
       }
     ],
-    "team_members": ["Laia Álvarez", "Silvia Marcó", "Sara Reyes"]
+    "team_members": [
+      "Laia Álvarez",
+      "Silvia Marcó",
+      "Sara Reyes"
+    ]
   },
   "psicopedagogia": {
     "meta_title": "Psicopedagoga a Barcelona — Dificultats d'Aprenentatge | ABC Centre",
@@ -279,7 +305,9 @@
         "a": "La logopèdia se centra en els trastorns de la parla i el llenguatge, mentre que la psicopedagogia treballa els processos d'aprenentatge i el rendiment acadèmic. Sovint treballen de forma complementària."
       }
     ],
-    "team_members": ["Carla López"]
+    "team_members": [
+      "Carla López"
+    ]
   },
   "tea": {
     "meta_title": "Logopèdia i Psicologia per a TEA a Barcelona | ABC Centre",
@@ -323,7 +351,11 @@
         "a": "Sí. Organitzem grups d'habilitats socials per a nens amb TEA en funció de l'edat i el nivell de desenvolupament."
       }
     ],
-    "team_members": ["Laia Álvarez", "Laia Lahoz", "Vanessa de Pedro"]
+    "team_members": [
+      "Laia Álvarez",
+      "Laia Lahoz",
+      "Vanessa de Pedro"
+    ]
   },
   "rehabilitacion_voz": {
     "meta_title": "Rehabilitació de la Veu a Barcelona — Logopeda | ABC Centre",
@@ -364,7 +396,10 @@
         "a": "Sí. Tenim experiència treballant amb professionals de la veu i adaptem el tractament a les demandes vocals específiques de cada perfil."
       }
     ],
-    "team_members": ["Laia Lahoz", "Noelia Torres"]
+    "team_members": [
+      "Laia Lahoz",
+      "Noelia Torres"
+    ]
   },
   "terapia_familiar": {
     "meta_title": "Teràpia Familiar i de Parella a Barcelona | ABC Centre",
@@ -402,7 +437,10 @@
         "a": "No necessàriament. La teràpia de parella pot ajudar tant a millorar la relació com a prendre decisions de forma més conscient, incloent la separació."
       }
     ],
-    "team_members": ["Mª del Mar Aránega", "Margot Moreno"]
+    "team_members": [
+      "Mª del Mar Aránega",
+      "Margot Moreno"
+    ]
   },
   "habilidades_sociales": {
     "meta_title": "Habilitats Socials Nens i Adolescents Barcelona | ABC Centre",
@@ -445,7 +483,10 @@
         "a": "Els grups nous comencen al setembre i al gener. Contacta'ns per informar-te de les places disponibles."
       }
     ],
-    "team_members": ["Silvia Marcó", "Sara Reyes"]
+    "team_members": [
+      "Silvia Marcó",
+      "Sara Reyes"
+    ]
   },
   "equipo": {
     "meta_title": "El nostre Equip — ABC Centre Barcelona",
@@ -494,5 +535,11 @@
     "map_title": "Com arribar",
     "map_metro": "Metro: L1 (Trinitat Nova), L4 (Via Júlia), L5 (Virrei Amat)",
     "map_bus": "Bus: 11, 50, 76, 97"
+  },
+  "galeria": {
+    "meta_title": "Galeria de Fotos — ABC Centre Barcelona",
+    "meta_desc": "Descobreix les instal·lacions d'ABC Centre a Nou Barris, Barcelona. Sales de teràpia modernes i un entorn acollidor.",
+    "h1": "Galeria",
+    "subtitle": "Coneix les nostres instal·lacions i l'espai on treballem cada dia."
   }
 }

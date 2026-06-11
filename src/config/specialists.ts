@@ -138,6 +138,19 @@ export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
   'habilidades-sociales':['silvia_marco', 'sara_reyes'],
 };
 
+// ─── Duración de primera visita por servicio (minutos) ───────────────────────
+
+export const SERVICE_DURATION: Record<Service, number> = {
+  logopedia:              45,
+  psicologia:             45,
+  neuropsicologia:        45,
+  psicopedagogia:         45,
+  tea:                    45,
+  'rehabilitacion-voz':   30,
+  'terapia-familiar':     45,
+  'habilidades-sociales': 45,
+};
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /** Devuelve las especialistas de un servicio con su config completa */
