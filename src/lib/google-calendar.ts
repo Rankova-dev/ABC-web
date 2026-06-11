@@ -197,16 +197,11 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
     // 2. Create the patient appointment event
     const event = await calendar.events.insert({
       calendarId,
-      sendUpdates: 'all',
       requestBody: {
         summary:     `Primera consulta — ${request.patientName}`,
         description: buildEventDescription(request, specialist.name, specialist.role),
         start: { dateTime: request.selectedSlot.start, timeZone: TZ },
         end:   { dateTime: request.selectedSlot.end,   timeZone: TZ },
-        attendees: [
-          { email: request.email },
-          { email: specialist.email },
-        ],
         reminders: {
           useDefault: false,
           overrides: [
