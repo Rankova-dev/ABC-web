@@ -32,6 +32,10 @@ export const routing = defineRouting({
       ca: '/contacte',
     },
     '/blog': '/blog',
+    '/galeria': {
+      es: '/galeria',
+      ca: '/galeria',
+    },
   },
 });
 
