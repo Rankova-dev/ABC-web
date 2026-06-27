@@ -181,7 +181,7 @@ export default function Navbar() {
             <Link href="/galeria" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('gallery')}
             </Link>
-            <Link href="/equipo#unete" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
+            <Link href={{ pathname: '/equipo', hash: 'unete' }} className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('work_with_us')}
             </Link>
             <Link href="/contacto" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
