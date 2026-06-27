@@ -11,12 +11,13 @@
       "psicologia": "Psicologia",
       "neuropsicologia": "Neuropsicologia",
       "psicopedagogia": "Psicopedagogia",
-      "tea": "TEA",
-      "rehabilitacion_voz": "Rehabilitació de la Veu",
-      "terapia_familiar": "Teràpia Familiar",
-      "habilidades_sociales": "Habilitats Socials"
+      "tea": "Trastorn de l'Espectre de l'Autisme (TEA)",
+      "orientacion_familiar": "Orientació i Assessorament Familiar",
+      "cursos_formacion": "Cursos i Formació",
+      "salut": "Salut"
     },
-    "gallery": "Galeria"
+    "gallery": "Galeria",
+    "work_with_us": "Treballa amb nosaltres"
   },
   "footer": {
     "tagline": "Des de 1999 ajudant-te a donar un pas endavant.",
@@ -84,7 +85,12 @@
     "booking_step3_body": "Reps la confirmació per correu a l'instant.",
     "booking_cta": "Demana cita ara",
     "map_title": "Troba'ns",
-    "map_subtitle": "Al cor de Nou Barris, Barcelona."
+    "map_subtitle": "Al cor de Nou Barris, Barcelona.",
+    "newsletter_title": "Subscriu-te i obtén un 10% de descompte a la teva primera cita",
+    "newsletter_body": "Consells de logopèdia, psicologia i benestar directament al teu correu. Sense spam.",
+    "newsletter_placeholder": "El teu correu electrònic",
+    "newsletter_cta": "Subscriure'm",
+    "newsletter_disclaimer": "En subscriure't rebràs un codi de descompte del 10% per a la teva primera cita. Sense compromís, pots donar-te de baixa en qualsevol moment."
   },
   "common": {
     "book_cta": "Demana la teva primera consulta",
@@ -541,5 +547,145 @@
     "meta_desc": "Descobreix les instal·lacions d'ABC Centre a Nou Barris, Barcelona. Sales de teràpia modernes i un entorn acollidor.",
     "h1": "Galeria",
     "subtitle": "Coneix les nostres instal·lacions i l'espai on treballem cada dia."
+  },
+  "orientacion_familiar": {
+    "meta_title": "Orientació i Assessorament Familiar a Barcelona | ABC Centre",
+    "meta_desc": "Orientació i assessorament familiar a Nou Barris, Barcelona. Suport psicològic per a famílies amb fills en teràpia, TEA, crisis familiars i orientació parental.",
+    "h1": "Orientació i Assessorament Familiar a Barcelona",
+    "subtitle": "Acompanyament professional per a famílies que necessiten orientació i eines per donar suport als seus fills i afrontar els reptes del dia a dia.",
+    "what_title": "Què és l'orientació i l'assessorament familiar?",
+    "what_body": "L'orientació i l'assessorament familiar és un servei de suport psicològic adreçat a famílies que conviuen amb situacions complexes: fills amb dificultats del desenvolupament, diagnòstics recents de TEA, TDAH o altres condicions, crisis familiars o simplement la necessitat de millorar la comunicació i les estratègies a la llar. No és teràpia de parella ni teràpia familiar estructurada, sinó un espai d'orientació pràctica i acompanyament.",
+    "children_title": "Per a qui és?",
+    "children_items": [
+      "Famílies amb fills amb TEA o en procés de diagnòstic",
+      "Famílies amb fills amb TDAH, dificultats d'aprenentatge o emocionals",
+      "Pares que necessiten eines per gestionar conductes difícils",
+      "Famílies en situacions d'estrès o crisi",
+      "Famílies en processos de separació amb fills menors",
+      "Famílies reconstituïdes o en acolliment i adopció",
+      "Avis i altres cuidadors principals"
+    ],
+    "adults_title": "Què treballem?",
+    "adults_items": [
+      "Estratègies de comunicació a la llar",
+      "Gestió de conductes difícils",
+      "Orientació parental individualitzada",
+      "Coordinació amb l'escola i altres professionals",
+      "Suport emocional als pares i cuidadors",
+      "Eines per al dia a dia segons el diagnòstic del fill"
+    ],
+    "approach_title": "El nostre enfocament",
+    "approach_body": "Treballem des d'un enfocament sistèmic i pràctic, centrat en les necessitats concretes de cada família. Les sessions són un espai d'escolta, orientació i construcció d'estratègies adaptades a la realitat de cada llar. Coordinem amb la resta de l'equip del centre quan el cas ho requereix, oferint una visió integral.",
+    "faq": [
+      {
+        "q": "És el mateix que la teràpia familiar?",
+        "a": "No exactament. L'orientació familiar se centra a oferir pautes, eines i estratègies als pares i cuidadors. No és una teràpia estructurada sinó un espai de suport i orientació pràctica."
+      },
+      {
+        "q": "Han de venir tots els membres de la família?",
+        "a": "Depèn de la situació. En molts casos treballem només amb els pares o cuidadors. Ho valorem en la primera consulta."
+      },
+      {
+        "q": "Podem combinar aquest servei amb la teràpia del nen?",
+        "a": "Sí, i és molt recomanable. L'orientació familiar complementa el treball terapèutic individual del nen i millora els resultats."
+      }
+    ],
+    "team_members": [
+      "Laia Álvarez",
+      "Mª del Mar Aránega",
+      "Margot Moreno"
+    ]
+  },
+  "cursos_formacion": {
+    "meta_title": "Cursos i Formació — ABC Centre Barcelona",
+    "meta_desc": "Cursos, tallers i formació per a famílies, professionals i centres educatius a Nou Barris, Barcelona. TEA, habilitats parentals, salut mental. ABC Centre.",
+    "h1": "Cursos i Formació a ABC Centre",
+    "subtitle": "Tallers i cursos especialitzats per a famílies, professionals de l'educació i equips d'atenció a la infància.",
+    "what_title": "Què oferim?",
+    "what_body": "Des d'ABC Centre organitzem formacions, tallers i cursos adreçats tant a famílies com a professionals. El nostre objectiu és compartir el coneixement i les eines que fem servir al centre perquè puguin aplicar-se a la llar, a l'escola o en altres contextos d'intervenció. Les formacions són impartides per les nostres especialistes amb àmplia experiència clínica.",
+    "children_title": "Formació per a famílies",
+    "children_items": [
+      "Taller d'habilitats parentals",
+      "Taller de comunicació amb fills amb TEA",
+      "Gestió de conductes difícils a casa",
+      "Estratègies per millorar el rendiment acadèmic",
+      "Tallers sobre TDAH per a pares",
+      "Gestió emocional familiar"
+    ],
+    "adults_title": "Formació per a professionals",
+    "adults_items": [
+      "Tallers per a docents sobre TEA a l'aula",
+      "Formació en detecció primerenca de dificultats del llenguatge",
+      "Atenció a la diversitat en educació infantil i primària",
+      "Jornades de neuropsicologia aplicada",
+      "Formació per a equips d'atenció a la infància i l'adolescència"
+    ],
+    "approach_title": "El nostre enfocament formatiu",
+    "approach_body": "Les formacions d'ABC Centre combinen la base teòrica amb la pràctica clínica real. Són sessions participatives, amb exemples concrets i eines aplicables des del primer moment. Poden realitzar-se al centre o en format presencial en centres educatius i entitats sota petició.",
+    "faq": [
+      {
+        "q": "Els tallers tenen cost?",
+        "a": "Sí, els tallers tenen un preu segons el format i la durada. Contacta'ns per informar-te de la programació actual i els preus."
+      },
+      {
+        "q": "Podem sol·licitar una formació a mida per a la nostra escola?",
+        "a": "Sí. Dissenyem formacions a mida per a centres educatius, equips d'orientació i altres serveis d'atenció a la infància. Contacta'ns per valorar les vostres necessitats."
+      },
+      {
+        "q": "On es realitzen els tallers?",
+        "a": "Els tallers per a famílies es realitzen habitualment al nostre centre de Nou Barris. Les formacions per a professionals poden realitzar-se al centre o in situ segons l'acord."
+      }
+    ],
+    "team_members": [
+      "Laia Álvarez",
+      "Silvia Marcó",
+      "Carla López"
+    ]
+  },
+  "salut": {
+    "meta_title": "Salut i Benestar — ABC Centre Barcelona",
+    "meta_desc": "Programes de salut i benestar mental i vocal a Nou Barris, Barcelona. Prevenció, benestar emocional i salut per a adults. ABC Centre.",
+    "h1": "Salut i Benestar a ABC Centre",
+    "subtitle": "Programes de salut preventiva, benestar emocional i salut vocal per a adults que volen cuidar-se abans que apareguin els problemes.",
+    "what_title": "Què és el servei de Salut?",
+    "what_body": "El servei de Salut d'ABC Centre agrupa una sèrie de programes orientats a la prevenció i el benestar. No cal tenir un diagnòstic ni un problema greu per beneficiar-se d'aquest servei. Està pensat per a adults que volen treballar la seva salut emocional, vocal o psicològica des d'una perspectiva preventiva i d'autocura.",
+    "children_title": "Programes disponibles",
+    "children_items": [
+      "Benestar emocional per a adults (gestió de l'estrès, ansietat lleu)",
+      "Higiene vocal i prevenció de disfuncions vocals",
+      "Estimulació cognitiva preventiva per a adults grans",
+      "Suport psicològic en transicions vitals (maternitat, jubilació, canvis laborals)",
+      "Tallers de mindfulness i regulació emocional",
+      "Programes de salut mental per a empreses i organitzacions"
+    ],
+    "adults_title": "A qui va adreçat?",
+    "adults_items": [
+      "Adults amb estrès o ansietat lleu que volen prevenir-la",
+      "Professionals de la veu (docents, comunicadors, cantants)",
+      "Adults grans interessats en l'estimulació cognitiva",
+      "Persones en etapes de canvi vital",
+      "Empreses i organitzacions que cuiden la salut dels seus equips"
+    ],
+    "approach_title": "El nostre enfocament",
+    "approach_body": "Creiem que la salut no és només l'absència de malaltia. Per això oferim un espai per a l'autocura i la prevenció, amb programes dissenyats per les nostres especialistes en psicologia, neuropsicologia i logopèdia. Cada programa s'adapta a les necessitats individuals o grupals de cada persona.",
+    "faq": [
+      {
+        "q": "Necessito tenir algun diagnòstic per accedir a aquests programes?",
+        "a": "No. El servei de Salut està pensat precisament per a persones sense diagnòstic que volen cuidar el seu benestar de forma preventiva."
+      },
+      {
+        "q": "Els programes són individuals o grupals?",
+        "a": "Oferim les dues modalitats. Alguns programes són tallers grupals i d'altres són sessions individuals. Contacta'ns per valorar què s'adapta millor a tu."
+      },
+      {
+        "q": "També oferiu aquests programes per a empreses?",
+        "a": "Sí. Dissenyem programes de benestar per a equips de treball, amb tallers de gestió emocional, salut vocal i mindfulness. Contacta'ns per a una proposta personalitzada."
+      }
+    ],
+    "team_members": [
+      "Laia Álvarez",
+      "Margot Moreno",
+      "Noelia Torres"
+    ]
   }
 }

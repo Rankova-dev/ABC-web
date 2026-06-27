@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   MessageCircle, Brain, Activity, BookOpen,
-  Sparkles, Mic, Users, Handshake,
+  Sparkles, Mic, Users, Handshake, GraduationCap, Heart,
 } from 'lucide-react';
 import type { Service, SpecialistId } from '@/config/specialists';
 import { getTeamForService, SERVICE_TEAM } from '@/config/specialists';
@@ -17,9 +17,9 @@ const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: st
   { value: 'neuropsicologia',      label: 'Neuropsicología',        icon: <Activity       className="w-5 h-5" />, desc: 'Evaluación cognitiva' },
   { value: 'psicopedagogia',       label: 'Psicopedagogia',         icon: <BookOpen       className="w-5 h-5" />, desc: 'Aprendizaje y desarrollo' },
   { value: 'tea',                  label: 'TEA (Autismo)',           icon: <Sparkles       className="w-5 h-5" />, desc: 'Trastorno del espectro' },
-  { value: 'rehabilitacion-voz',   label: 'Rehabilitación de Voz',  icon: <Mic            className="w-5 h-5" />, desc: 'Patología vocal' },
-  { value: 'terapia-familiar',     label: 'Terapia Familiar',       icon: <Users          className="w-5 h-5" />, desc: 'Relaciones y conflictos' },
-  { value: 'habilidades-sociales', label: 'Habilidades Sociales',   icon: <Handshake      className="w-5 h-5" />, desc: 'Comunicación interpersonal' },
+  { value: 'orientacion-familiar', label: 'Orientación Familiar',   icon: <Users          className="w-5 h-5" />, desc: 'Asesoramiento y orientación' },
+  { value: 'cursos-formacion',     label: 'Cursos y Formación',     icon: <GraduationCap  className="w-5 h-5" />, desc: 'Talleres y formación' },
+  { value: 'salut',                label: 'Salut',                  icon: <Heart          className="w-5 h-5" />, desc: 'Bienestar y prevención' },
 ];
 
 const TODAY_STR = new Date().toISOString().split('T')[0];

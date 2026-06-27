@@ -32,7 +32,10 @@ export type Service =
   | 'tea'
   | 'rehabilitacion-voz'
   | 'terapia-familiar'
-  | 'habilidades-sociales';
+  | 'habilidades-sociales'
+  | 'orientacion-familiar'
+  | 'cursos-formacion'
+  | 'salut';
 
 // ─── Catálogo de especialistas ────────────────────────────────────────────────
 
@@ -128,27 +131,33 @@ export type SpecialistId = keyof typeof SPECIALISTS;
 // ─── Mapeo servicio → equipo ──────────────────────────────────────────────────
 
 export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
-  logopedia:             ['laia_lahoz',   'vanessa_pedro',  'noelia_torres'],
-  psicologia:            ['laia_alvarez', 'mar_aranega',    'margot_moreno', 'eulalia_marquez'],
-  neuropsicologia:       ['laia_alvarez', 'silvia_marco', 'sara_reyes'],
-  psicopedagogia:        ['carla_lopez'],
-  tea:                   ['laia_alvarez', 'laia_lahoz',     'vanessa_pedro'],
-  'rehabilitacion-voz':  ['laia_lahoz',   'noelia_torres'],
-  'terapia-familiar':    ['mar_aranega',  'margot_moreno'],
-  'habilidades-sociales':['silvia_marco', 'sara_reyes'],
+  logopedia:              ['laia_lahoz',   'vanessa_pedro',  'noelia_torres'],
+  psicologia:             ['laia_alvarez', 'mar_aranega',    'margot_moreno', 'eulalia_marquez'],
+  neuropsicologia:        ['laia_alvarez', 'silvia_marco',   'sara_reyes'],
+  psicopedagogia:         ['carla_lopez'],
+  tea:                    ['laia_alvarez', 'laia_lahoz',     'vanessa_pedro'],
+  'rehabilitacion-voz':   ['laia_lahoz',   'noelia_torres'],
+  'terapia-familiar':     ['mar_aranega',  'margot_moreno'],
+  'habilidades-sociales': ['silvia_marco', 'sara_reyes'],
+  'orientacion-familiar': ['laia_alvarez', 'mar_aranega',    'margot_moreno'],
+  'cursos-formacion':     ['laia_alvarez', 'silvia_marco',   'carla_lopez'],
+  'salut':                ['laia_alvarez', 'margot_moreno',  'noelia_torres'],
 };
 
 // ─── Duración de primera visita por servicio (minutos) ───────────────────────
 
 export const SERVICE_DURATION: Record<Service, number> = {
-  logopedia:              45,
-  psicologia:             45,
-  neuropsicologia:        45,
-  psicopedagogia:         45,
-  tea:                    45,
-  'rehabilitacion-voz':   30,
-  'terapia-familiar':     45,
-  'habilidades-sociales': 45,
+  logopedia:               45,
+  psicologia:              45,
+  neuropsicologia:         45,
+  psicopedagogia:          45,
+  tea:                     45,
+  'rehabilitacion-voz':    30,
+  'terapia-familiar':      45,
+  'habilidades-sociales':  45,
+  'orientacion-familiar':  45,
+  'cursos-formacion':      60,
+  'salut':                 45,
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

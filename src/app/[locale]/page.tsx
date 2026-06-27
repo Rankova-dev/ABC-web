@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import {
   MessageCircle, Brain, Activity, BookOpen, Sparkles,
-  Mic, Users, Handshake, Calendar, Heart, MapPin,
+  Users, GraduationCap, Heart, Calendar, MapPin,
 } from 'lucide-react';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -20,15 +20,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const SERVICES: { key: string; href: '/logopedia' | '/psicologia' | '/neuropsicologia' | '/psicopedagogia' | '/tea' | '/rehabilitacion-voz' | '/terapia-familiar' | '/habilidades-sociales'; icon: ReactNode; color: string }[] = [
+const SERVICES: { key: string; href: '/logopedia' | '/psicologia' | '/neuropsicologia' | '/psicopedagogia' | '/tea' | '/orientacion-familiar' | '/cursos-formacion' | '/salut'; icon: ReactNode; color: string }[] = [
   { key: 'logopedia',            href: '/logopedia',            icon: <MessageCircle className="w-6 h-6" />, color: 'border-teal' },
   { key: 'psicologia',           href: '/psicologia',           icon: <Brain className="w-6 h-6" />,         color: 'border-teal' },
   { key: 'neuropsicologia',      href: '/neuropsicologia',      icon: <Activity className="w-6 h-6" />,      color: 'border-lime' },
   { key: 'psicopedagogia',       href: '/psicopedagogia',       icon: <BookOpen className="w-6 h-6" />,      color: 'border-teal' },
   { key: 'tea',                  href: '/tea',                  icon: <Sparkles className="w-6 h-6" />,      color: 'border-lime' },
-  { key: 'rehabilitacion_voz',   href: '/rehabilitacion-voz',   icon: <Mic className="w-6 h-6" />,           color: 'border-teal' },
-  { key: 'terapia_familiar',     href: '/terapia-familiar',     icon: <Users className="w-6 h-6" />,         color: 'border-lime' },
-  { key: 'habilidades_sociales', href: '/habilidades-sociales', icon: <Handshake className="w-6 h-6" />,     color: 'border-teal' },
+  { key: 'orientacion_familiar', href: '/orientacion-familiar', icon: <Users className="w-6 h-6" />,         color: 'border-teal' },
+  { key: 'cursos_formacion',     href: '/cursos-formacion',     icon: <GraduationCap className="w-6 h-6" />, color: 'border-lime' },
+  { key: 'salut',                href: '/salut',                icon: <Heart className="w-6 h-6" />,          color: 'border-teal' },
 ];
 
 const TEAM = [
@@ -356,6 +356,44 @@ export default function HomePage() {
               WhatsApp
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* ── NEWSLETTER ─────────────────────────────────────────── */}
+      <section className="py-16 bg-lime">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-ink/50 bg-white/40 px-4 py-2 rounded-full mb-5">
+            Newsletter
+          </span>
+          <h2 className="text-h2 font-outfit font-semibold text-ink mb-3 animate-on-scroll">
+            {t('newsletter_title')}
+          </h2>
+          <p className="text-sm font-light text-ink/70 mb-8 animate-on-scroll">
+            {t('newsletter_body')}
+          </p>
+          <form
+            action="mailto:info@abccentre.es"
+            method="get"
+            encType="text/plain"
+            className="flex flex-col sm:flex-row gap-3 justify-center animate-on-scroll"
+          >
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder={t('newsletter_placeholder')}
+              className="flex-1 max-w-sm px-4 py-3 rounded-xl border border-ink/10 bg-white font-outfit text-sm text-ink placeholder-gray/50 focus:outline-none focus:ring-2 focus:ring-teal/40"
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-teal text-white font-outfit font-semibold text-sm rounded-xl hover:bg-teal/90 transition-colors whitespace-nowrap"
+            >
+              {t('newsletter_cta')}
+            </button>
+          </form>
+          <p className="text-xs font-light text-ink/50 mt-4 animate-on-scroll">
+            {t('newsletter_disclaimer')}
+          </p>
         </div>
       </section>
 

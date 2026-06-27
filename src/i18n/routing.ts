@@ -23,6 +23,15 @@ export const routing = defineRouting({
       es: '/habilidades-sociales',
       ca: '/habilitats-socials',
     },
+    '/orientacion-familiar': {
+      es: '/orientacion-familiar',
+      ca: '/orientacio-familiar',
+    },
+    '/cursos-formacion': {
+      es: '/cursos-formacion',
+      ca: '/cursos-formacio',
+    },
+    '/salut': '/salut',
     '/equipo': {
       es: '/equipo',
       ca: '/equip',

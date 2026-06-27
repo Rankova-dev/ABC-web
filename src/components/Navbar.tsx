@@ -5,14 +5,14 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 
 const SERVICES = [
-  { key: 'logopedia',          href: '/logopedia' },
-  { key: 'psicologia',         href: '/psicologia' },
-  { key: 'neuropsicologia',    href: '/neuropsicologia' },
-  { key: 'psicopedagogia',     href: '/psicopedagogia' },
-  { key: 'tea',                href: '/tea' },
-  { key: 'rehabilitacion_voz', href: '/rehabilitacion-voz' },
-  { key: 'terapia_familiar',   href: '/terapia-familiar' },
-  { key: 'habilidades_sociales', href: '/habilidades-sociales' },
+  { key: 'logopedia',            href: '/logopedia' },
+  { key: 'psicologia',           href: '/psicologia' },
+  { key: 'neuropsicologia',      href: '/neuropsicologia' },
+  { key: 'psicopedagogia',       href: '/psicopedagogia' },
+  { key: 'tea',                  href: '/tea' },
+  { key: 'orientacion_familiar', href: '/orientacion-familiar' },
+  { key: 'cursos_formacion',     href: '/cursos-formacion' },
+  { key: 'salut',                href: '/salut' },
 ] as const;
 
 export default function Navbar() {
@@ -49,17 +49,22 @@ export default function Navbar() {
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 lg:h-20">
 
-          {/* Logo */}
-          <Link href="/" aria-label="ABC Centre — Inicio">
-            <Image
-              src="/logos/logo-horizontal.png"
-              alt="ABC Centre"
-              width={160}
-              height={48}
-              className="h-10 w-auto object-contain"
-              priority
-            />
-          </Link>
+          {/* Logo + tagline */}
+          <div className="flex flex-col">
+            <Link href="/" aria-label="ABC Centre — Inicio">
+              <Image
+                src="/logos/logo-horizontal.png"
+                alt="ABC Centre"
+                width={160}
+                height={48}
+                className="h-10 w-auto object-contain"
+                priority
+              />
+            </Link>
+            <p className="hidden xl:block text-[10px] font-light text-gray/60 leading-none mt-0.5 pl-0.5">
+              Des de 1999 ajudant a donar un pas endavant
+            </p>
+          </div>
 
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-8">
@@ -175,6 +180,9 @@ export default function Navbar() {
             </Link>
             <Link href="/galeria" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('gallery')}
+            </Link>
+            <Link href="/equipo#unete" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
+              {t('work_with_us')}
             </Link>
             <Link href="/contacto" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('contact')}
