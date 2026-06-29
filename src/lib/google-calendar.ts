@@ -38,18 +38,22 @@ export interface BookingResult {
 const TZ = 'Europe/Madrid';
 
 /**
- * Case-insensitive prefix that identifies an availability slot created by
+ * Case-insensitive prefixes that identify an availability slot created by
  * the specialist in her own Google Calendar.
  *
  * Valid event titles (all matched):
- *   "Primera consulta"
- *   "Primera consulta disponible"
- *   "primera consulta 10h"
+ *   "Primera consulta"  "Primera consulta disponible"  "primera consulta 10h"
+ *   "Primera cita"      "primera cita"
  *
  * Not matched (existing appointments, notes, etc.):
  *   "Seguimiento Cita 1"  "NUEVA CITA — …"  etc.
  */
-const SLOT_KEYWORD = 'primera consulta';
+const SLOT_KEYWORDS = ['primera consulta', 'primera cita'] as const;
+
+function isSlotEvent(title: string | null | undefined): boolean {
+  const lower = (title ?? '').toLowerCase();
+  return SLOT_KEYWORDS.some(kw => lower.startsWith(kw));
+}
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 
@@ -142,13 +146,13 @@ export async function getAvailableSlots(
       timeMin:      dayStart,
       timeMax:      dayEnd,
       timeZone:     TZ,
-      q:            SLOT_KEYWORD,   // pre-filter by Google (case-insensitive)
+      q:            'primera',      // pre-filter by Google (case-insensitive, catches all SLOT_KEYWORDS)
       singleEvents: true,
       orderBy:      'startTime',
     });
 
     return (eventsRes.data.items ?? [])
-      .filter(ev => ev.summary?.toLowerCase().startsWith(SLOT_KEYWORD))
+      .filter(ev => isSlotEvent(ev.summary))
       .map(ev => ({
         start:     ev.start?.dateTime ?? ev.start?.date ?? '',
         end:       ev.end?.dateTime   ?? ev.end?.date   ?? '',
