@@ -1,5 +1,5 @@
-import { resolveCalendarId, SPECIALISTS, SERVICE_TEAM, getLeadSpecialistId, SERVICE_DURATION } from '@/config/specialists';
-import type { Service, SpecialistId } from '@/config/specialists';
+import { resolveCalendarId, SPECIALISTS, SERVICE_LABELS, APPOINTMENT_TYPES } from '@/config/specialists';
+import type { Service, SpecialistId, AppointmentType } from '@/config/specialists';
 
 // Re-export types used by other files
 export type { Service } from '@/config/specialists';
@@ -13,18 +13,21 @@ export interface TimeSlot {
   /** Google Calendar event ID of the "Primera consulta" availability slot.
    *  Sent back on booking so the route can delete it atomically. */
   eventId?: string;
+  /** Especialista dueña del calendario en el que se abrió este hueco. */
+  specialistId?:   SpecialistId;
+  specialistName?: string;
 }
 
 export interface BookingRequest {
-  service:       Service;
-  specialistId:  SpecialistId;
-  patientName:   string;
-  patientAge?:   number | string;
-  guardianName?: string;
-  email:         string;
-  phone:         string;
-  message?:      string;
-  selectedSlot:  TimeSlot;
+  service:         Service;
+  appointmentType: AppointmentType;
+  patientName:     string;
+  patientAge?:     number | string;
+  guardianName?:   string;
+  email:           string;
+  phone:           string;
+  message?:        string;
+  selectedSlot:    TimeSlot & { specialistId: SpecialistId };
 }
 
 export interface BookingResult {
@@ -113,66 +116,93 @@ function toMadridDateStr(date: Date): string {
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * Returns the slots the specialist has explicitly opened for first consultations.
- *
- * Reads events whose title starts with SLOT_KEYWORD ("primera consulta") from
- * the specialist's Google Calendar for the given day.
- *
- * Falls back to mock data when credentials or calendarId are not configured.
+ * Reads events whose title starts with a SLOT_KEYWORD ("primera consulta" /
+ * "primera cita") from a single Google Calendar for the given day.
  */
-export async function getAvailableSlots(
-  specialistId: SpecialistId,
-  dateFrom: Date,
-  _dateTo: Date
-): Promise<TimeSlot[]> {
-  const calendarId = resolveCalendarId(specialistId);
+async function getSlotsFromCalendar(calendarId: string, dateStr: string): Promise<TimeSlot[]> {
+  const auth = await getCalendarAuth();
+  const { google } = await import('googleapis');
+  const calendar = google.calendar({ version: 'v3', auth });
 
-  if (!hasCredentials() || !calendarId) {
-    return getMockSlots(dateFrom);
-  }
+  const dayStart = buildMadridISO(dateStr, 0, 0);
+  const dayEnd   = buildMadridISO(dateStr, 23, 59);
 
-  const dateStr = toMadridDateStr(dateFrom);
+  const eventsRes = await calendar.events.list({
+    calendarId,
+    timeMin:      dayStart,
+    timeMax:      dayEnd,
+    timeZone:     TZ,
+    q:            'primera',      // pre-filter by Google (case-insensitive, catches all SLOT_KEYWORDS)
+    singleEvents: true,
+    orderBy:      'startTime',
+  });
 
-  try {
-    const auth = await getCalendarAuth();
-    const { google } = await import('googleapis');
-    const calendar = google.calendar({ version: 'v3', auth });
-
-    const dayStart = buildMadridISO(dateStr, 0, 0);
-    const dayEnd   = buildMadridISO(dateStr, 23, 59);
-
-    const eventsRes = await calendar.events.list({
-      calendarId,
-      timeMin:      dayStart,
-      timeMax:      dayEnd,
-      timeZone:     TZ,
-      q:            'primera',      // pre-filter by Google (case-insensitive, catches all SLOT_KEYWORDS)
-      singleEvents: true,
-      orderBy:      'startTime',
-    });
-
-    return (eventsRes.data.items ?? [])
-      .filter(ev => isSlotEvent(ev.summary))
-      .map(ev => ({
-        start:     ev.start?.dateTime ?? ev.start?.date ?? '',
-        end:       ev.end?.dateTime   ?? ev.end?.date   ?? '',
-        available: true,
-        eventId:   ev.id ?? undefined,
-      }));
-
-  } catch (err) {
-    console.error('[GoogleCalendar] getAvailableSlots error:', err);
-    return [];
-  }
+  return (eventsRes.data.items ?? [])
+    .filter(ev => isSlotEvent(ev.summary))
+    .map(ev => ({
+      start:     ev.start?.dateTime ?? ev.start?.date ?? '',
+      end:       ev.end?.dateTime   ?? ev.end?.date   ?? '',
+      available: true,
+      eventId:   ev.id ?? undefined,
+    }));
 }
 
 /**
- * Creates a Google Calendar event for the confirmed booking and
- * removes the corresponding "Primera consulta" availability slot.
+ * Returns the first-consultation slots opened across every specialist's
+ * Google Calendar for the given day, merged and sorted by start time.
+ *
+ * Laia Álvarez handles the vast majority of first appointments, so her
+ * calendar is always checked; any other specialist who has also opened
+ * "primera cita" slots on her own calendar gets folded into the same list.
+ * If nobody else has opened slots, the result is naturally just Laia's.
+ *
+ * Falls back to mock data (tagged as Laia's) when credentials are not configured.
+ */
+export async function getAllAvailableSlots(dateFrom: Date): Promise<TimeSlot[]> {
+  if (!hasCredentials()) {
+    return getMockSlots(dateFrom).map(slot => ({
+      ...slot,
+      specialistId:   'laia_alvarez',
+      specialistName: SPECIALISTS.laia_alvarez.name,
+    }));
+  }
+
+  const dateStr = toMadridDateStr(dateFrom);
+  const ids = Object.keys(SPECIALISTS) as SpecialistId[];
+
+  const perSpecialist = await Promise.all(
+    ids.map(async (id): Promise<TimeSlot[]> => {
+      const calendarId = resolveCalendarId(id);
+      if (!calendarId) return [];
+      try {
+        const slots = await getSlotsFromCalendar(calendarId, dateStr);
+        return slots.map(slot => ({
+          ...slot,
+          specialistId:   id,
+          specialistName: SPECIALISTS[id].name,
+        }));
+      } catch (err) {
+        console.error(`[GoogleCalendar] getAllAvailableSlots error for ${id}:`, err);
+        return [];
+      }
+    })
+  );
+
+  return perSpecialist.flat().sort((a, b) => a.start.localeCompare(b.start));
+}
+
+/**
+ * Confirms a booking by turning the existing "Primera cita" availability
+ * event (already created by the specialist, in her own calendar) into the
+ * patient's appointment: adjusts its duration to match the chosen appointment
+ * type and rewrites its title/description with the patient's data — in place,
+ * same event, same calendar. Falls back to creating a new event only if the
+ * original slot can no longer be found (e.g. race condition).
  */
 export async function createBooking(request: BookingRequest): Promise<BookingResult> {
-  const specialist = SPECIALISTS[request.specialistId];
-  const calendarId = resolveCalendarId(request.specialistId);
+  const specialistId = request.selectedSlot.specialistId;
+  const specialist = SPECIALISTS[specialistId];
+  const calendarId = resolveCalendarId(specialistId);
 
   if (!hasCredentials() || !calendarId) {
     console.warn('[GoogleCalendar] No credentials/calendarId — booking logged to console only');
@@ -185,21 +215,7 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
     const { google } = await import('googleapis');
     const calendar = google.calendar({ version: 'v3', auth });
 
-    // 1. Delete the availability event so no other patient can book the same slot
-    if (request.selectedSlot.eventId) {
-      try {
-        await calendar.events.delete({
-          calendarId,
-          eventId: request.selectedSlot.eventId,
-        });
-      } catch (err) {
-        // Non-fatal: slot may have already been removed (race condition / manual deletion)
-        console.warn('[GoogleCalendar] Could not delete availability event:', err);
-      }
-    }
-
-    // 2. Create the patient appointment event
-    const durationMin = SERVICE_DURATION[request.service] ?? 45;
+    const durationMin = APPOINTMENT_TYPES[request.appointmentType]?.duration ?? 30;
     const startDate = new Date(request.selectedSlot.start);
     const endDate = new Date(startDate.getTime() + durationMin * 60_000);
     const endParts = new Intl.DateTimeFormat('en', {
@@ -214,34 +230,49 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
       parseInt(ep('minute')),
     );
 
-    const event = await calendar.events.insert({
-      calendarId,
-      requestBody: {
-        summary:     `Primera consulta — ${request.patientName}`,
-        description: buildEventDescription(request, specialist.name, specialist.role),
-        start: { dateTime: request.selectedSlot.start, timeZone: TZ },
-        end:   { dateTime: endDateTime,                timeZone: TZ },
-        reminders: {
-          useDefault: false,
-          overrides: [
-            { method: 'email', minutes: 24 * 60 },
-            { method: 'popup', minutes: 30 },
-          ],
-        },
+    const eventBody = {
+      summary:     `${APPOINTMENT_TYPES[request.appointmentType]?.label ?? 'Primera consulta'} — ${request.patientName}`,
+      description: buildEventDescription(request, specialist.name, specialist.role),
+      start: { dateTime: request.selectedSlot.start, timeZone: TZ },
+      end:   { dateTime: endDateTime,                timeZone: TZ },
+      reminders: {
+        useDefault: false,
+        overrides: [
+          { method: 'email', minutes: 24 * 60 },
+          { method: 'popup', minutes: 30 },
+        ],
       },
-    });
+    };
 
-    return { success: true, eventId: event.data.id ?? undefined };
+    let eventId: string | undefined;
+
+    // 1. Try to update the existing "Primera cita" slot in place
+    if (request.selectedSlot.eventId) {
+      try {
+        const updated = await calendar.events.patch({
+          calendarId,
+          eventId: request.selectedSlot.eventId,
+          requestBody: eventBody,
+        });
+        eventId = updated.data.id ?? undefined;
+      } catch (err) {
+        // Slot may have already been booked/removed (race condition) — fall back to creating a new event
+        console.warn('[GoogleCalendar] Could not update availability event, creating new one instead:', err);
+      }
+    }
+
+    // 2. Fallback: create a new event if there was no slot to update
+    if (!eventId) {
+      const created = await calendar.events.insert({ calendarId, requestBody: eventBody });
+      eventId = created.data.id ?? undefined;
+    }
+
+    return { success: true, eventId };
 
   } catch (err) {
     console.error('[GoogleCalendar] createBooking error:', err);
     return { success: false, error: 'No se pudo crear el evento en Google Calendar' };
   }
-}
-
-/** Returns the lead specialist ID for a service. */
-export function getLeadSpecialist(service: Service): SpecialistId {
-  return getLeadSpecialistId(service);
 }
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
@@ -251,14 +282,17 @@ function buildEventDescription(
   specialistName: string,
   specialistRole: string
 ): string {
+  const appointmentType = APPOINTMENT_TYPES[request.appointmentType];
   const lines = [
     `NUEVA CITA — ${specialistName} (${specialistRole})`,
+    '',
+    `Tipo de cita: ${appointmentType?.label ?? request.appointmentType} (${appointmentType?.detail ?? ''})`,
+    `Servicio: ${SERVICE_LABELS[request.service] ?? request.service}`,
     '',
     `Paciente: ${request.patientName}${request.patientAge ? `, ${request.patientAge} años` : ''}`,
     request.guardianName ? `Familiar: ${request.guardianName}` : null,
     `Email: ${request.email}`,
     `Teléfono: ${request.phone}`,
-    `Servicio: ${request.service}`,
     '',
     request.message ? `Motivo de consulta:\n${request.message}` : null,
     '',

@@ -5,8 +5,8 @@ import {
   MessageCircle, Brain, Activity, BookOpen,
   Sparkles, Mic, Users, Handshake, GraduationCap, Heart,
 } from 'lucide-react';
-import type { Service, SpecialistId } from '@/config/specialists';
-import { getTeamForService, SERVICE_TEAM } from '@/config/specialists';
+import type { Service, AppointmentType } from '@/config/specialists';
+import { SERVICE_TEAM, APPOINTMENT_TYPES, SPECIALISTS } from '@/config/specialists';
 import type { TimeSlot } from '@/lib/google-calendar';
 
 // ─── Static data ──────────────────────────────────────────────────────────────
@@ -21,6 +21,13 @@ const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: st
   { value: 'cursos-formacion',     label: 'Cursos y Formación',     icon: <GraduationCap  className="w-5 h-5" />, desc: 'Talleres y formación' },
   { value: 'salut',                label: 'Salut',                  icon: <Heart          className="w-5 h-5" />, desc: 'Bienestar y prevención' },
 ];
+
+const APPOINTMENT_TYPE_LIST: { value: AppointmentType; label: string; detail: string }[] =
+  (Object.keys(APPOINTMENT_TYPES) as AppointmentType[]).map((value) => ({
+    value,
+    label: APPOINTMENT_TYPES[value].label,
+    detail: APPOINTMENT_TYPES[value].detail,
+  }));
 
 const TODAY_STR = new Date().toISOString().split('T')[0];
 
@@ -40,6 +47,16 @@ function formatDateDisplay(dateStr: string) {
   if (!dateStr) return '';
   const d = new Date(dateStr + 'T12:00:00');
   return `${WEEK_DAYS[d.getDay()]} ${d.getDate()} de ${MONTHS[d.getMonth()]}`;
+}
+
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .map(w => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 }
 
 // ─── Step indicator ───────────────────────────────────────────────────────────
@@ -208,11 +225,9 @@ export default function BookingForm({ defaultService }: Props) {
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
-  // Step 1 — service & specialist
+  // Step 1 — service & appointment type
   const [service,         setService]         = useState<Service | ''>(defaultService ?? '');
-  const [specialists,     setSpecialists]     = useState<ReturnType<typeof getTeamForService>>([]);
-  const [specialistId,    setSpecialistId]    = useState<SpecialistId | ''>('');
-  const [noPreference,    setNoPreference]    = useState(false);
+  const [appointmentType, setAppointmentType] = useState<AppointmentType | ''>('');
 
   // Step 2 — date & slot
   const [selectedDate,    setSelectedDate]    = useState('');
@@ -239,36 +254,21 @@ export default function BookingForm({ defaultService }: Props) {
     setTimeout(() => topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
   }
 
-  // Update specialists when service changes
+  // Fetch slots (aggregated across every specialist's calendar) when date changes
   useEffect(() => {
-    if (!service) { setSpecialists([]); setSpecialistId(''); setNoPreference(false); return; }
-    const team = getTeamForService(service as Service);
-    setSpecialists(team);
-    if (team.length === 1) {
-      // Only one option — select automatically
-      setSpecialistId(team[0].id);
-      setNoPreference(false);
-    } else {
-      setSpecialistId('');
-      setNoPreference(false);
-    }
-  }, [service]);
-
-  // Fetch slots when specialist + date change
-  useEffect(() => {
-    if (!specialistId || !selectedDate) {
+    if (!selectedDate) {
       setAvailableSlots([]);
       setSelectedSlot(null);
       return;
     }
     setLoadingSlots(true);
     setSelectedSlot(null);
-    fetch(`/api/availability?specialist=${specialistId}&date=${selectedDate}`)
+    fetch(`/api/availability?date=${selectedDate}`)
       .then(r => r.json())
       .then(data => setAvailableSlots(data.slots ?? []))
       .catch(() => setAvailableSlots([]))
       .finally(() => setLoadingSlots(false));
-  }, [specialistId, selectedDate]);
+  }, [selectedDate]);
 
   function handleFormChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
@@ -278,29 +278,16 @@ export default function BookingForm({ defaultService }: Props) {
     }));
   }
 
-  function handleSelectSpecialist(id: SpecialistId) {
-    setSpecialistId(id);
-    setNoPreference(false);
-  }
-
-  function handleNoPreference() {
-    // Pick the lead specialist (first in team) as the actual booking target
-    if (specialists.length > 0) {
-      setSpecialistId(specialists[0].id);
-      setNoPreference(true);
-    }
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!selectedSlot || !specialistId || !service) return;
+    if (!selectedSlot || !service || !appointmentType) return;
     setStatus('sending');
 
     try {
       const res = await fetch('/api/appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, service, specialistId, selectedSlot }),
+        body: JSON.stringify({ ...form, service, appointmentType, selectedSlot }),
       });
       setStatus(res.ok ? 'success' : 'error');
     } catch {
@@ -310,7 +297,7 @@ export default function BookingForm({ defaultService }: Props) {
 
   // ── Success screen ─────────────────────────────────────────────────────────
   if (status === 'success') {
-    const specialist = specialists.find(s => s.id === specialistId);
+    const specialist = selectedSlot?.specialistId ? SPECIALISTS[selectedSlot.specialistId] : undefined;
     return (
       <div className="text-center py-8 px-4">
         <div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-5">
@@ -361,16 +348,16 @@ export default function BookingForm({ defaultService }: Props) {
     );
   }
 
-  const freeSlots             = availableSlots.filter(s => s.available);
-  const selectedSpecialistInfo = specialists.find(s => s.id === specialistId);
-  const selectedServiceInfo    = SERVICES.find(s => s.value === service);
+  const freeSlots               = availableSlots.filter(s => s.available);
+  const selectedServiceInfo     = SERVICES.find(s => s.value === service);
+  const selectedAppointmentType = APPOINTMENT_TYPE_LIST.find(a => a.value === appointmentType);
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div ref={topRef}>
       <StepIndicator step={step} />
 
-      {/* ── STEP 1: Service + Specialist ──────────────────────────────────── */}
+      {/* ── STEP 1: Service + Appointment type ──────────────────────────────── */}
       {step === 1 && (
         <div className="space-y-6">
 
@@ -412,109 +399,45 @@ export default function BookingForm({ defaultService }: Props) {
             </div>
           </div>
 
-          {/* Specialist selector */}
-          {service && specialists.length > 0 && (
-            <div>
-              {specialists.length === 1 ? (
-                /* Single specialist — show passively */
-                <div>
-                  <p className="text-sm font-semibold text-ink mb-3">
-                    Especialista asignada
-                    <span className="text-xs font-light text-gray ml-2">(única para este servicio)</span>
-                  </p>
-                  <div className="flex items-center gap-4 bg-teal/5 border border-teal rounded-xl px-4 py-3">
-                    <div className="w-10 h-10 rounded-full bg-teal flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm font-semibold text-white">{specialists[0].initials}</span>
-                    </div>
+          {/* Appointment type selector */}
+          <div>
+            <p className="text-sm font-semibold text-ink mb-3">
+              ¿Qué tipo de cita necesitas? <span className="text-teal">*</span>
+            </p>
+            <div className="space-y-2">
+              {APPOINTMENT_TYPE_LIST.map((at) => {
+                const isSelected = appointmentType === at.value;
+                return (
+                  <button
+                    key={at.value}
+                    type="button"
+                    onClick={() => setAppointmentType(at.value)}
+                    className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl border text-left transition-all duration-150 ${
+                      isSelected
+                        ? 'bg-teal/5 border-teal'
+                        : 'bg-cream border-gray/15 hover:border-teal/40 hover:bg-teal/5'
+                    }`}
+                  >
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-ink">{specialists[0].name}</p>
-                      <p className="text-xs font-light text-gray">{specialists[0].role}</p>
+                      <p className="text-sm font-semibold text-ink">{at.label}</p>
+                      <p className="text-xs font-light text-gray">{at.detail}</p>
                     </div>
-                    <div className="w-5 h-5 rounded-full bg-teal flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* Multiple specialists */
-                <div>
-                  <p className="text-sm font-semibold text-ink mb-3">
-                    Elige tu especialista <span className="text-teal">*</span>
-                  </p>
-                  <div className="space-y-2">
-                    {specialists.map((sp) => {
-                      const isSelected = specialistId === sp.id && !noPreference;
-                      return (
-                        <button
-                          key={sp.id}
-                          type="button"
-                          onClick={() => handleSelectSpecialist(sp.id)}
-                          className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl border text-left transition-all duration-150 ${
-                            isSelected
-                              ? 'bg-teal/5 border-teal'
-                              : 'bg-cream border-gray/15 hover:border-teal/40 hover:bg-teal/5'
-                          }`}
-                        >
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-                            isSelected ? 'bg-teal text-white' : 'bg-teal/10 text-teal'
-                          }`}>
-                            <span className="text-sm font-semibold">{sp.initials}</span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-ink">{sp.name}</p>
-                            <p className="text-xs font-light text-gray truncate">{sp.role}</p>
-                          </div>
-                          {isSelected && (
-                            <div className="w-5 h-5 rounded-full bg-teal flex items-center justify-center flex-shrink-0">
-                              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
-                              </svg>
-                            </div>
-                          )}
-                        </button>
-                      );
-                    })}
-
-                    {/* "No preference" option */}
-                    <button
-                      type="button"
-                      onClick={handleNoPreference}
-                      className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl border text-left transition-all duration-150 ${
-                        noPreference
-                          ? 'bg-lime/10 border-lime/60'
-                          : 'bg-cream border-dashed border-gray/30 hover:border-gray/50 hover:bg-cream-dark/40'
-                      }`}
-                    >
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-                        noPreference ? 'bg-lime/30 text-ink' : 'bg-gray/10 text-gray'
-                      }`}>
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    {isSelected && (
+                      <div className="w-5 h-5 rounded-full bg-teal flex items-center justify-center flex-shrink-0">
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                         </svg>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-ink">Sin preferencia</p>
-                        <p className="text-xs font-light text-gray">Cualquier especialista disponible</p>
-                      </div>
-                      {noPreference && (
-                        <div className="w-5 h-5 rounded-full bg-lime flex items-center justify-center flex-shrink-0">
-                          <svg className="w-3 h-3 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
-                          </svg>
-                        </div>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
+                    )}
+                  </button>
+                );
+              })}
             </div>
-          )}
+          </div>
 
           <button
             type="button"
-            disabled={!service || !specialistId}
+            disabled={!service || !appointmentType}
             onClick={() => goToStep(2)}
             className="btn-primary w-full justify-center disabled:opacity-40 disabled:cursor-not-allowed mt-2"
           >
@@ -535,12 +458,7 @@ export default function BookingForm({ defaultService }: Props) {
             <div className="flex items-center gap-3 bg-teal/5 border border-teal/20 rounded-xl px-4 py-3">
               <span className="text-teal flex-shrink-0">{selectedServiceInfo.icon}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-ink">
-                  {noPreference
-                    ? 'Sin preferencia de especialista'
-                    : selectedSpecialistInfo?.name
-                  }
-                </p>
+                <p className="text-sm font-semibold text-ink">{selectedAppointmentType?.label}</p>
                 <p className="text-xs text-gray">{selectedServiceInfo.label}</p>
               </div>
               <button type="button" onClick={() => goToStep(1)}
@@ -622,6 +540,7 @@ export default function BookingForm({ defaultService }: Props) {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                   </svg>
                   {formatDateDisplay(selectedDate)} a las {formatTime(selectedSlot.start)}
+                  {selectedSlot.specialistName && ` · ${selectedSlot.specialistName}`}
                 </div>
               )}
             </div>
@@ -652,7 +571,7 @@ export default function BookingForm({ defaultService }: Props) {
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
 
           {/* Booking recap */}
-          {selectedSpecialistInfo && selectedSlot && selectedServiceInfo && (
+          {selectedSlot && selectedServiceInfo && selectedAppointmentType && (
             <div className="bg-teal/5 border border-teal/20 rounded-xl px-4 py-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold text-gray uppercase tracking-wider">Tu cita</span>
@@ -660,15 +579,16 @@ export default function BookingForm({ defaultService }: Props) {
                   className="text-xs text-teal font-semibold hover:underline">Cambiar fecha</button>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-teal flex items-center justify-center flex-shrink-0">
-                  <span className="text-xs font-semibold text-white">{selectedSpecialistInfo.initials}</span>
-                </div>
+                {selectedSlot.specialistName && (
+                  <div className="w-9 h-9 rounded-full bg-teal flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-semibold text-white">{getInitials(selectedSlot.specialistName)}</span>
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-ink">
-                    {noPreference ? 'Sin preferencia de especialista' : selectedSpecialistInfo.name}
-                  </p>
+                  <p className="text-sm font-semibold text-ink">{selectedAppointmentType.label}</p>
                   <p className="text-xs text-gray">
                     {selectedServiceInfo.label} · {formatDateDisplay(selectedDate)} · {formatTime(selectedSlot.start)}
+                    {selectedSlot.specialistName && ` · ${selectedSlot.specialistName}`}
                   </p>
                 </div>
               </div>

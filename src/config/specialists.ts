@@ -144,20 +144,64 @@ export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
   'salut':                ['laia_alvarez', 'margot_moreno',  'noelia_torres'],
 };
 
-// ─── Duración de primera visita por servicio (minutos) ───────────────────────
+/** Etiquetas legibles de cada servicio (usadas en emails y resúmenes) */
+export const SERVICE_LABELS: Record<Service, string> = {
+  logopedia:               'Logopedia',
+  psicologia:              'Psicología',
+  neuropsicologia:         'Neuropsicología',
+  psicopedagogia:          'Psicopedagogia',
+  tea:                     'TEA (Autismo)',
+  'rehabilitacion-voz':    'Rehabilitación de la Voz',
+  'terapia-familiar':      'Terapia Familiar',
+  'habilidades-sociales':  'Habilidades Sociales',
+  'orientacion-familiar':  'Orientación Familiar',
+  'cursos-formacion':      'Cursos y Formación',
+  'salut':                 'Salut',
+};
 
-export const SERVICE_DURATION: Record<Service, number> = {
-  logopedia:               45,
-  psicologia:              45,
-  neuropsicologia:         45,
-  psicopedagogia:          45,
-  tea:                     45,
-  'rehabilitacion-voz':    30,
-  'terapia-familiar':      45,
-  'habilidades-sociales':  45,
-  'orientacion-familiar':  45,
-  'cursos-formacion':      60,
-  'salut':                 45,
+// ─── Tipos de cita ────────────────────────────────────────────────────────────
+
+export type AppointmentType =
+  | 'informativa-presencial'
+  | 'informativa-telefonica'
+  | 'valoracion-infanto-juvenil'
+  | 'valoracion-adultos';
+
+export interface AppointmentTypeConfig {
+  label:    string;
+  /** Texto corto con precio/condiciones, ej. "Gratuita" o "50 € · Solo padres" */
+  detail:   string;
+  /** Duración del evento en el calendario (minutos) */
+  duration: number;
+  /** Precio en euros, 0 = gratuita */
+  price:    number;
+}
+
+export const APPOINTMENT_TYPES: Record<AppointmentType, AppointmentTypeConfig> = {
+  'informativa-presencial': {
+    label:    'Sesión informativa presencial',
+    detail:   'Gratuita',
+    duration: 20,
+    price:    0,
+  },
+  'informativa-telefonica': {
+    label:    'Sesión informativa telefónica',
+    detail:   'Gratuita',
+    duration: 30,
+    price:    0,
+  },
+  'valoracion-infanto-juvenil': {
+    label:    '1ª sesión de valoración neuropsicológica/psicopedagógica infanto-juvenil',
+    detail:   '50 € · Solo padres',
+    duration: 50,
+    price:    50,
+  },
+  'valoracion-adultos': {
+    label:    '1ª sesión de valoración neuropsicológica adultos',
+    detail:   '55 €',
+    duration: 50,
+    price:    55,
+  },
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

@@ -11,7 +11,7 @@
  */
 
 import type { BookingRequest } from '@/lib/google-calendar';
-import { SPECIALISTS } from '@/config/specialists';
+import { SPECIALISTS, SERVICE_LABELS, APPOINTMENT_TYPES } from '@/config/specialists';
 
 const TZ = 'Europe/Madrid';
 
@@ -68,7 +68,7 @@ function buildRawMessage(opts: {
  * Sends a booking confirmation email to the patient.
  */
 export async function sendPatientConfirmation(request: BookingRequest): Promise<void> {
-  const specialist = SPECIALISTS[request.specialistId];
+  const specialist = SPECIALISTS[request.selectedSlot.specialistId];
   const from = process.env.GMAIL_SENDER_EMAIL ?? 'noreply@abccentre.es';
 
   if (!hasGmailCredentials()) {
@@ -107,7 +107,7 @@ export async function sendPatientConfirmation(request: BookingRequest): Promise<
  * Sends an internal notification to the reception / specialist team.
  */
 export async function sendInternalNotification(request: BookingRequest): Promise<void> {
-  const specialist = SPECIALISTS[request.specialistId];
+  const specialist = SPECIALISTS[request.selectedSlot.specialistId];
   const from = process.env.GMAIL_SENDER_EMAIL ?? 'noreply@abccentre.es';
   const internalRecipient = process.env.GMAIL_INTERNAL_RECIPIENT ?? 'citas@abccentre.es';
 
@@ -162,6 +162,7 @@ function formatSlotTime(isoStr: string): string {
 function buildPatientEmailHtml(request: BookingRequest, specialistName: string): string {
   const date = formatSlotDate(request.selectedSlot.start);
   const time = formatSlotTime(request.selectedSlot.start);
+  const appointmentTypeLabel = APPOINTMENT_TYPES[request.appointmentType]?.label ?? request.appointmentType;
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -201,7 +202,11 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
             <td style="color:#2C2C2C;font-size:14px;font-weight:600;text-align:right;">${request.patientName}</td>
           </tr>
           <tr>
-            <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Servicio</td>
+            <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Tipo de cita</td>
+            <td style="color:#2C2C2C;font-size:14px;font-weight:600;text-align:right;">${appointmentTypeLabel}</td>
+          </tr>
+          <tr>
+            <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Especialista</td>
             <td style="color:#2C2C2C;font-size:14px;font-weight:600;text-align:right;">${specialistName}</td>
           </tr>
           <tr>
@@ -246,9 +251,13 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
 function buildInternalEmailHtml(request: BookingRequest, specialistName: string): string {
   const date = formatSlotDate(request.selectedSlot.start);
   const time = formatSlotTime(request.selectedSlot.start);
+  const appointmentTypeLabel = APPOINTMENT_TYPES[request.appointmentType]?.label ?? request.appointmentType;
+  const serviceLabel = SERVICE_LABELS[request.service] ?? request.service;
 
   const rows = [
-    ['Servicio', specialistName],
+    ['Tipo de cita', appointmentTypeLabel],
+    ['Servicio', serviceLabel],
+    ['Especialista', specialistName],
     ['Fecha', date],
     ['Hora', time],
     ['Paciente', request.patientName],
