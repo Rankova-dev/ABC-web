@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -19,6 +20,7 @@ export default function Navbar() {
   const t = useTranslations('nav');
   const locale = useLocale();
   const pathname = usePathname();
+  const params = useParams();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -126,7 +128,7 @@ export default function Navbar() {
 
             {/* Locale toggle */}
             <Link
-              href={pathname}
+              href={{ pathname, params } as never}
               locale={altLocale}
               className="font-outfit text-xs font-semibold text-gray border border-gray/30 px-3 py-1 rounded-full hover:border-teal hover:text-teal transition-colors"
             >
@@ -187,7 +189,7 @@ export default function Navbar() {
             <Link href="/contacto" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('contact')}
             </Link>
-            <Link href={pathname} locale={altLocale} className="block py-2 font-outfit text-sm text-gray hover:text-teal">
+            <Link href={{ pathname, params } as never} locale={altLocale} className="block py-2 font-outfit text-sm text-gray hover:text-teal">
               {t('locale_toggle')}
             </Link>
             <Link href="/contacto" className="btn-primary w-full justify-center mt-4">

@@ -41,10 +41,20 @@ export const routing = defineRouting({
       ca: '/contacte',
     },
     '/blog': '/blog',
+    '/blog/[slug]': '/blog/[slug]',
     '/galeria': {
       es: '/galeria',
       ca: '/galeria',
     },
+    '/politica-de-privacidad': {
+      es: '/politica-de-privacidad',
+      ca: '/politica-de-privacitat',
+    },
+    '/aviso-legal': {
+      es: '/aviso-legal',
+      ca: '/avis-legal',
+    },
+    '/politica-de-cookies': '/politica-de-cookies',
   },
 });
 

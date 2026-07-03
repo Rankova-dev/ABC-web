@@ -110,9 +110,9 @@ export default function Footer() {
               {t('legal_title')}
             </h3>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-sm font-light text-white/70 hover:text-white transition-colors">{t('privacy')}</Link></li>
-              <li><Link href="/" className="text-sm font-light text-white/70 hover:text-white transition-colors">{t('legal_notice')}</Link></li>
-              <li><Link href="/" className="text-sm font-light text-white/70 hover:text-white transition-colors">{t('cookies')}</Link></li>
+              <li><Link href="/politica-de-privacidad" className="text-sm font-light text-white/70 hover:text-white transition-colors">{t('privacy')}</Link></li>
+              <li><Link href="/aviso-legal" className="text-sm font-light text-white/70 hover:text-white transition-colors">{t('legal_notice')}</Link></li>
+              <li><Link href="/politica-de-cookies" className="text-sm font-light text-white/70 hover:text-white transition-colors">{t('cookies')}</Link></li>
             </ul>
             <div className="mt-8">
               <a
