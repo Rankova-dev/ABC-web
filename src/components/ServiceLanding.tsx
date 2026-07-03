@@ -28,7 +28,6 @@ const ALL_TEAM: Record<string, { role: string; initials: string }> = {
   'Noelia Torres':   { role: 'Logopeda',                                         initials: 'NT' },
   'Silvia Marcó':    { role: 'Psicóloga · Neuropsicóloga',                       initials: 'SM' },
   'Eulàlia Marquez': { role: 'Psicóloga Gral. Sanitaria',                        initials: 'EM' },
-  'Sara Reyes':      { role: 'Psicóloga · Neuropsicóloga',                       initials: 'SR' },
   'Carla López':     { role: 'Psicopedagoga',                                    initials: 'CL' },
 };
 

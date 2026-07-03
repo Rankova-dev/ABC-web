@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface TeamCardProps {
   name: string;
@@ -9,17 +10,24 @@ interface TeamCardProps {
   bio?: string;
   color?: string;
   large?: boolean;
+  photo?: string;
 }
 
-export default function TeamCard({ name, role, specialty, initials, bio, color = 'bg-teal/10', large = false }: TeamCardProps) {
+export default function TeamCard({ name, role, specialty, initials, bio, color = 'bg-teal/10', large = false, photo }: TeamCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div className={`card flex flex-col gap-3 ${large ? 'border-t-4 border-teal' : ''}`}>
       <div className="flex gap-4 items-start">
-        <div className={`${large ? 'w-16 h-16 rounded-2xl' : 'w-12 h-12 rounded-xl'} ${color} flex items-center justify-center flex-shrink-0`}>
-          <span className={`font-outfit font-semibold text-white ${large ? 'text-xl' : 'text-sm'}`}>{initials}</span>
-        </div>
+        {photo ? (
+          <div className={`${large ? 'w-16 h-16 rounded-2xl' : 'w-12 h-12 rounded-xl'} relative flex-shrink-0 overflow-hidden`}>
+            <Image src={photo} alt={name} fill className="object-cover" sizes={large ? '64px' : '48px'} />
+          </div>
+        ) : (
+          <div className={`${large ? 'w-16 h-16 rounded-2xl' : 'w-12 h-12 rounded-xl'} ${color} flex items-center justify-center flex-shrink-0`}>
+            <span className={`font-outfit font-semibold text-white ${large ? 'text-xl' : 'text-sm'}`}>{initials}</span>
+          </div>
+        )}
         <div className="flex-1 min-w-0">
           <h3 className={`font-outfit font-semibold text-ink mb-0.5 ${large ? 'text-lg' : 'text-sm'}`}>{name}</h3>
           <p className={`font-semibold text-teal mb-1 ${large ? 'text-sm' : 'text-xs'}`}>{role}</p>

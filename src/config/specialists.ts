@@ -110,13 +110,6 @@ export const SPECIALISTS = {
     calendarId: process.env.GOOGLE_CALENDAR_EULALIA_MARQUEZ ?? '',
     email: process.env.NOTIFY_EULALIA_MARQUEZ ?? 'citas@abccentre.es',
   },
-  sara_reyes: {
-    name: 'Sara Reyes',
-    role: 'Psicóloga · Neuropsicóloga',
-    initials: 'SR',
-    calendarId: process.env.GOOGLE_CALENDAR_SARA_REYES ?? '',
-    email: process.env.NOTIFY_SARA_REYES ?? 'citas@abccentre.es',
-  },
   carla_lopez: {
     name: 'Carla López',
     role: 'Psicopedagoga',
@@ -133,12 +126,12 @@ export type SpecialistId = keyof typeof SPECIALISTS;
 export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
   logopedia:              ['laia_lahoz',   'vanessa_pedro',  'noelia_torres'],
   psicologia:             ['laia_alvarez', 'mar_aranega',    'margot_moreno', 'eulalia_marquez'],
-  neuropsicologia:        ['laia_alvarez', 'silvia_marco',   'sara_reyes'],
+  neuropsicologia:        ['laia_alvarez', 'silvia_marco'],
   psicopedagogia:         ['carla_lopez'],
   tea:                    ['laia_alvarez', 'laia_lahoz',     'vanessa_pedro'],
   'rehabilitacion-voz':   ['laia_lahoz',   'noelia_torres'],
   'terapia-familiar':     ['mar_aranega',  'margot_moreno'],
-  'habilidades-sociales': ['silvia_marco', 'sara_reyes'],
+  'habilidades-sociales': ['silvia_marco'],
   'orientacion-familiar': ['laia_alvarez', 'mar_aranega',    'margot_moreno'],
   'cursos-formacion':     ['laia_alvarez', 'silvia_marco',   'carla_lopez'],
   'salut':                ['laia_alvarez', 'margot_moreno',  'noelia_torres'],

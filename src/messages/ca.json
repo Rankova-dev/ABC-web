@@ -272,8 +272,7 @@
     ],
     "team_members": [
       "Laia Álvarez",
-      "Silvia Marcó",
-      "Sara Reyes"
+      "Silvia Marcó"
     ]
   },
   "psicopedagogia": {
@@ -490,22 +489,87 @@
       }
     ],
     "team_members": [
-      "Silvia Marcó",
-      "Sara Reyes"
+      "Silvia Marcó"
     ]
   },
   "equipo": {
     "meta_title": "El nostre Equip — ABC Centre Barcelona",
     "meta_desc": "Coneix l'equip d'especialistes d'ABC Centre: logopedes, psicòlogues i neuropsicòlogues amb anys d'experiència a Nou Barris, Barcelona.",
     "h1": "El nostre equip",
-    "subtitle": "12 especialistes en logopèdia, psicologia i neuropsicologia compromeses amb el teu benestar.",
+    "subtitle": "13 especialistes en logopèdia, psicologia i neuropsicologia compromeses amb el teu benestar.",
     "intro": "A ABC Centre creiem que l'èxit del procés terapèutic es basa en la confiança, la professionalitat i el tracte humà. Per això comptem amb un equip multidisciplinari que treballa de forma coordinada per oferir-te la millor atenció.",
     "directors_title": "Codirectores",
     "team_title": "Equip d'especialistes",
     "disciplines_title": "Les nostres disciplines",
     "join_title": "Vols treballar amb nosaltres?",
     "join_body": "Sempre estem obertes a incorporar noves especialistes a l'equip.",
-    "join_cta": "Enviar candidatura →"
+    "join_cta": "Enviar candidatura →",
+    "members": {
+      "celia_cruz": {
+        "role": "Codirectora · Logopeda",
+        "specialty": "Logopèdia infantojuvenil i adults"
+      },
+      "laia_alvarez": {
+        "role": "Codirectora · Psicòloga Gral. Sanitària · Neuropsicòloga",
+        "specialty": "Neuropsicologia infantil i adults, psicopedagogia",
+        "bio": "Soc Laia Álvarez, Psicòloga General Sanitaria, Neuropsicòloga i Pedagoga. Durant molt temps, vaig compaginar la intervenció psicològica infanto-juvenil amb l'abordatge psicopedagògic, però poc a poc vaig anar continuant la meva formació i especialització en Neuropsicologia. Actualment compagino la direcció i coordinació del Centre ABC amb l'atenció del dia a dia dels usuaris i la realització d'avaluacions neuropsicològiques a infants, joves i adults. També continuo treballant amb infants amb necessitats psicopedagògiques. Em considero una professional propera, empàtica i que aconsegueixo vincular amb les persones amb les que treballo, per tal de poder dur a terme així un abordatge proper, personalitzat i adequat a les necessitats de cadascú."
+      },
+      "laia_lahoz": {
+        "role": "Logopeda",
+        "specialty": "Logopèdia infantojuvenil",
+        "bio": "Sóc la Laia Lahoz, graduada en logopèdia i amb un màster realitzat enfocat en l'abordatge dels trastorns de l'aprenentatge. Acompanyo a infants i adolescents adaptant-me a les diferents necessitats, així com les de les famílies que els acompanyen. Considero que la vinculació és molt important, per això sempre intento fer-la de la millor manera possible."
+      },
+      "vanessa_de_pedro": {
+        "role": "Logopeda",
+        "specialty": "Logopèdia infantojuvenil i adults",
+        "bio": "Soc la Vanessa, graduada en Logopèdia i en Educació Primària, amb menció en Pedagogia Terapèutica i Audició i Llenguatge. Acompanyo a infants, adolescents i adults en el seu desenvolupament comunicatiu i lingüístic, adaptant-me a les necessitats individuals de cada persona. Compto amb formació i experiència en atenció precoç, trastorn de l'espectre autista (TEA), trastorns del llenguatge i parla, i alteracions en la lectoescriptura. També treballo aspectes relacionats amb la motricitat orofacial i els processos de la deglució en totes les edats. Continuo formant-me per oferir una atenció centrada en les necessitats de cada persona."
+      },
+      "noelia_torres": {
+        "role": "Logopeda",
+        "specialty": "Logopèdia adults i infantojuvenil",
+        "bio": "Soc la Noelia Torres, soc logopeda desde l'any 2019 tinc menció en la intervenció en l'àmbit clínic que em dóna el coneixement per abordar patologies i dissenyar tractaments personalitzats en infants i adults. Tinc formació en dificultats dels aprenentatges, el qual m'ha donat coneixements per realitzar tractaments enfocats a la dislèxia, la disgrafia i altres dificultats d'aprenentatge. A l'hora, tinc formació i experiència amb adults, per treballar diferents patologies i dificultats relacionades amb la comunicació, el llenguatge, la respiració i la deglució. Em considero una persona empàtica que sap connectar amb el pacient i augmentar la seva motivació per assolir els objectius els quals volem arribar."
+      },
+      "maria_andres": {
+        "role": "Psicòloga",
+        "specialty": "Psicologia infantojuvenil",
+        "bio": "Graduada en Psicologia · Màster en Psicologia General Sanitària · Màster en Psicologia Infanto-Juvenil"
+      },
+      "mar_aranega": {
+        "role": "Psicòloga General Sanitària",
+        "specialty": "Psicologia infantil, juvenil i adults",
+        "bio": "Sóc Psicòloga General Sanitària. Al llarg de la meva trajectòria he adquirit experiència en l'avaluació i intervenció psicològica amb infants, adolescents i les seves famílies, adaptant sempre el treball terapèutic a les necessitats individuals de cada persona. També he realitzat formació en l'àmbit d'adults, el que em permet abordar la intervenció psicològica en totes les edats. Una de les àrees en què em sento especialment còmoda és el treball amb adolescents. Considero que tinc facilitat per establir un vincle de confiança amb ells, comprendre les seves necessitats i acompanyar-los en processos relacionats amb la gestió emocional, l'autoestima, les relacions socials, les dificultats conductuals i els reptes propis d'aquesta etapa vital. Em defineixo com una professional propera, empàtica i compromesa, que valora el treball coordinat amb les famílies i altres professionals per oferir una atenció integral."
+      },
+      "margot_moreno": {
+        "role": "Psicòloga General Sanitària · Neuropsicòloga",
+        "specialty": "Psicologia infantil, juvenil i adults",
+        "bio": "Soc Psicòloga General Sanitària i amb formació especialitzada en neuropsicologia, trastorns mentals crònics i intervenció en conducta suïcida. Actualment treballo amb infants, adolescents i adults, acompanyant-los en aquells moments en què les emocions, les dificultats personals o les situacions vitals poden generar malestar. Al llarg de la meva trajectòria he tingut l'oportunitat de treballar en diferents àmbits de la salut mental, una experiència que m'ha ajudat a entendre la importància d'adaptar cada procés terapèutic a les necessitats de la persona que tinc al davant. Per a mi, la teràpia és un espai de confiança, escolta i respecte, on poder sentir-se comprès i acompanyat sense judicis. M'agrada crear un vincle proper amb cada persona i caminar al seu costat perquè pugui entendre millor el que li està passant, descobrir les seves pròpies eines i avançar cap al benestar que busca. Tinc un especial interès en la prevenció i la intervenció en conducta suïcida, una àrea que m'apassiona i en la qual m'he format específicament, perquè crec en la importància d'oferir un espai segur on poder parlar del patiment i trobar noves formes d'afrontar-lo."
+      },
+      "silvia_marco": {
+        "role": "Psicòloga General Sanitària · Neuropsicòloga",
+        "specialty": "Infantil, adults, TEA",
+        "bio": "Soc Psicòloga General Sanitaria, amb formació en neuropsicologia i acreditada com a Experta en Neuropsicologia pel COPC. En els darrers anys he obtingut el Doctorat Cum Laude en Psicologia a la Universitat de Barcelona. La meva trajectoria professional va enfocada al treball neuropsicològic i a la intervenció en trastorns de l'espectre de l'autisme, motiu pel qual he anat ampliant la meva formació fins haver obtingut la Certificació en el model DENVER d'Atenció Primerenca, l'acreditació en l'entrevista diagnòstica ADI-R pel Trastorn de l'Espectre Autista i l'acreditació en l'administració d'ADOS-2 pel Trastorn de l'Espectre Autista. La meva formació m'ha aportat una mirada clínica rigorosa, integradora i propera. El meu objectiu principal és que l'avaluació i la intervenció siguin útils, comprensibles i respectuoses, ajudant la persona i el seu entorn a entendre millor el seu funcionament i a disposar d'eines concretes per afavorir el seu desenvolupament, benestar i autonomia. Considero essencial el treball coordinat amb famílies, escoles i altres professionals, així com oferir orientacions pràctiques i ajustades a cada cas."
+      },
+      "eulalia_marquez": {
+        "role": "Psicòloga General Sanitària",
+        "specialty": "Psicologia infantil, juvenil i adults",
+        "bio": "Soc Psicòloga General Sanitària, graduada en Psicologia per la Universitat Ramon Llull. Atenc infants, adolescents i adults, acompanyant persones en diferents moments del seu cicle vital. He desenvolupat la meva pràctica clínica acompanyant persones que travessen situacions de malestar emocional, dificultats personals o relacionals, així com processos de canvi i creixement personal. També he realitzat formació en trastorn mental greu, ampliant els meus coneixements dins l'àmbit de la salut mental. Entenc la teràpia com un espai segur de confiança, escolta i respecte, on poder comprendre allò que està generant malestar i trobar eines per afrontar les dificultats. Treballo des d'una perspectiva propera, empàtica i personalitzada, adaptant la intervenció a les necessitats i al ritme de cada persona."
+      },
+      "carla_lopez": {
+        "role": "Psicopedagoga",
+        "specialty": "Trastorns d'aprenentatge, màster psicologia infantojuvenil",
+        "bio": "Soc graduada en Mestra d'educació Primaria, amb els màsters de Psicopedagogia i Psicologia Clínica Infanto-Juvenil, formació que ha orientat la meva trajectòria professional cap a l'acompanyament emocional, educatiu i familiar. Actualment, continuo la meva formació cursant el Grau de Psicologia. La meva vocació sempre ha estat acompanyar infants i adolescents en el seu procés de creixement i aprenentatge. He exercit durant vuit anys com a professora, una experiència que em va permetre conèixer de prop el desenvolupament infantil, els processos d'aprenentatge i les necessitats educatives dels infants i adolescents. Com a psicopedagoga, treballo amb infants, adolescents i les seves famílies en aspectes relacionats amb les dificultats d'aprenentatge, les necessitats educatives, els hàbits d'estudi, l'atenció, les funcions executives, la gestió emocional i les habilitats socials. Em defineixo com una professional propera, empàtica i compromesa, que dona molta importància a la creació d'un vincle de confiança amb els infants i les seves famílies. Considero fonamental adaptar la intervenció a les necessitats de cada persona, potenciant els seus recursos i acompanyant-la en el seu procés de creixement i desenvolupament."
+      },
+      "raisa_pocino": {
+        "role": "Psicòloga General Sanitària",
+        "specialty": "Infantojuvenil, TEA",
+        "bio": "Sóc la Raisa Pocino, Psicòloga Infanto-juvenil i Psicòloga General Sanitària. Compto amb formació específica en Trastorn de l'Espectre de l'Autisme, havent obtingut el Diploma d'Especialització en Autisme. El meu objectiu és poder acompanyar infants, adolescents i les seves famílies des d'una mirada respectuosa i centrada en les seves necessitats. Treballo des d'una mirada individualitzada i integral, tenint en compte tant les dificultats com les fortaleses de cada infant o jove, amb l'objectiu d'afavorir el seu benestar emocional, desenvolupament personal i qualitat de vida."
+      },
+      "elia_huertas": {
+        "role": "Psicòloga General Sanitària",
+        "specialty": "Infantojuvenil, adults, TEA",
+        "bio": "Sóc Psicòloga General Sanitària, amb Màster d'especialitat en Clínica Psicoanalítica de la Infància i l'Adolescència. He completat la meva formació amb diferents especialitzacions en salut mental, psicopatologia i atenció infantojuvenil, com són la teràpia familiar, l'hora del joc, formació en Trastorn de l'Espectre de l'Autisme i Llengua de Signes Catalana. D'altra banda, també compto amb formació específica en l'àmbit de la sexualitat i la protecció a la infància i l'adolescència: 'Abuso Sexual Infantil: identificación, actuación y prevención', realitzat a la Fundació Vicki Bernadet, i el 'Curs d'Atenció a la Sexualitat en l'Adolescència', realitzat al CJAS, Centre Jove d'Atenció a les Sexualitats. La meva trajectòria professional s'ha desenvolupat tant en l'àmbit privat com en diferents dispositius de la xarxa de salut mental pública, treballant amb infants, adolescents, adults i les seves famílies. Treballo des d'una orientació psicodinàmica, entenent la teràpia com un espai d'escolta, reflexió i acompanyament que permet comprendre el malestar emocional i potenciar els recursos propis de cada persona. Em defineix una mirada propera, sensible i respectuosa amb la singularitat de cada pacient. Actualment, continuo en formació permanent a través de seminaris de lectura teòrica entorn de la intervenció i la clínica."
+      }
+    }
   },
   "blog": {
     "meta_title": "Blog — ABC Centre Barcelona",
