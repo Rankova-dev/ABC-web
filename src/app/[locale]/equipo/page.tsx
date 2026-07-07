@@ -25,9 +25,9 @@ const TEAM = [
   { key: 'margot_moreno',   name: 'Margot Moreno',        initials: 'MR', photo: '/images/equipo/margot-moreno.webp' },
   { key: 'silvia_marco',    name: 'Silvia Marcó',         initials: 'SM', photo: '/images/equipo/silvia-marco.webp' },
   { key: 'eulalia_marquez', name: 'Eulàlia Márquez',      initials: 'EM', photo: '/images/equipo/eulalia-marquez.webp' },
-  { key: 'carla_lopez',     name: 'Carla López',          initials: 'CL' },
+  { key: 'carla_lopez',     name: 'Carla López',          initials: 'CL', photo: '/images/equipo/carla-lopez.webp' },
   { key: 'raisa_pocino',    name: 'Raisa Pocino',         initials: 'RP' },
-  { key: 'elia_huertas',    name: 'Elia Huertas',         initials: 'EH' },
+  { key: 'elia_huertas',    name: 'Elia Huertas',         initials: 'EH', photo: '/images/equipo/elia-huertas.webp' },
 ];
 
 const DISCIPLINES = [

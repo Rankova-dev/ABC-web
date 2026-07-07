@@ -47,9 +47,20 @@ export default function TeamCard({ name, role, specialty, initials, bio, color =
           <div
             className={`overflow-hidden transition-all duration-300 ease-in-out ${expanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
           >
-            <p className="text-xs font-light text-gray leading-relaxed border-t border-cream pt-3 italic">
-              {bio}
-            </p>
+            <div className="flex gap-4 border-t border-cream pt-3">
+              {photo ? (
+                <div className="w-20 h-20 rounded-xl relative flex-shrink-0 overflow-hidden">
+                  <Image src={photo} alt={name} fill className="object-cover" sizes="80px" />
+                </div>
+              ) : (
+                <div className={`w-20 h-20 rounded-xl ${color} flex items-center justify-center flex-shrink-0`}>
+                  <span className="font-outfit font-semibold text-white text-2xl">{initials}</span>
+                </div>
+              )}
+              <p className="text-xs font-light text-gray leading-relaxed italic">
+                {bio}
+              </p>
+            </div>
           </div>
         </>
       )}
