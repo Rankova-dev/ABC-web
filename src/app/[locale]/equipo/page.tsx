@@ -26,7 +26,7 @@ const TEAM = [
   { key: 'silvia_marco',    name: 'Silvia Marcó',         initials: 'SM', photo: '/images/equipo/silvia-marco.webp' },
   { key: 'eulalia_marquez', name: 'Eulàlia Márquez',      initials: 'EM', photo: '/images/equipo/eulalia-marquez.webp' },
   { key: 'carla_lopez',     name: 'Carla López',          initials: 'CL', photo: '/images/equipo/carla-lopez.webp' },
-  { key: 'raisa_pocino',    name: 'Raisa Pocino',         initials: 'RP' },
+  { key: 'raisa_pocino',    name: 'Raisa Pocino',         initials: 'RP', photo: '/images/equipo/raisa-pocino.webp' },
   { key: 'elia_huertas',    name: 'Elia Huertas',         initials: 'EH', photo: '/images/equipo/elia-huertas.webp' },
 ];
 
