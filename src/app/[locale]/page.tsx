@@ -32,10 +32,10 @@ const SERVICES: { key: string; href: '/logopedia' | '/psicologia' | '/neuropsico
 ];
 
 const TEAM = [
-  { name: 'Celia Cruz',   role: 'Codirectora · Logopeda',                             initials: 'CC' },
-  { name: 'Laia Álvarez', role: 'Codirectora · Psicóloga General Sanitaria · Neuropsicóloga', initials: 'LA' },
-  { name: 'Silvia Marcó', role: 'Psicóloga · Neuropsicóloga',                          initials: 'SM' },
-  { name: 'Carla López',  role: 'Psicopedagoga',                                       initials: 'CL' },
+  { name: 'Celia Cruz',   role: 'Codirectora · Logopeda',                             initials: 'CC', photo: '/images/equipo/celia-cruz.webp' },
+  { name: 'Laia Álvarez', role: 'Codirectora · Psicóloga General Sanitaria · Neuropsicóloga', initials: 'LA', photo: '/images/equipo/laia-alvarez.webp' },
+  { name: 'Silvia Marcó', role: 'Psicóloga · Neuropsicóloga',                          initials: 'SM', photo: '/images/equipo/silvia-marco.webp' },
+  { name: 'Carla López',  role: 'Psicopedagoga',                                       initials: 'CL', photo: '/images/equipo/carla-lopez.webp' },
 ];
 
 const SCHEMA = {
@@ -294,9 +294,15 @@ export default function HomePage() {
                 className="animate-on-scroll card text-center"
                 style={{ animationDelay: `${i * 80}ms` }}
               >
-                <div className="w-16 h-16 rounded-full bg-teal/10 flex items-center justify-center mx-auto mb-4">
-                  <span className="font-outfit font-semibold text-lg text-teal">{member.initials}</span>
-                </div>
+                {member.photo ? (
+                  <div className="w-16 h-16 rounded-full mx-auto mb-4 relative overflow-hidden">
+                    <Image src={member.photo} alt={member.name} fill className="object-cover" sizes="64px" />
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-teal/10 flex items-center justify-center mx-auto mb-4">
+                    <span className="font-outfit font-semibold text-lg text-teal">{member.initials}</span>
+                  </div>
+                )}
                 <h3 className="font-outfit font-semibold text-sm text-ink mb-1">{member.name}</h3>
                 <p className="text-xs font-light text-gray leading-snug">{member.role}</p>
               </div>
