@@ -3,14 +3,14 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 
 const SERVICES = [
-  { key: 'logopedia',          href: '/logopedia' as const },
-  { key: 'psicologia',         href: '/psicologia' as const },
-  { key: 'neuropsicologia',    href: '/neuropsicologia' as const },
-  { key: 'psicopedagogia',     href: '/psicopedagogia' as const },
-  { key: 'tea',                href: '/tea' as const },
-  { key: 'rehabilitacion_voz', href: '/rehabilitacion-voz' as const },
-  { key: 'terapia_familiar',   href: '/terapia-familiar' as const },
-  { key: 'habilidades_sociales', href: '/habilidades-sociales' as const },
+  { key: 'logopedia',            href: '/logopedia' as const },
+  { key: 'psicologia',           href: '/psicologia' as const },
+  { key: 'neuropsicologia',      href: '/neuropsicologia' as const },
+  { key: 'psicopedagogia',       href: '/psicopedagogia' as const },
+  { key: 'tea',                  href: '/tea' as const },
+  { key: 'orientacion_familiar', href: '/orientacion-familiar' as const },
+  { key: 'cursos_formacion',     href: '/cursos-formacion' as const },
+  { key: 'salut',                href: '/salut' as const },
 ] as const;
 
 export default function Footer() {
