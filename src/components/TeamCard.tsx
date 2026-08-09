@@ -12,9 +12,10 @@ interface TeamCardProps {
   color?: string;
   large?: boolean;
   photo?: string;
+  collegiateNumber?: string;
 }
 
-export default function TeamCard({ name, role, specialty, initials, bio, color = 'bg-teal/10', large = false, photo }: TeamCardProps) {
+export default function TeamCard({ name, role, specialty, initials, bio, color = 'bg-teal/10', large = false, photo, collegiateNumber }: TeamCardProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -22,18 +23,21 @@ export default function TeamCard({ name, role, specialty, initials, bio, color =
       <div className={`card flex flex-col gap-3 ${large ? 'border-t-4 border-teal' : ''}`}>
         <div className="flex gap-4 items-start">
           {photo ? (
-            <div className={`${large ? 'w-16 h-16 rounded-2xl' : 'w-12 h-12 rounded-xl'} relative flex-shrink-0 overflow-hidden`}>
-              <Image src={photo} alt={name} fill className="object-cover" sizes={large ? '64px' : '48px'} />
+            <div className={`${large ? 'w-24 h-24 rounded-2xl' : 'w-20 h-20 rounded-xl'} relative flex-shrink-0 overflow-hidden`}>
+              <Image src={photo} alt={name} fill className="object-cover object-top" sizes={large ? '96px' : '80px'} />
             </div>
           ) : (
-            <div className={`${large ? 'w-16 h-16 rounded-2xl' : 'w-12 h-12 rounded-xl'} ${color} flex items-center justify-center flex-shrink-0`}>
-              <span className={`font-outfit font-semibold text-white ${large ? 'text-xl' : 'text-sm'}`}>{initials}</span>
+            <div className={`${large ? 'w-24 h-24 rounded-2xl' : 'w-20 h-20 rounded-xl'} ${color} flex items-center justify-center flex-shrink-0`}>
+              <span className={`font-outfit font-semibold text-white ${large ? 'text-2xl' : 'text-lg'}`}>{initials}</span>
             </div>
           )}
           <div className="flex-1 min-w-0">
             <h3 className={`font-outfit font-semibold text-ink mb-0.5 ${large ? 'text-lg' : 'text-sm'}`}>{name}</h3>
             <p className={`font-semibold text-teal mb-1 ${large ? 'text-sm' : 'text-xs'}`}>{role}</p>
             <p className={`font-light text-gray leading-snug ${large ? 'text-sm' : 'text-xs'}`}>{specialty}</p>
+            {collegiateNumber && (
+              <p className={`font-light text-gray/70 mt-1 ${large ? 'text-xs' : 'text-[11px]'}`}>Nº Col. {collegiateNumber}</p>
+            )}
           </div>
         </div>
 
@@ -58,11 +62,11 @@ export default function TeamCard({ name, role, specialty, initials, bio, color =
           >
             <div className="relative">
               {photo ? (
-                <div className="w-full aspect-[4/3] relative">
+                <div className="w-full aspect-[3/4] relative">
                   <Image src={photo} alt={name} fill className="object-cover object-top rounded-t-2xl" sizes="512px" />
                 </div>
               ) : (
-                <div className={`w-full aspect-[4/3] rounded-t-2xl ${color} flex items-center justify-center`}>
+                <div className={`w-full aspect-[3/4] rounded-t-2xl ${color} flex items-center justify-center`}>
                   <span className="font-outfit font-semibold text-white text-5xl">{initials}</span>
                 </div>
               )}
@@ -77,8 +81,11 @@ export default function TeamCard({ name, role, specialty, initials, bio, color =
             <div className="p-6">
               <h3 className="font-outfit font-semibold text-ink text-xl mb-1">{name}</h3>
               <p className="font-semibold text-teal text-sm mb-1">{role}</p>
-              <p className="font-light text-gray text-sm leading-snug mb-4">{specialty}</p>
-              <p className="text-sm font-light text-gray leading-relaxed border-t border-cream pt-4">
+              <p className="font-light text-gray text-sm leading-snug">{specialty}</p>
+              {collegiateNumber && (
+                <p className="font-light text-gray/70 text-xs mt-1 mb-4">Nº Col. {collegiateNumber}</p>
+              )}
+              <p className={`text-sm font-light text-gray leading-relaxed border-t border-cream pt-4 ${collegiateNumber ? '' : 'mt-4'}`}>
                 {bio}
               </p>
             </div>

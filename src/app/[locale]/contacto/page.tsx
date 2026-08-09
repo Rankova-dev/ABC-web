@@ -117,7 +117,7 @@ export default function ContactoPage() {
                   <h3 className="font-outfit font-semibold text-ink mb-3">{t('map_title')}</h3>
                   <div className="rounded-2xl overflow-hidden h-52 shadow-card">
                     <iframe
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=2.1742%2C41.4459%2C2.1794%2C41.4479&layer=mapnik&marker=41.4469%2C2.1768"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=2.1772%2C41.4287%2C2.1824%2C41.4307&layer=mapnik&marker=41.4297%2C2.1798"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}

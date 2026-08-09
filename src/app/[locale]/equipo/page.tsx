@@ -79,6 +79,7 @@ export default function EquipoPage() {
                   specialty={t(`members.${member.key}.specialty`)}
                   initials={member.initials}
                   bio={t.has(`members.${member.key}.bio`) ? t(`members.${member.key}.bio`) : undefined}
+                  collegiateNumber={t.has(`members.${member.key}.collegiate_number`) ? t(`members.${member.key}.collegiate_number`) : undefined}
                   color={member.color}
                   photo={member.photo}
                   large
@@ -102,6 +103,7 @@ export default function EquipoPage() {
                   specialty={t(`members.${member.key}.specialty`)}
                   initials={member.initials}
                   bio={t.has(`members.${member.key}.bio`) ? t(`members.${member.key}.bio`) : undefined}
+                  collegiateNumber={t.has(`members.${member.key}.collegiate_number`) ? t(`members.${member.key}.collegiate_number`) : undefined}
                   photo={member.photo}
                 />
               </div>

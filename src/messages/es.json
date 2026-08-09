@@ -14,7 +14,10 @@
       "tea": "Trastorno del Espectro del Autismo (TEA)",
       "orientacion_familiar": "Orientación y Asesoramiento Familiar",
       "cursos_formacion": "Cursos y Formación",
-      "salut": "Salut"
+      "salut": "Salut",
+      "habilidades_sociales": "Habilidades Sociales",
+      "terapia_familiar": "Terapia Familiar",
+      "rehabilitacion_voz": "Rehabilitación de Voz"
     },
     "gallery": "Galería",
     "work_with_us": "Trabaja con nosotros"
@@ -602,7 +605,7 @@
     "calendar_coming_soon": "El sistema de reservas online estará disponible próximamente. Mientras tanto, contáctanos por teléfono o WhatsApp.",
     "info_title": "Información de contacto",
     "map_title": "Cómo llegar",
-    "map_metro": "Metro: L1 (Trinitat Nova), L4 (Via Júlia), L5 (Virrei Amat)",
+    "map_metro": "Metro: L1 (Fabra i Puig), L4 (Via Júlia), L5 (Virrei Amat)",
     "map_bus": "Bus: 11, 50, 76, 97"
   },
   "galeria": {
