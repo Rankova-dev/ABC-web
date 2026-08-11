@@ -7,6 +7,9 @@ const PHOTOS = [
   { src: '/images/centro-1.jpg', alt: 'ABC Centre — sala de terapia' },
   { src: '/images/centro-2.jpg', alt: 'ABC Centre — recepción' },
   { src: '/images/centro-3.jpg', alt: 'ABC Centre — sala infantil' },
+  { src: '/images/equipo-abc.jpg', alt: 'ABC Centre — equipo del centro' },
+  { src: '/images/sala-espera.jpg', alt: 'ABC Centre — sala de espera' },
+  { src: '/images/recepcion-mostrador.jpg', alt: 'ABC Centre — mostrador de recepción' },
 ];
 
 export default function GaleriaPage() {
