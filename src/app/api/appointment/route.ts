@@ -4,12 +4,23 @@ import { sendPatientConfirmation, sendInternalNotification } from '@/lib/gmail';
 import type { BookingRequest } from '@/lib/google-calendar';
 import type { Service, SpecialistId, AppointmentType } from '@/config/specialists';
 import { SPECIALISTS, SERVICE_TEAM, APPOINTMENT_TYPES } from '@/config/specialists';
+import { getClientIp, rateLimit } from '@/lib/rate-limit';
+import { isValidEmail } from '@/lib/validation';
 
 const VALID_SERVICES = new Set<Service>(Object.keys(SERVICE_TEAM) as Service[]);
 const VALID_APPOINTMENT_TYPES = new Set<AppointmentType>(Object.keys(APPOINTMENT_TYPES) as AppointmentType[]);
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const { allowed, retryAfterSeconds } = rateLimit(`appointment:${ip}`, 5, 10 * 60 * 1000);
+    if (!allowed) {
+      return NextResponse.json(
+        { error: 'Demasiadas solicitudes. Inténtalo de nuevo en unos minutos.' },
+        { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+      );
+    }
+
     const body = await req.json();
     const { patientName, email, phone, service, appointmentType, selectedSlot } = body;
 
@@ -19,6 +30,10 @@ export async function POST(req: NextRequest) {
         { error: 'Faltan campos obligatorios' },
         { status: 400 }
       );
+    }
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ error: 'Email no válido' }, { status: 400 });
     }
 
     if (!VALID_SERVICES.has(service as Service)) {

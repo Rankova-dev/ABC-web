@@ -15,6 +15,15 @@ import { SPECIALISTS, SERVICE_LABELS, APPOINTMENT_TYPES } from '@/config/special
 
 const TZ = 'Europe/Madrid';
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 
 function hasGmailCredentials(): boolean {
@@ -199,7 +208,7 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Paciente</td>
-            <td style="color:#2C2C2C;font-size:14px;font-weight:600;text-align:right;">${request.patientName}</td>
+            <td style="color:#2C2C2C;font-size:14px;font-weight:600;text-align:right;">${escapeHtml(request.patientName)}</td>
           </tr>
           <tr>
             <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Tipo de cita</td>
@@ -271,8 +280,8 @@ function buildInternalEmailHtml(request: BookingRequest, specialistName: string)
   const tableRows = rows
     .map(
       ([label, value]) =>
-        `<tr><td style="color:#6D6E71;font-size:14px;padding:5px 12px 5px 0;">${label}</td>
-         <td style="color:#2C2C2C;font-size:14px;font-weight:600;">${value}</td></tr>`
+        `<tr><td style="color:#6D6E71;font-size:14px;padding:5px 12px 5px 0;">${escapeHtml(label)}</td>
+         <td style="color:#2C2C2C;font-size:14px;font-weight:600;">${escapeHtml(value)}</td></tr>`
     )
     .join('');
 

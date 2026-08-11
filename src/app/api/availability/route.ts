@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllAvailableSlots } from '@/lib/google-calendar';
+import { getClientIp, rateLimit } from '@/lib/rate-limit';
 
 export async function GET(req: NextRequest) {
+  const ip = getClientIp(req);
+  const { allowed, retryAfterSeconds } = rateLimit(`availability:${ip}`, 60, 60 * 1000);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Demasiadas solicitudes.' },
+      { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+    );
+  }
+
   const dateStr = req.nextUrl.searchParams.get('date');
 
   if (!dateStr) {
