@@ -59,12 +59,12 @@ export default function Navbar() {
                 alt="ABC Centre"
                 width={160}
                 height={48}
-                className="h-10 w-auto object-contain"
+                className="h-11 sm:h-12 lg:h-14 w-auto object-contain"
                 priority
               />
             </Link>
-            <p className="hidden xl:block text-[10px] font-light text-gray/60 leading-none mt-0.5 pl-0.5">
-              Des de 1999 ajudant a donar un pas endavant
+            <p className="hidden sm:block text-xs font-medium text-gray/80 leading-none mt-1 pl-0.5">
+              {t('tagline')}
             </p>
           </div>
 

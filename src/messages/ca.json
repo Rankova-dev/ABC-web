@@ -20,7 +20,8 @@
       "rehabilitacion_voz": "Rehabilitació de la Veu"
     },
     "gallery": "Galeria",
-    "work_with_us": "Treballa amb nosaltres"
+    "work_with_us": "Treballa amb nosaltres",
+    "tagline": "Des de 1999 ajudant-te a donar un pas endavant."
   },
   "footer": {
     "tagline": "Des de 1999 ajudant-te a donar un pas endavant.",
@@ -37,9 +38,9 @@
     "copyright": "© {year} ABC Centre. Tots els drets reservats. Web per Rankova."
   },
   "home": {
-    "hero_badge": "Des de 1999 · Nou Barris, Barcelona",
+    "hero_badge": "Des de 1999 · Barcelona",
     "hero_h1": "Logopèdia, Psicologia i Neuropsicologia a Barcelona",
-    "hero_subtitle": "Un equip de 12 especialistes acompanya nens, joves i adults a Nou Barris. 26 anys d'experiència al teu costat.",
+    "hero_subtitle": "Un equip de 12 especialistes acompanya nens, joves i adults a Barcelona. 26 anys d'experiència al teu costat.",
     "hero_cta_primary": "Serveis per a adults",
     "hero_cta_secondary": "Serveis per a nens i joves",
     "hero_stat_years": "anys d'experiència",
@@ -69,13 +70,13 @@
     "services_subtitle": "Un centre multidisciplinari amb tot el que necessites sota un mateix sostre.",
     "why_title": "Per què ABC Centre",
     "why_years_title": "26 anys de trajectòria",
-    "why_years_body": "Acompanyant famílies i adults des de 1999 al cor de Nou Barris.",
+    "why_years_body": "Acompanyant famílies i adults des de 1999 a Barcelona.",
     "why_team_title": "Equip multidisciplinari",
     "why_team_body": "12 especialistes en logopèdia, psicologia, neuropsicologia i psicopedagogia.",
     "why_personal_title": "Atenció personalitzada",
     "why_personal_body": "Cada persona té un pla de treball adaptat a les seves necessitats i objectius.",
     "why_location_title": "Centre de referència",
-    "why_location_body": "Al cor de Nou Barris. Accessible amb metro L1, L4 i L5.",
+    "why_location_body": "A Barcelona. Accessible amb metro L1, L4 i L5.",
     "team_title": "El nostre equip",
     "team_subtitle": "Professionals especialitzats compromesos amb el teu benestar.",
     "team_cta": "Coneix l'equip complet",
@@ -88,7 +89,7 @@
     "booking_step3_body": "Reps la confirmació per correu a l'instant.",
     "booking_cta": "Demana cita ara",
     "map_title": "Troba'ns",
-    "map_subtitle": "Al cor de Nou Barris, Barcelona.",
+    "map_subtitle": "A Barcelona.",
     "newsletter_title": "Subscriu-te i obtén un 10% de descompte a la teva primera cita",
     "newsletter_body": "Consells de logopèdia, psicologia i benestar directament al teu correu. Sense spam.",
     "newsletter_placeholder": "El teu correu electrònic",
@@ -127,9 +128,9 @@
   },
   "logopedia": {
     "meta_title": "Logopeda a Barcelona — Infantil i Adults | ABC Centre",
-    "meta_desc": "Logopeda especialitzada en nens i adults a Nou Barris, Barcelona. Tractem trastorns de la parla, el llenguatge, la veu i la deglució. 26 anys d'experiència.",
+    "meta_desc": "Logopeda especialitzada en nens i adults a Barcelona. Tractem trastorns de la parla, el llenguatge, la veu i la deglució. 26 anys d'experiència.",
     "h1": "Logopeda a Barcelona — nens, adolescents i adults",
-    "subtitle": "Avaluació i tractament dels trastorns de la parla, el llenguatge, la veu i la deglució a Nou Barris, Barcelona.",
+    "subtitle": "Avaluació i tractament dels trastorns de la parla, el llenguatge, la veu i la deglució a Barcelona.",
     "what_title": "Què és la logopèdia?",
     "what_body": "La logopèdia és la disciplina que s'ocupa de la prevenció, avaluació, diagnòstic i tractament dels trastorns de la comunicació humana i els trastorns relacionats amb la deglució. A ABC Centre treballem amb nens, adolescents i adults per millorar la seva comunicació i qualitat de vida.",
     "children_title": "Logopèdia infantil i juvenil",
@@ -180,9 +181,9 @@
   },
   "psicologia": {
     "meta_title": "Psicòleg a Barcelona — Infantil, Juvenil i Adults | ABC Centre",
-    "meta_desc": "Psicòlegs a Nou Barris, Barcelona. Atenció psicològica per a nens, adolescents i adults. Presencial i online. 26 anys d'experiència.",
+    "meta_desc": "Psicòlegs a Barcelona. Atenció psicològica per a nens, adolescents i adults. Presencial i online. 26 anys d'experiència.",
     "h1": "Psicòleg a Barcelona — infantil, juvenil i adults",
-    "subtitle": "Suport psicològic especialitzat per a nens, adolescents i adults a Nou Barris, Barcelona. També online.",
+    "subtitle": "Suport psicològic especialitzat per a nens, adolescents i adults a Barcelona. També online.",
     "what_title": "Què és la psicologia clínica?",
     "what_body": "La psicologia clínica s'ocupa de l'avaluació, diagnòstic i tractament dels problemes emocionals, conductuals i relacionals que afecten el benestar de les persones. A ABC Centre comptem amb psicòlogues generals sanitàries especialitzades en diferents etapes de la vida.",
     "children_title": "Psicologia infantil i juvenil",
@@ -235,9 +236,9 @@
   },
   "neuropsicologia": {
     "meta_title": "Neuropsicòleg a Barcelona — Avaluació i Rehabilitació | ABC Centre",
-    "meta_desc": "Neuropsicologia a Barcelona. Avaluació cognitiva per a nens (TDAH, dislèxia) i adults (dany cerebral, deteriorament cognitiu). ABC Centre, Nou Barris.",
+    "meta_desc": "Neuropsicologia a Barcelona. Avaluació cognitiva per a nens (TDAH, dislèxia) i adults (dany cerebral, deteriorament cognitiu). ABC Centre.",
     "h1": "Neuropsicòleg a Barcelona — avaluació i rehabilitació cognitiva",
-    "subtitle": "Avaluació i rehabilitació neuropsicològica per a nens, adolescents i adults a Nou Barris, Barcelona.",
+    "subtitle": "Avaluació i rehabilitació neuropsicològica per a nens, adolescents i adults a Barcelona.",
     "what_title": "Què és la neuropsicologia?",
     "what_body": "La neuropsicologia estudia la relació entre el cervell i el comportament. A través d'una avaluació neuropsicològica podem identificar com funcionen la memòria, l'atenció, el llenguatge i altres funcions cognitives, i dissenyar un programa de rehabilitació o estimulació adaptat.",
     "children_title": "Neuropsicologia infantil i juvenil",
@@ -280,9 +281,9 @@
   },
   "psicopedagogia": {
     "meta_title": "Psicopedagoga a Barcelona — Dificultats d'Aprenentatge | ABC Centre",
-    "meta_desc": "Psicopedagogia a Nou Barris, Barcelona. Suport educatiu per a nens amb dislèxia, TDAH i dificultats d'aprenentatge.",
+    "meta_desc": "Psicopedagogia a Barcelona. Suport educatiu per a nens amb dislèxia, TDAH i dificultats d'aprenentatge.",
     "h1": "Psicopedagog a Barcelona — dislèxia, TDAH i dificultats d'aprenentatge",
-    "subtitle": "Avaluació i suport educatiu per a nens i joves amb dificultats d'aprenentatge a Nou Barris, Barcelona.",
+    "subtitle": "Avaluació i suport educatiu per a nens i joves amb dificultats d'aprenentatge a Barcelona.",
     "what_title": "Què és la psicopedagogia?",
     "what_body": "La psicopedagogia s'encarrega d'estudiar l'aprenentatge humà i les seves dificultats. El psicopedagog avalua el rendiment acadèmic, els processos d'aprenentatge i els factors emocionals i cognitius que poden estar influint, i dissenya estratègies d'intervenció personalitzades.",
     "children_title": "Per a qui és?",
@@ -319,9 +320,9 @@
   },
   "tea": {
     "meta_title": "Autisme i TEA a Barcelona — Trastorn de l'Espectre Autista | ABC Centre",
-    "meta_desc": "Intervenció especialitzada en Trastorn de l'Espectre Autista (TEA) a Barcelona. Logopèdia, psicologia i neuropsicologia per a nens i adults amb autisme. ABC Centre, Nou Barris.",
+    "meta_desc": "Intervenció especialitzada en Trastorn de l'Espectre Autista (TEA) a Barcelona. Logopèdia, psicologia i neuropsicologia per a nens i adults amb autisme. ABC Centre.",
     "h1": "Trastorn de l'Espectre Autista (TEA) a Barcelona",
-    "subtitle": "Intervenció integral i especialitzada per a persones amb autisme i TEA, i les seves famílies, a Nou Barris, Barcelona.",
+    "subtitle": "Intervenció integral i especialitzada per a persones amb autisme i TEA, i les seves famílies, a Barcelona.",
     "what_title": "Què és el Trastorn de l'Espectre Autista (TEA)?",
     "what_body": "El Trastorn de l'Espectre Autista (TEA) és un conjunt de condicions del neurodesenvolupament que afecten la comunicació, la interacció social i el comportament. A ABC Centre oferim una intervenció integral que treballa de forma coordinada des de la logopèdia, la psicologia i les habilitats socials.",
     "children_title": "Àrees d'intervenció",
@@ -367,7 +368,7 @@
   },
   "rehabilitacion_voz": {
     "meta_title": "Rehabilitació de la Veu a Barcelona — Logopeda | ABC Centre",
-    "meta_desc": "Rehabilitació de la veu a Barcelona. Tractament de disfònies, nòduls, paràlisi vocal i trastorns vocals. Logopeda especialitzada. Nou Barris.",
+    "meta_desc": "Rehabilitació de la veu a Barcelona. Tractament de disfònies, nòduls, paràlisi vocal i trastorns vocals. Logopeda especialitzada.",
     "h1": "Rehabilitació de la Veu a Barcelona",
     "subtitle": "Tractament especialitzat dels trastorns de la veu i rehabilitació vocal per a professionals i públic general.",
     "what_title": "Què és la rehabilitació de la veu?",
@@ -411,7 +412,7 @@
   },
   "terapia_familiar": {
     "meta_title": "Teràpia Familiar i de Parella a Barcelona | ABC Centre",
-    "meta_desc": "Teràpia familiar i de parella a Nou Barris, Barcelona. Millora la comunicació i resol conflictes amb ajuda professional.",
+    "meta_desc": "Teràpia familiar i de parella a Barcelona. Millora la comunicació i resol conflictes amb ajuda professional.",
     "h1": "Teràpia Familiar i de Parella a Barcelona",
     "subtitle": "Acompanyament professional per millorar la comunicació i resoldre conflictes en l'entorn familiar i de parella.",
     "what_title": "Què és la teràpia familiar?",
@@ -452,7 +453,7 @@
   },
   "habilidades_sociales": {
     "meta_title": "Habilitats Socials Nens i Adolescents Barcelona | ABC Centre",
-    "meta_desc": "Grups d'habilitats socials per a nens i adolescents a Barcelona. Millora la comunicació i les relacions. ABC Centre, Nou Barris.",
+    "meta_desc": "Grups d'habilitats socials per a nens i adolescents a Barcelona. Millora la comunicació i les relacions. ABC Centre.",
     "h1": "Habilitats Socials a Barcelona",
     "subtitle": "Grups terapèutics per a nens i adolescents que volen millorar les seves relacions socials i la seva comunicació.",
     "what_title": "Què són les habilitats socials?",
@@ -497,7 +498,7 @@
   },
   "equipo": {
     "meta_title": "El nostre Equip — ABC Centre Barcelona",
-    "meta_desc": "Coneix l'equip d'especialistes d'ABC Centre: logopedes, psicòlogues i neuropsicòlogues amb anys d'experiència a Nou Barris, Barcelona.",
+    "meta_desc": "Coneix l'equip d'especialistes d'ABC Centre: logopedes, psicòlogues i neuropsicòlogues amb anys d'experiència a Barcelona.",
     "h1": "El nostre equip",
     "subtitle": "13 especialistes en logopèdia, psicologia i neuropsicologia compromeses amb el teu benestar.",
     "intro": "A ABC Centre creiem que l'èxit del procés terapèutic es basa en la confiança, la professionalitat i el tracte humà. Per això comptem amb un equip multidisciplinari que treballa de forma coordinada per oferir-te la millor atenció.",
@@ -577,13 +578,13 @@
   },
   "blog": {
     "meta_title": "Blog — ABC Centre Barcelona",
-    "meta_desc": "Articles i recursos sobre logopèdia, psicologia, neuropsicologia i criança de l'equip especialista d'ABC Centre, Nou Barris, Barcelona.",
+    "meta_desc": "Articles i recursos sobre logopèdia, psicologia, neuropsicologia i criança de l'equip especialista d'ABC Centre, Barcelona.",
     "h1": "Blog",
     "subtitle": "Articles i recursos de l'equip d'ABC Centre."
   },
   "contacto": {
     "meta_title": "Contacte i Primera Cita — ABC Centre Barcelona",
-    "meta_desc": "Contacta amb ABC Centre a Nou Barris, Barcelona. Demana la teva primera cita en logopèdia, psicologia o neuropsicologia. Tel: 93 243 48 35.",
+    "meta_desc": "Contacta amb ABC Centre a Barcelona. Demana la teva primera cita en logopèdia, psicologia o neuropsicologia. Tel: 93 243 48 35.",
     "h1": "Contacte i primera cita",
     "subtitle": "Estem aquí per ajudar-te. Contacta'ns pel canal que prefereixis.",
     "form_title": "Demana la teva primera consulta",
@@ -610,13 +611,13 @@
   },
   "galeria": {
     "meta_title": "Galeria de Fotos — ABC Centre Barcelona",
-    "meta_desc": "Descobreix les instal·lacions d'ABC Centre a Nou Barris, Barcelona. Sales de teràpia modernes i un entorn acollidor.",
+    "meta_desc": "Descobreix les instal·lacions d'ABC Centre a Barcelona. Sales de teràpia modernes i un entorn acollidor.",
     "h1": "Galeria",
     "subtitle": "Coneix les nostres instal·lacions i l'espai on treballem cada dia."
   },
   "orientacion_familiar": {
     "meta_title": "Orientació i Assessorament Familiar a Barcelona | ABC Centre",
-    "meta_desc": "Orientació i assessorament familiar a Nou Barris, Barcelona. Suport psicològic per a famílies amb fills en teràpia, TEA, crisis familiars i orientació parental.",
+    "meta_desc": "Orientació i assessorament familiar a Barcelona. Suport psicològic per a famílies amb fills en teràpia, TEA, crisis familiars i orientació parental.",
     "h1": "Orientació i Assessorament Familiar a Barcelona",
     "subtitle": "Acompanyament professional per a famílies que necessiten orientació i eines per donar suport als seus fills i afrontar els reptes del dia a dia.",
     "what_title": "Què és l'orientació i l'assessorament familiar?",
@@ -664,7 +665,7 @@
   },
   "cursos_formacion": {
     "meta_title": "Cursos i Formació — ABC Centre Barcelona",
-    "meta_desc": "Cursos, tallers i formació per a famílies, professionals i centres educatius a Nou Barris, Barcelona. TEA, habilitats parentals, salut mental. ABC Centre.",
+    "meta_desc": "Cursos, tallers i formació per a famílies, professionals i centres educatius a Barcelona. TEA, habilitats parentals, salut mental. ABC Centre.",
     "h1": "Cursos i Formació a ABC Centre",
     "subtitle": "Tallers i cursos especialitzats per a famílies, professionals de l'educació i equips d'atenció a la infància.",
     "what_title": "Què oferim?",
@@ -699,7 +700,7 @@
       },
       {
         "q": "On es realitzen els tallers?",
-        "a": "Els tallers per a famílies es realitzen habitualment al nostre centre de Nou Barris. Les formacions per a professionals poden realitzar-se al centre o in situ segons l'acord."
+        "a": "Els tallers per a famílies es realitzen habitualment al nostre centre. Les formacions per a professionals poden realitzar-se al centre o in situ segons l'acord."
       }
     ],
     "team_members": [
@@ -710,7 +711,7 @@
   },
   "salut": {
     "meta_title": "Salut i Benestar — ABC Centre Barcelona",
-    "meta_desc": "Programes de salut i benestar mental i vocal a Nou Barris, Barcelona. Prevenció, benestar emocional i salut per a adults. ABC Centre.",
+    "meta_desc": "Programes de salut i benestar mental i vocal a Barcelona. Prevenció, benestar emocional i salut per a adults. ABC Centre.",
     "h1": "Salut i Benestar a ABC Centre",
     "subtitle": "Programes de salut preventiva, benestar emocional i salut vocal per a adults que volen cuidar-se abans que apareguin els problemes.",
     "what_title": "Què és el servei de Salut?",

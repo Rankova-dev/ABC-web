@@ -42,7 +42,7 @@ const SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
   name: 'ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia',
-  description: 'Centro multidisciplinar de logopedia, psicología, neuropsicología y psicopedagogia en Nou Barris, Barcelona. Desde 1999.',
+  description: 'Centro multidisciplinar de logopedia, psicología, neuropsicología y psicopedagogia en Barcelona. Desde 1999.',
   url: 'https://abccentre.es',
   telephone: ['+34932434835', '+34634545308'],
   email: 'info@abccentre.es',
@@ -133,7 +133,7 @@ export default function HomePage() {
             <div className="relative rounded-3xl overflow-hidden aspect-[4/3] shadow-card-hover">
               <Image
                 src="/images/centro-1.jpg"
-                alt="ABC Centre — Centro de logopedia y psicología en Nou Barris, Barcelona"
+                alt="ABC Centre — Centro de logopedia y psicología en Barcelona"
                 fill
                 className="object-cover"
                 priority
@@ -144,7 +144,7 @@ export default function HomePage() {
             {/* Floating badge */}
             <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl px-5 py-4 shadow-card">
               <p className="text-xs font-semibold text-gray uppercase tracking-wider mb-1">Centro en</p>
-              <p className="text-sm font-semibold text-ink">Nou Barris · Barcelona</p>
+              <p className="text-sm font-semibold text-ink">Barcelona</p>
               <p className="text-xs text-gray">Metro L1 · L4 · L5</p>
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/servicios" className="inline-flex items-center gap-1 text-sm font-semibold text-lime hover:underline">
+              <Link href={{ pathname: '/servicios', hash: 'adultos' }} className="inline-flex items-center gap-1 text-sm font-semibold text-lime hover:underline">
                 {t('audience_adults_cta')} →
               </Link>
             </div>

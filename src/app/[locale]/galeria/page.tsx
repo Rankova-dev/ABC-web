@@ -59,7 +59,7 @@ export default function GaleriaPage() {
           onClick={() => setSelected(null)}
         >
           <button
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+            className="absolute top-4 right-4 z-10 text-white/80 hover:text-white transition-colors"
             onClick={() => setSelected(null)}
             aria-label="Cerrar"
           >
@@ -70,7 +70,7 @@ export default function GaleriaPage() {
 
           {selected > 0 && (
             <button
-              className="absolute left-4 text-white/80 hover:text-white transition-colors"
+              className="absolute left-4 z-10 text-white/80 hover:text-white transition-colors"
               onClick={(e) => { e.stopPropagation(); setSelected(selected - 1); }}
               aria-label="Anterior"
             >
@@ -81,7 +81,7 @@ export default function GaleriaPage() {
           )}
 
           <div
-            className="relative max-w-4xl w-full max-h-[80vh] aspect-[4/3]"
+            className="relative z-0 max-w-4xl w-full max-h-[80vh] aspect-[4/3]"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
@@ -96,7 +96,7 @@ export default function GaleriaPage() {
 
           {selected < PHOTOS.length - 1 && (
             <button
-              className="absolute right-4 text-white/80 hover:text-white transition-colors"
+              className="absolute right-4 z-10 text-white/80 hover:text-white transition-colors"
               onClick={(e) => { e.stopPropagation(); setSelected(selected + 1); }}
               aria-label="Siguiente"
             >

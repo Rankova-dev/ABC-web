@@ -45,7 +45,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Children services */}
-      <section id="ninos" className="py-16 bg-white">
+      <section id="ninos" className="py-16 bg-white scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-title mb-8 animate-on-scroll">{t('children_section')}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,7 +68,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Adults services */}
-      <section id="adultos" className="py-16 bg-cream">
+      <section id="adultos" className="py-16 bg-cream scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-title mb-8 animate-on-scroll">{t('adults_section')}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: 'ABC Centre — Logopedia, Psicología y Neuropsicología en Barcelona',
   },
   description:
-    'Centro multidisciplinar de logopedia, psicología, neuropsicología y psicopedagogia en Nou Barris, Barcelona. Atención para niños, jóvenes y adultos desde 1999.',
+    'Centro multidisciplinar de logopedia, psicología, neuropsicología y psicopedagogia en Barcelona. Atención para niños, jóvenes y adultos desde 1999.',
   openGraph: {
     type: 'website',
     locale: 'es_ES',
