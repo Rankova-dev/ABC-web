@@ -99,6 +99,12 @@ export default function Navbar() {
                   ))}
                   <div className="border-t border-cream mt-1 pt-1">
                     <Link
+                      href="/servicios-adultos"
+                      className="block px-3 py-2 text-sm font-outfit font-semibold text-teal hover:bg-teal/5 rounded-xl transition-colors"
+                    >
+                      {t('adults_link')} →
+                    </Link>
+                    <Link
                       href="/servicios"
                       className="block px-3 py-2 text-sm font-outfit font-semibold text-teal hover:bg-teal/5 rounded-xl transition-colors"
                     >
@@ -174,6 +180,9 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
+            <Link href="/servicios-adultos" className="block py-2 font-outfit font-semibold text-teal">
+              {t('adults_link')}
+            </Link>
             <Link href="/equipo" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('team')}
             </Link>

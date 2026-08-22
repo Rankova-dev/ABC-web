@@ -25,3 +25,6 @@ yarn-error.log*
 # TypeScript
 tsconfig.tsbuildinfo
 next-env.d.ts
+
+# Token de la API de Coolify (nunca subir)
+.coolify.local

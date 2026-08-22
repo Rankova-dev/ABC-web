@@ -1,17 +1,14 @@
 /**
- * Sends transactional emails via Gmail API using a service account
- * with domain-wide delegation.
+ * Booking-related transactional emails.
  *
- * Setup required in Google Workspace Admin:
- *   1. Enable domain-wide delegation on the service account
- *   2. Grant the scope: https://www.googleapis.com/auth/gmail.send
- *   3. The impersonated address (GMAIL_SENDER_EMAIL) must exist in the domain
- *
- * Falls back to console.log when credentials are not configured.
+ * Templates live here; actual delivery is handled by @/lib/mailer, which picks
+ * SMTP or the Gmail API depending on what's configured (see that file).
+ * Every send is best-effort — a mail failure never breaks a booking.
  */
 
 import type { BookingRequest } from '@/lib/google-calendar';
 import { SPECIALISTS, SERVICE_LABELS, APPOINTMENT_TYPES } from '@/config/specialists';
+import { deliverEmail, canSendEmail, internalRecipient } from '@/lib/mailer';
 
 const TZ = 'Europe/Madrid';
 
@@ -24,128 +21,45 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#39;');
 }
 
-// ─── Auth ─────────────────────────────────────────────────────────────────────
+// ─── Public API ───────────────────────────────────────────────────────────────
 
-function hasGmailCredentials(): boolean {
-  return Boolean(
-    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
-    process.env.GOOGLE_PRIVATE_KEY &&
-    process.env.GMAIL_SENDER_EMAIL
-  );
+/** Kept for callers that only need to know whether mail can go out at all. */
+export function hasGmailCredentials(): boolean {
+  return canSendEmail();
 }
 
-async function getGmailAuth() {
-  const { google } = await import('googleapis');
-  const key = (process.env.GOOGLE_PRIVATE_KEY ?? '').replace(/\\n/g, '\n');
-  return new google.auth.JWT({
-    email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    key,
-    scopes: ['https://www.googleapis.com/auth/gmail.send'],
-    // Impersonate the sender so the email appears to come from the domain
-    subject: process.env.GMAIL_SENDER_EMAIL,
-  });
-}
-
-// ─── MIME builder ─────────────────────────────────────────────────────────────
-
-function buildRawMessage(opts: {
-  from: string;
+/** Sends an arbitrary transactional email (used by the newsletter). */
+export async function sendEmail(opts: {
   to: string;
   subject: string;
   html: string;
-}): string {
-  const encodedSubject = `=?UTF-8?B?${Buffer.from(opts.subject, 'utf-8').toString('base64')}?=`;
-  const encodedBody = Buffer.from(opts.html, 'utf-8').toString('base64');
-
-  const mime = [
-    `From: ABC Centre <${opts.from}>`,
-    `To: ${opts.to}`,
-    `Subject: ${encodedSubject}`,
-    'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=UTF-8',
-    'Content-Transfer-Encoding: base64',
-    '',
-    encodedBody,
-  ].join('\r\n');
-
-  return Buffer.from(mime, 'utf-8').toString('base64url');
+  replyTo?: string;
+}): Promise<void> {
+  await deliverEmail(opts);
 }
 
-// ─── Public API ───────────────────────────────────────────────────────────────
-
-/**
- * Sends a booking confirmation email to the patient.
- */
+/** Sends the booking confirmation to the patient. */
 export async function sendPatientConfirmation(request: BookingRequest): Promise<void> {
   const specialist = SPECIALISTS[request.selectedSlot.specialistId];
-  const from = process.env.GMAIL_SENDER_EMAIL ?? 'noreply@abccentre.es';
 
-  if (!hasGmailCredentials()) {
-    console.log('[Gmail] No credentials — would send confirmation to:', request.email);
-    console.log('[Gmail] Slot:', request.selectedSlot.start);
-    return;
-  }
-
-  const html = buildPatientEmailHtml(request, specialist.name);
-
-  try {
-    const auth = await getGmailAuth();
-    const { google } = await import('googleapis');
-    const gmail = google.gmail({ version: 'v1', auth });
-
-    await gmail.users.messages.send({
-      userId: 'me',
-      requestBody: {
-        raw: buildRawMessage({
-          from,
-          to: request.email,
-          subject: 'Tu cita en ABC Centre está confirmada',
-          html,
-        }),
-      },
-    });
-
-    console.log('[Gmail] Confirmation sent to:', request.email);
-  } catch (err) {
-    // Non-fatal: booking was already created in Calendar; log and continue
-    console.error('[Gmail] Failed to send confirmation email:', err);
-  }
+  await deliverEmail({
+    to: request.email,
+    subject: 'Tu cita en ABC Centre está confirmada',
+    html: buildPatientEmailHtml(request, specialist.name),
+    replyTo: internalRecipient(),
+  });
 }
 
-/**
- * Sends an internal notification to the reception / specialist team.
- */
+/** Sends the internal notification to reception / the specialist team. */
 export async function sendInternalNotification(request: BookingRequest): Promise<void> {
   const specialist = SPECIALISTS[request.selectedSlot.specialistId];
-  const from = process.env.GMAIL_SENDER_EMAIL ?? 'noreply@abccentre.es';
-  const internalRecipient = process.env.GMAIL_INTERNAL_RECIPIENT ?? 'citas@abccentre.es';
 
-  if (!hasGmailCredentials()) {
-    console.log('[Gmail] No credentials — would send internal notification for:', request.patientName);
-    return;
-  }
-
-  const html = buildInternalEmailHtml(request, specialist.name);
-
-  try {
-    const auth = await getGmailAuth();
-    const { google } = await import('googleapis');
-    const gmail = google.gmail({ version: 'v1', auth });
-
-    await gmail.users.messages.send({
-      userId: 'me',
-      requestBody: {
-        raw: buildRawMessage({
-          from,
-          to: internalRecipient,
-          subject: `Nueva cita: ${request.patientName} — ${specialist.name}`,
-          html,
-        }),
-      },
-    });
-  } catch (err) {
-    console.error('[Gmail] Failed to send internal notification:', err);
-  }
+  await deliverEmail({
+    to: internalRecipient(),
+    subject: `Nueva cita: ${request.patientName} — ${specialist.name}`,
+    html: buildInternalEmailHtml(request, specialist.name),
+    replyTo: request.email,
+  });
 }
 
 // ─── Email templates ──────────────────────────────────────────────────────────

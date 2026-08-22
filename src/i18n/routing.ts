@@ -9,6 +9,10 @@ export const routing = defineRouting({
       es: '/servicios',
       ca: '/serveis',
     },
+    '/servicios-adultos': {
+      es: '/servicios-adultos',
+      ca: '/serveis-adults',
+    },
     '/logopedia': '/logopedia',
     '/psicologia': '/psicologia',
     '/neuropsicologia': '/neuropsicologia',

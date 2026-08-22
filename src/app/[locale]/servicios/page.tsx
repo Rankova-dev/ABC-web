@@ -28,6 +28,7 @@ const ADULTS_SERVICES = [
   { key: 'terapia_familiar',   href: '/terapia-familiar' as const,   desc: 'Familia y pareja' },
   { key: 'rehabilitacion_voz', href: '/rehabilitacion-voz' as const, desc: 'Disfonías y trastornos vocales' },
   { key: 'logopedia',          href: '/logopedia' as const,          desc: 'Afasia, voz, fluencia' },
+  { key: 'salut',              href: '/salut' as const,              desc: 'Prevención y bienestar' },
 ];
 
 export default function ServiciosPage() {
@@ -67,26 +68,21 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      {/* Adults services */}
+      {/* Adults services — teaser linking to the dedicated adults landing */}
       <section id="adultos" className="py-16 bg-cream scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-title mb-8 animate-on-scroll">{t('adults_section')}</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ADULTS_SERVICES.map((s, i) => (
-              <Link
-                key={`adult-${s.key}-${i}`}
-                href={s.href}
-                className="animate-on-scroll card group border-l-4 border-lime hover:-translate-y-1"
-                style={{ animationDelay: `${i * 60}ms` }}
-              >
-                <h3 className="font-outfit font-semibold text-ink group-hover:text-teal transition-colors mb-1">
-                  {tNav(`services_menu.${s.key}`)}
-                </h3>
-                <p className="text-sm font-light text-gray">{s.desc}</p>
-                <span className="text-teal text-xs font-semibold mt-4 block">Ver servicio →</span>
-              </Link>
+          <h2 className="section-title mb-4 animate-on-scroll">{t('adults_section')}</h2>
+          <p className="text-base font-outfit font-light text-gray max-w-2xl mb-8 animate-on-scroll">
+            Psicología, logopedia, neuropsicología, terapia familiar y rehabilitación de voz para adultos, en un espacio pensado para ti.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+            {ADULTS_SERVICES.map((s) => (
+              <span key={s.key} className="tag">{tNav(`services_menu.${s.key}`)}</span>
             ))}
           </div>
+          <Link href="/servicios-adultos" className="btn-primary animate-on-scroll">
+            Ver servicios para adultos →
+          </Link>
         </div>
       </section>
 

@@ -21,7 +21,8 @@
     },
     "gallery": "Galería",
     "work_with_us": "Trabaja con nosotros",
-    "tagline": "Desde 1999 ayudándote a dar un paso adelante."
+    "tagline": "Desde 1999 ayudándote a dar un paso adelante.",
+    "adults_link": "Servicios para adultos"
   },
   "footer": {
     "tagline": "Desde 1999 ayudándote a dar un paso adelante.",
@@ -94,7 +95,10 @@
     "newsletter_body": "Consejos de logopedia, psicología y bienestar directamente en tu correo. Sin spam.",
     "newsletter_placeholder": "Tu correo electrónico",
     "newsletter_cta": "Suscribirme",
-    "newsletter_disclaimer": "Al suscribirte recibirás un código de descuento del 10% para tu primera cita. Sin compromiso, puedes darte de baja en cualquier momento."
+    "newsletter_disclaimer": "Al suscribirte recibirás un código de descuento del 10% para tu primera cita. Sin compromiso, puedes darte de baja en cualquier momento.",
+    "newsletter_success": "¡Listo! Revisa tu correo, te hemos enviado tu código de descuento.",
+    "newsletter_error": "Ha habido un error. Inténtalo de nuevo o escríbenos directamente.",
+    "newsletter_privacy_link": "Consulta la política de privacidad."
   },
   "common": {
     "book_cta": "Pide tu primera consulta",
@@ -754,5 +758,77 @@
       "Margot Moreno",
       "Noelia Torres"
     ]
+  },
+  "servicios_adultos": {
+    "meta_title": "Psicólogo y Logopeda para Adultos en Barcelona | ABC Centre",
+    "meta_desc": "Psicólogo, logopeda y neuropsicólogo para adultos en Barcelona. Ansiedad, terapia de pareja, rehabilitación de voz y evaluación cognitiva. 26 años de experiencia en Nou Barris.",
+    "h1": "Psicología, logopedia y neuropsicología para adultos en Barcelona",
+    "subtitle": "Atención especializada para adultos: apoyo psicológico, tratamiento de la voz y el habla, y evaluación neuropsicológica. Presencial y online, en Nou Barris.",
+    "intro_title": "Un centro que también piensa en ti",
+    "intro_body": "Desde 1999 acompañamos a familias en Barcelona, y con el mismo equipo multidisciplinar atendemos también a adultos que buscan psicólogo, logopeda o neuropsicólogo. Atención personalizada, sin listas de espera eternas y con especialistas colegiadas.",
+    "services_title": "Servicios para adultos",
+    "services": [
+      {
+        "key": "psicologia",
+        "href": "/psicologia",
+        "desc": "Ansiedad, depresión, duelo, autoestima y terapia individual. Presencial y online."
+      },
+      {
+        "key": "neuropsicologia",
+        "href": "/neuropsicologia",
+        "desc": "Evaluación tras daño cerebral, deterioro cognitivo y estimulación neuropsicológica."
+      },
+      {
+        "key": "terapia_familiar",
+        "href": "/terapia-familiar",
+        "desc": "Terapia de pareja y terapia familiar para mejorar la comunicación y resolver conflictos."
+      },
+      {
+        "key": "rehabilitacion_voz",
+        "href": "/rehabilitacion-voz",
+        "desc": "Tratamiento de disfonías, nódulos y trastornos vocales para profesionales de la voz."
+      },
+      {
+        "key": "logopedia",
+        "href": "/logopedia",
+        "desc": "Afasia, trastornos de la voz, tartamudez y rehabilitación tras ictus o daño cerebral."
+      },
+      {
+        "key": "salut",
+        "href": "/salut",
+        "desc": "Programas de prevención y bienestar emocional, vocal y cognitivo para adultos."
+      }
+    ],
+    "why_title": "Por qué elegir ABC Centre",
+    "why_years_title": "26 años de trayectoria",
+    "why_years_body": "Acompañando a adultos y familias desde 1999 en Barcelona.",
+    "why_team_title": "Equipo multidisciplinar",
+    "why_team_body": "Psicólogas, logopedas y neuropsicólogas coordinadas bajo un mismo centro.",
+    "why_personal_title": "Atención personalizada",
+    "why_personal_body": "Un plan de trabajo adaptado a tus necesidades, sin protocolos genéricos.",
+    "why_online_title": "También online",
+    "why_online_body": "Sesiones de psicología y logopedia online para quien lo necesite.",
+    "faq": [
+      {
+        "q": "¿Necesito un diagnóstico previo para pedir cita?",
+        "a": "No. Puedes contactarnos directamente sin derivación médica. En la primera consulta valoramos tu situación y te orientamos hacia el especialista adecuado."
+      },
+      {
+        "q": "¿Ofrecéis sesiones online para adultos?",
+        "a": "Sí, tanto en psicología como en logopedia ofrecemos la modalidad online para determinados casos."
+      },
+      {
+        "q": "¿Cómo sé qué servicio necesito?",
+        "a": "Cuéntanos tu situación por teléfono, WhatsApp o el formulario de contacto y te orientamos sin compromiso hacia el especialista más adecuado."
+      }
+    ],
+    "cta_title": "¿Listo para dar el primer paso?",
+    "cta_body": "Cuéntanos tu situación y te orientamos hacia el especialista adecuado, sin compromiso."
+  },
+  "reviews": {
+    "title": "Lo que dicen quienes ya confían en nosotros",
+    "subtitle": "Reseñas reales de pacientes en nuestra ficha de Google.",
+    "see_all": "Ver todas las reseñas en Google",
+    "based_on": "basado en {count} reseñas"
   }
 }

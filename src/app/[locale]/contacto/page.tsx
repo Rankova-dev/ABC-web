@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import BookingForm from '@/components/BookingForm';
+import GoogleReviews from '@/components/GoogleReviews';
+import { getGoogleReviews } from '@/lib/google-reviews';
 import type { Metadata } from 'next';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -11,7 +13,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: t('meta_title'), description: t('meta_desc') };
 }
 
-export default function ContactoPage() {
+export default async function ContactoPage({ params }: Props) {
+  const { locale } = await params;
+  const reviews = await getGoogleReviews(locale);
+  return <ContactoContent reviews={reviews} />;
+}
+
+function ContactoContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGoogleReviews>> }) {
   const t = useTranslations('contacto');
 
   return (
@@ -133,6 +141,8 @@ export default function ContactoPage() {
           </div>
         </div>
       </section>
+
+      {reviews && <GoogleReviews data={reviews} />}
     </>
   );
 }

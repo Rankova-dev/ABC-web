@@ -10,6 +10,17 @@
  *   Permiso: "Realizar cambios en eventos"
  */
 
+/**
+ * Buzón que recibe el aviso interno cuando no hay NOTIFY_<ESPECIALISTA>.
+ * Puede ser de cualquier dominio (vale un Gmail): solo es un destinatario.
+ * info@abccentre.es es la dirección que el centro publica en su web y en el
+ * aviso legal, así que es la apuesta segura mientras no confirmen otra.
+ */
+const DEFAULT_NOTIFY_EMAIL =
+  process.env.MAIL_INTERNAL_RECIPIENT ??
+  process.env.GMAIL_INTERNAL_RECIPIENT ??
+  'info@abccentre.es';
+
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
 export interface SpecialistConfig {
@@ -45,77 +56,77 @@ export const SPECIALISTS = {
     role: 'Codirectora · Logopeda',
     initials: 'CC',
     calendarId: process.env.GOOGLE_CALENDAR_CELIA_CRUZ ?? '',
-    email: process.env.NOTIFY_CELIA_CRUZ ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_CELIA_CRUZ ?? DEFAULT_NOTIFY_EMAIL,
   },
   laia_alvarez: {
     name: 'Laia Álvarez',
     role: 'Codirectora · Psicóloga · Neuropsicóloga',
     initials: 'LA',
     calendarId: process.env.GOOGLE_CALENDAR_LAIA_ALVAREZ ?? '',
-    email: process.env.NOTIFY_LAIA_ALVAREZ ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_LAIA_ALVAREZ ?? DEFAULT_NOTIFY_EMAIL,
   },
   maria_andres: {
     name: 'Maria Andrés',
     role: 'Psicóloga',
     initials: 'MA',
     calendarId: process.env.GOOGLE_CALENDAR_MARIA_ANDRES ?? '',
-    email: process.env.NOTIFY_MARIA_ANDRES ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_MARIA_ANDRES ?? DEFAULT_NOTIFY_EMAIL,
   },
   laia_lahoz: {
     name: 'Laia Lahoz',
     role: 'Logopeda',
     initials: 'LL',
     calendarId: process.env.GOOGLE_CALENDAR_LAIA_LAHOZ ?? '',
-    email: process.env.NOTIFY_LAIA_LAHOZ ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_LAIA_LAHOZ ?? DEFAULT_NOTIFY_EMAIL,
   },
   vanessa_pedro: {
     name: 'Vanessa de Pedro',
     role: 'Logopeda',
     initials: 'VP',
     calendarId: process.env.GOOGLE_CALENDAR_VANESSA_PEDRO ?? '',
-    email: process.env.NOTIFY_VANESSA_PEDRO ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_VANESSA_PEDRO ?? DEFAULT_NOTIFY_EMAIL,
   },
   mar_aranega: {
     name: 'Mª del Mar Aránega',
     role: 'Psicóloga',
     initials: 'MM',
     calendarId: process.env.GOOGLE_CALENDAR_MAR_ARANEGA ?? '',
-    email: process.env.NOTIFY_MAR_ARANEGA ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_MAR_ARANEGA ?? DEFAULT_NOTIFY_EMAIL,
   },
   margot_moreno: {
     name: 'Margot Moreno',
     role: 'Psicóloga',
     initials: 'MR',
     calendarId: process.env.GOOGLE_CALENDAR_MARGOT_MORENO ?? '',
-    email: process.env.NOTIFY_MARGOT_MORENO ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_MARGOT_MORENO ?? DEFAULT_NOTIFY_EMAIL,
   },
   noelia_torres: {
     name: 'Noelia Torres',
     role: 'Logopeda',
     initials: 'NT',
     calendarId: process.env.GOOGLE_CALENDAR_NOELIA_TORRES ?? '',
-    email: process.env.NOTIFY_NOELIA_TORRES ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_NOELIA_TORRES ?? DEFAULT_NOTIFY_EMAIL,
   },
   silvia_marco: {
     name: 'Silvia Marcó',
     role: 'Psicóloga · Neuropsicóloga',
     initials: 'SM',
     calendarId: process.env.GOOGLE_CALENDAR_SILVIA_MARCO ?? '',
-    email: process.env.NOTIFY_SILVIA_MARCO ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_SILVIA_MARCO ?? DEFAULT_NOTIFY_EMAIL,
   },
   eulalia_marquez: {
     name: 'Eulàlia Marquez',
     role: 'Psicóloga Gral. Sanitaria',
     initials: 'EM',
     calendarId: process.env.GOOGLE_CALENDAR_EULALIA_MARQUEZ ?? '',
-    email: process.env.NOTIFY_EULALIA_MARQUEZ ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_EULALIA_MARQUEZ ?? DEFAULT_NOTIFY_EMAIL,
   },
   carla_lopez: {
     name: 'Carla López',
     role: 'Psicopedagoga',
     initials: 'CL',
     calendarId: process.env.GOOGLE_CALENDAR_CARLA_LOPEZ ?? '',
-    email: process.env.NOTIFY_CARLA_LOPEZ ?? 'citas@abccentre.es',
+    email: process.env.NOTIFY_CARLA_LOPEZ ?? DEFAULT_NOTIFY_EMAIL,
   },
 } as const satisfies Record<string, SpecialistConfig>;
 

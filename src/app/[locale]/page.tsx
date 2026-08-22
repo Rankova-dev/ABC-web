@@ -8,6 +8,9 @@ import {
   MessageCircle, Brain, Activity, BookOpen, Sparkles,
   Users, GraduationCap, Heart, Calendar, MapPin,
 } from 'lucide-react';
+import GoogleReviews from '@/components/GoogleReviews';
+import { getGoogleReviews } from '@/lib/google-reviews';
+import NewsletterForm from '@/components/NewsletterForm';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -66,7 +69,13 @@ const SCHEMA = {
   sameAs: ['https://www.instagram.com/abc_logopsico/'],
 };
 
-export default function HomePage() {
+export default async function HomePage({ params }: Props) {
+  const { locale } = await params;
+  const reviews = await getGoogleReviews(locale);
+  return <HomeContent reviews={reviews} />;
+}
+
+function HomeContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGoogleReviews>> }) {
   const t = useTranslations('home');
   const tNav = useTranslations('nav');
   const tCommon = useTranslations('common');
@@ -102,7 +111,7 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
-              <Link href={{ pathname: '/servicios', hash: 'adultos' }} className="btn-primary text-base px-8 py-4">
+              <Link href="/servicios-adultos" className="btn-primary text-base px-8 py-4">
                 {t('hero_cta_primary')}
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -197,7 +206,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <Link href={{ pathname: '/servicios', hash: 'adultos' }} className="inline-flex items-center gap-1 text-sm font-semibold text-lime hover:underline">
+              <Link href="/servicios-adultos" className="inline-flex items-center gap-1 text-sm font-semibold text-lime hover:underline">
                 {t('audience_adults_cta')} →
               </Link>
             </div>
@@ -317,6 +326,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── REVIEWS ────────────────────────────────────────────── */}
+      {reviews && <GoogleReviews data={reviews} />}
+
       {/* ── BOOKING CTA ────────────────────────────────────────── */}
       <section className="py-20 bg-teal">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -377,29 +389,7 @@ export default function HomePage() {
           <p className="text-sm font-light text-ink/70 mb-8 animate-on-scroll">
             {t('newsletter_body')}
           </p>
-          <form
-            action="mailto:info@abccentre.es"
-            method="get"
-            encType="text/plain"
-            className="flex flex-col sm:flex-row gap-3 justify-center animate-on-scroll"
-          >
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder={t('newsletter_placeholder')}
-              className="flex-1 max-w-sm px-4 py-3 rounded-xl border border-ink/10 bg-white font-outfit text-sm text-ink placeholder-gray/50 focus:outline-none focus:ring-2 focus:ring-teal/40"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-teal text-white font-outfit font-semibold text-sm rounded-xl hover:bg-teal/90 transition-colors whitespace-nowrap"
-            >
-              {t('newsletter_cta')}
-            </button>
-          </form>
-          <p className="text-xs font-light text-ink/50 mt-4 animate-on-scroll">
-            {t('newsletter_disclaimer')}
-          </p>
+          <NewsletterForm />
         </div>
       </section>
 
