@@ -62,6 +62,22 @@ export const SPECIALTY_LABELS: Record<Specialty, { es: string; ca: string }> = {
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
+/**
+ * Tramo semanal reservado a visitas online, en hora de Madrid.
+ * Ej.: martes de 15 a 20 → { weekday: 2, fromHour: 15, toHour: 20 }
+ *
+ * Es una alternativa a escribir "online" en el título del hueco: sirve cuando
+ * la franja es siempre la misma y no apetece ir titulando eventos.
+ */
+export interface OnlineWindow {
+  /** Día de la semana: 0 domingo, 1 lunes, 2 martes… */
+  weekday:  number;
+  /** Hora de inicio, incluida (24h) */
+  fromHour: number;
+  /** Hora de fin, excluida (24h) */
+  toHour:   number;
+}
+
 export interface SpecialistConfig {
   name:     string;
   role:     string;
@@ -69,12 +85,11 @@ export interface SpecialistConfig {
   /** Áreas en las que atiende. Vacío = no entra en el reparto de citas online. */
   specialties: readonly Specialty[];
   /**
-   * Áreas por las que acepta citas pedidas desde la web. Sin valor, todas las
-   * suyas. Sirve para quien trabaja varias áreas en el centro pero solo quiere
-   * recibir un tipo de cita por la web: sigue apareciendo en las páginas de sus
-   * áreas, pero el calendario solo le ofrece las que acepta.
+   * Tramos de su calendario reservados a visitas online. Los huecos que caen
+   * dentro solo se ofrecen para citas online; los de fuera valen para todo lo
+   * que ella atienda, online incluido.
    */
-  bookableSpecialties?: readonly Specialty[];
+  onlineWindows?: readonly OnlineWindow[];
   /** Google Calendar ID (email de la cuenta o c_xxx@group.calendar.google.com) */
   calendarId: string;
   /** Email que aparece como asistente en el evento creado */
@@ -206,9 +221,9 @@ export const SPECIALISTS = {
       'psicopedagogia',
       'asesoramiento-padres',
     ],
-    // Trabaja todas esas áreas en el centro, pero por la web solo coge citas de
-    // psicología online (dirección, 14/09/2026).
-    bookableSpecialties: ['psicologia-online'],
+    // Martes de 15 a 20 solo atiende online; el resto de sus huecos valen para
+    // cualquier cosa que ofrezca (dirección, 14/09/2026).
+    onlineWindows: [{ weekday: 2, fromHour: 15, toHour: 20 }],
     calendarId: process.env.GOOGLE_CALENDAR_ELIA_HUERTAS ?? '',
     email: process.env.NOTIFY_ELIA_HUERTAS ?? DEFAULT_NOTIFY_EMAIL,
   },
@@ -614,24 +629,17 @@ export function getTeamForService(
  * Especialistas que pueden atender esta cita: las del servicio y, si el tipo
  * de cita exige un área concreta (psicología online, por ejemplo), solo las
  * que además trabajan esa área.
- *
- * Quien tiene `bookableSpecialties` solo entra si el tipo de cita es de una de
- * esas áreas: sin área declarada (sesión informativa, valoración) se queda
- * fuera, porque no hay forma de saber si esa cita es de las que acepta.
  */
 export function getSpecialistsForAppointment(
   service: Service,
   appointmentType?: AppointmentType
 ): readonly SpecialistId[] {
   const required = appointmentType ? APPOINTMENT_TYPES[appointmentType]?.specialty : undefined;
+  if (!required) return SERVICE_TEAM[service];
 
-  return SERVICE_TEAM[service].filter((id) => {
-    const sp: SpecialistConfig = SPECIALISTS[id];
-    if (sp.bookableSpecialties) {
-      return required ? sp.bookableSpecialties.includes(required) : false;
-    }
-    return required ? (sp.specialties as readonly Specialty[]).includes(required) : true;
-  });
+  return SERVICE_TEAM[service].filter((id) =>
+    (SPECIALISTS[id].specialties as readonly Specialty[]).includes(required)
+  );
 }
 
 /** Devuelve las especialistas de un área concreta con su config completa */

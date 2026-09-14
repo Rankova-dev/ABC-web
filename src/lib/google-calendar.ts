@@ -6,7 +6,7 @@ import {
   ONLINE_SLOT_KEYWORD,
   getSpecialistsForAppointment,
 } from '@/config/specialists';
-import type { Service, SpecialistId, AppointmentType } from '@/config/specialists';
+import type { Service, SpecialistId, AppointmentType, SpecialistConfig } from '@/config/specialists';
 
 // Re-export types used by other files
 export type { Service } from '@/config/specialists';
@@ -70,35 +70,60 @@ function isSlotEvent(title: string | null | undefined): boolean {
 }
 
 /**
- * Franja reservada a las visitas online: la especialista añade la palabra
- * "online" al título del hueco ("Primera cita online"). Esos huecos solo se
- * ofrecen para citas online, y las citas online solo usan esos huecos.
+ * Marca de hueco reservado a visitas online: la especialista añade la palabra
+ * "online" al título ("Primera cita online"). La otra forma de reservar una
+ * franja para online, sin tocar títulos, son los `onlineWindows` de cada
+ * especialista en config/specialists.ts.
  */
 function isOnlineSlotEvent(title: string | null | undefined): boolean {
   return new RegExp(`\\b${ONLINE_SLOT_KEYWORD}\\b`, 'i').test(title ?? '');
 }
 
-/** Hora (0-23) en la que empieza un hueco, en horario de Madrid */
-function madridHourOf(iso: string): number {
-  const hour = new Intl.DateTimeFormat('en', {
+/** Día de la semana (0 domingo) y hora en la que empieza un hueco, en Madrid */
+function madridWeekdayAndHour(iso: string): { weekday: number; hour: number } {
+  const parts = new Intl.DateTimeFormat('en-US', {
     timeZone: TZ,
+    weekday:  'short',
     hour:     '2-digit',
     hour12:   false,
-  }).format(new Date(iso));
-  return Number(hour);
+  }).formatToParts(new Date(iso));
+  const wd = parts.find((p) => p.type === 'weekday')?.value ?? 'Sun';
+  const hh = parts.find((p) => p.type === 'hour')?.value ?? '0';
+  const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(wd);
+  return { weekday: weekday === -1 ? 0 : weekday, hour: Number(hh) % 24 };
 }
 
 /**
- * ¿Sirve este hueco para el tipo de cita elegido? Cruza la franja online y la
- * restricción horaria declaradas en APPOINTMENT_TYPES.
+ * ¿Es un hueco reservado a visitas online? Lo es si lleva "online" en el título
+ * o si cae dentro de una franja online de esa especialista.
  */
-function slotFitsAppointmentType(slot: TimeSlot, appointmentType?: AppointmentType): boolean {
-  const cfg = appointmentType ? APPOINTMENT_TYPES[appointmentType] : undefined;
-  const wantsOnline = cfg?.onlineOnly === true;
+function isOnlineOnlySlot(slot: TimeSlot, specialistId: SpecialistId): boolean {
+  if (slot.online) return true;
 
-  if (wantsOnline !== Boolean(slot.online)) return false;
+  const windows = (SPECIALISTS[specialistId] as SpecialistConfig).onlineWindows;
+  if (!windows?.length || !slot.start) return false;
+
+  const { weekday, hour } = madridWeekdayAndHour(slot.start);
+  return windows.some((w) => w.weekday === weekday && hour >= w.fromHour && hour < w.toHour);
+}
+
+/**
+ * ¿Sirve este hueco para el tipo de cita elegido?
+ *
+ * Los huecos reservados a online solo valen para citas online. Al revés no:
+ * una cita online también puede caer en un hueco normal, porque fuera de su
+ * franja la especialista atiende "lo que surja", online incluido.
+ */
+function slotFitsAppointmentType(
+  slot: TimeSlot,
+  specialistId: SpecialistId,
+  appointmentType?: AppointmentType
+): boolean {
+  const cfg = appointmentType ? APPOINTMENT_TYPES[appointmentType] : undefined;
+
+  if (!cfg?.onlineOnly && isOnlineOnlySlot(slot, specialistId)) return false;
   if (cfg?.maxStartHour != null && slot.start) {
-    if (madridHourOf(slot.start) >= cfg.maxStartHour) return false;
+    if (madridWeekdayAndHour(slot.start).hour >= cfg.maxStartHour) return false;
   }
   return true;
 }
@@ -219,7 +244,7 @@ export async function getAllAvailableSlots(
   if (!hasCredentials()) {
     const mockId: SpecialistId = ids[0] ?? 'laia_alvarez';
     return getMockSlots(dateFrom)
-      .filter(slot => slotFitsAppointmentType(slot, appointmentType))
+      .filter(slot => slotFitsAppointmentType(slot, mockId, appointmentType))
       .map(slot => ({
         ...slot,
         specialistId:   mockId,
@@ -236,7 +261,7 @@ export async function getAllAvailableSlots(
       try {
         const slots = await getSlotsFromCalendar(calendarId, dateStr);
         return slots
-          .filter(slot => slotFitsAppointmentType(slot, appointmentType))
+          .filter(slot => slotFitsAppointmentType(slot, id, appointmentType))
           .map(slot => ({
             ...slot,
             specialistId:   id,
