@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { BUSINESS } from '@/config/business';
 
 const SERVICES = [
   { key: 'logopedia',            href: '/logopedia' as const },
@@ -77,6 +78,14 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li className="pt-1">
+                <Link
+                  href="/tarifas"
+                  className="text-sm font-semibold text-white hover:text-lime transition-colors"
+                >
+                  {tNav('pricing')}
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -86,7 +95,19 @@ export default function Footer() {
               {t('contact_title')}
             </h3>
             <address className="not-italic space-y-3">
-              <p className="text-sm font-light text-white/70 whitespace-pre-line">{t('address')}</p>
+              {/* La dirección enlaza a la ficha de Google del centro: ayuda al
+                  posicionamiento local y lleva a la ruta de un toque */}
+              <a
+                href={BUSINESS.googleMapsUrl}
+                target="_blank"
+                rel="noopener"
+                className="group block text-sm font-light text-white/70 hover:text-white transition-colors"
+              >
+                <span className="whitespace-pre-line">{t('address')}</span>
+                <span className="block text-xs font-semibold text-lime mt-1 group-hover:underline">
+                  {t('map_link')} →
+                </span>
+              </a>
               <a href="tel:+34932434835" className="block text-sm font-light text-white/70 hover:text-white transition-colors">
                 93 243 48 35
               </a>

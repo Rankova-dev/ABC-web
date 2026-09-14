@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import type { Metadata } from 'next';
 import TeamCard from '@/components/TeamCard';
+import { SERVICE_TEAM } from '@/config/specialists';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -27,14 +28,17 @@ const TEAM = [
   { key: 'eulalia_marquez', name: 'Eulàlia Márquez',      initials: 'EM', photo: '/images/equipo/eulalia-marquez.webp' },
   { key: 'carla_lopez',     name: 'Carla López',          initials: 'CL', photo: '/images/equipo/carla-lopez.webp' },
   { key: 'raisa_pocino',    name: 'Raisa Pocino',         initials: 'RP', photo: '/images/equipo/raisa-pocino.webp' },
-  { key: 'elia_huertas',    name: 'Elia Huertas',         initials: 'EH', photo: '/images/equipo/elia-huertas.webp' },
+  { key: 'elia_huertas',    name: 'Èlia Huertas',         initials: 'EH', photo: '/images/equipo/elia-huertas.webp' },
 ];
 
+// Los recuentos salen de config/specialists.ts para que no se queden desfasados
+// cada vez que cambian las especialidades de alguien.
 const DISCIPLINES = [
-  { name: 'Logopedia',       count: 4,  color: 'bg-teal/10 text-teal border-teal/20' },
-  { name: 'Psicología',      count: 7,  color: 'bg-lime/20 text-ink border-lime/30' },
-  { name: 'Neuropsicología', count: 3,  color: 'bg-teal/10 text-teal border-teal/20' },
-  { name: 'Psicopedagogia',  count: 1,  color: 'bg-lime/20 text-ink border-lime/30' },
+  { name: 'Logopedia',       count: SERVICE_TEAM.logopedia.length,       color: 'bg-teal/10 text-teal border-teal/20' },
+  { name: 'Psicología',      count: SERVICE_TEAM.psicologia.length,      color: 'bg-lime/20 text-ink border-lime/30' },
+  { name: 'Neuropsicología', count: SERVICE_TEAM.neuropsicologia.length, color: 'bg-teal/10 text-teal border-teal/20' },
+  { name: 'Psicopedagogia',  count: SERVICE_TEAM.psicopedagogia.length,  color: 'bg-lime/20 text-ink border-lime/30' },
+  { name: 'TEA',             count: SERVICE_TEAM.tea.length,             color: 'bg-teal/10 text-teal border-teal/20' },
 ];
 
 export default function EquipoPage() {

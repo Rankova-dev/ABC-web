@@ -2,40 +2,23 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import BookingForm from './BookingForm';
 import type { Service } from '@/lib/google-calendar';
-
-interface TeamMember {
-  name: string;
-  role: string;
-  initials: string;
-}
+import { getTeamForService } from '@/config/specialists';
 
 interface Props {
   namespace: string;
   service: Service;
   tags?: string[];
-  teamMembers?: TeamMember[];
   schema?: Record<string, unknown>;
 }
-
-const ALL_TEAM: Record<string, { role: string; initials: string }> = {
-  'Celia Cruz':      { role: 'Codirectora · Logopeda',                          initials: 'CC' },
-  'Laia Álvarez':    { role: 'Codirectora · Psicóloga Gral. Sanitaria · Neuropsicóloga', initials: 'LA' },
-  'Maria Andrés':    { role: 'Psicóloga',                                        initials: 'MA' },
-  'Laia Lahoz':      { role: 'Logopeda',                                         initials: 'LL' },
-  'Vanessa de Pedro':{ role: 'Logopeda',                                         initials: 'VP' },
-  'Mª del Mar Aránega':{ role: 'Psicóloga',                                     initials: 'MM' },
-  'Margot Moreno':   { role: 'Psicóloga',                                        initials: 'MR' },
-  'Noelia Torres':   { role: 'Logopeda',                                         initials: 'NT' },
-  'Silvia Marcó':    { role: 'Psicóloga · Neuropsicóloga',                       initials: 'SM' },
-  'Eulàlia Marquez': { role: 'Psicóloga Gral. Sanitaria',                        initials: 'EM' },
-  'Carla López':     { role: 'Psicopedagoga',                                    initials: 'CL' },
-};
 
 export default function ServiceLanding({ namespace, service, tags = [], schema }: Props) {
   const t = useTranslations(namespace as never);
   const tCommon = useTranslations('common');
 
-  const memberNames: string[] = t.raw('team_members') as string[];
+  // El equipo sale de config/specialists.ts, la misma fuente que usa el
+  // calendario de citas: así la web nunca muestra a alguien que no atiende
+  // ese servicio (ni al revés).
+  const team = getTeamForService(service);
   const childrenItems: string[] = t.raw('children_items') as string[];
   const adultsItems: string[] = t.raw('adults_items') as string[];
   const faqItems: { q: string; a: string }[] = t.raw('faq') as { q: string; a: string }[];
@@ -193,22 +176,19 @@ export default function ServiceLanding({ namespace, service, tags = [], schema }
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-title animate-on-scroll">{tCommon('our_team')}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-6">
-            {memberNames.map((name, i) => {
-              const info = ALL_TEAM[name];
-              return (
-                <div
-                  key={name}
-                  className="animate-on-scroll card text-center"
-                  style={{ animationDelay: `${i * 80}ms` }}
-                >
-                  <div className="w-12 h-12 rounded-full bg-teal/10 flex items-center justify-center mx-auto mb-3">
-                    <span className="font-outfit font-semibold text-sm text-teal">{info?.initials ?? name.slice(0, 2)}</span>
-                  </div>
-                  <p className="text-sm font-semibold text-ink mb-1">{name}</p>
-                  <p className="text-xs font-light text-gray leading-snug">{info?.role}</p>
+            {team.map((member, i) => (
+              <div
+                key={member.id}
+                className="animate-on-scroll card text-center"
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
+                <div className="w-12 h-12 rounded-full bg-teal/10 flex items-center justify-center mx-auto mb-3">
+                  <span className="font-outfit font-semibold text-sm text-teal">{member.initials}</span>
                 </div>
-              );
-            })}
+                <p className="text-sm font-semibold text-ink mb-1">{member.name}</p>
+                <p className="text-xs font-light text-gray leading-snug">{member.role}</p>
+              </div>
+            ))}
           </div>
           <div className="mt-6 animate-on-scroll">
             <Link href="/equipo" className="btn-ghost px-0">
@@ -267,6 +247,24 @@ export default function ServiceLanding({ namespace, service, tags = [], schema }
               info@abccentre.es
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* ── TARIFAS Y BONOS ──────────────────────────────────── */}
+      <section className="py-14 bg-cream">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-h2 font-outfit font-semibold text-ink mb-3 animate-on-scroll">
+            {tCommon('pricing_title')}
+          </h2>
+          <p className="text-base font-outfit font-light text-gray mb-6 animate-on-scroll">
+            {tCommon('pricing_body')}
+          </p>
+          <Link
+            href={{ pathname: '/tarifas', hash: service }}
+            className="btn-primary animate-on-scroll"
+          >
+            {tCommon('pricing_cta')}
+          </Link>
         </div>
       </section>
     </>

@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { BUSINESS } from '@/config/business';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
@@ -37,7 +38,7 @@ const SERVICES: { key: string; href: '/logopedia' | '/psicologia' | '/neuropsico
 const TEAM = [
   { name: 'Celia Cruz',   role: 'Codirectora · Logopeda',                             initials: 'CC', photo: '/images/equipo/celia-cruz.webp' },
   { name: 'Laia Álvarez', role: 'Codirectora · Psicóloga General Sanitaria · Neuropsicóloga', initials: 'LA', photo: '/images/equipo/laia-alvarez.webp' },
-  { name: 'Silvia Marcó', role: 'Psicóloga · Neuropsicóloga',                          initials: 'SM', photo: '/images/equipo/silvia-marco.webp' },
+  { name: 'Silvia Marcó', role: 'Psicóloga Gral. Sanitaria · Neuropsicóloga',           initials: 'SM', photo: '/images/equipo/silvia-marco.webp' },
   { name: 'Carla López',  role: 'Psicopedagoga',                                       initials: 'CL', photo: '/images/equipo/carla-lopez.webp' },
 ];
 
@@ -51,12 +52,14 @@ const SCHEMA = {
   email: 'info@abccentre.es',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Carrer de Malgrat, 47',
-    addressLocality: 'Barcelona',
-    postalCode: '08016',
-    addressCountry: 'ES',
+    streetAddress: BUSINESS.streetAddress,
+    addressLocality: BUSINESS.city,
+    postalCode: BUSINESS.postalCode,
+    addressCountry: BUSINESS.country,
   },
-  geo: { '@type': 'GeoCoordinates', latitude: 41.4469, longitude: 2.1764 },
+  // Coordenadas y enlace tomados de la ficha real de Google (config/business.ts)
+  geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.lat, longitude: BUSINESS.lng },
+  hasMap: BUSINESS.googleMapsUrl,
   openingHoursSpecification: [{
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -66,7 +69,7 @@ const SCHEMA = {
   medicalSpecialty: ['Logopedia', 'Psicología', 'Neuropsicología', 'Psicopedagogia'],
   foundingDate: '1999',
   numberOfEmployees: { '@type': 'QuantitativeValue', value: 12 },
-  sameAs: ['https://www.instagram.com/abc_logopsico/'],
+  sameAs: ['https://www.instagram.com/abc_logopsico/', BUSINESS.googleMapsUrl],
 };
 
 export default async function HomePage({ params }: Props) {

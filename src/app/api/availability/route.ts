@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllAvailableSlots } from '@/lib/google-calendar';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
+import { SERVICE_TEAM, APPOINTMENT_TYPES } from '@/config/specialists';
+import type { Service, AppointmentType } from '@/config/specialists';
 
 export async function GET(req: NextRequest) {
   const ip = getClientIp(req);
@@ -23,7 +25,23 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Formato de fecha inválido' }, { status: 400 });
   }
 
-  const allSlots = await getAllAvailableSlots(from);
+  // Servicio elegido: solo se consultan los calendarios de quien lo atiende.
+  // Si no llega (o no se reconoce), se consultan todos, como hasta ahora.
+  const serviceParam = req.nextUrl.searchParams.get('service');
+  const service =
+    serviceParam && serviceParam in SERVICE_TEAM
+      ? (serviceParam as Service)
+      : undefined;
+
+  // Tipo de cita: acota el área (psicología online) y qué huecos valen
+  // (franja online, horario de mañana).
+  const typeParam = req.nextUrl.searchParams.get('type');
+  const appointmentType =
+    typeParam && typeParam in APPOINTMENT_TYPES
+      ? (typeParam as AppointmentType)
+      : undefined;
+
+  const allSlots = await getAllAvailableSlots(from, service, appointmentType);
 
   // Filter to the requested day (calendars are queried per-day already, this is a sanity check)
   const daySlots = allSlots.filter((slot) => {

@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import BookingForm from '@/components/BookingForm';
 import GoogleReviews from '@/components/GoogleReviews';
 import { getGoogleReviews } from '@/lib/google-reviews';
+import { BUSINESS } from '@/config/business';
 import type { Metadata } from 'next';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -39,7 +40,7 @@ function ContactoContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGo
             {/* Form — takes 3 cols */}
             <div className="lg:col-span-3 animate-on-scroll">
               <h2 className="section-title mb-6">{t('form_title')}</h2>
-              <div className="card">
+              <div id="cita" className="card scroll-mt-24">
                 <BookingForm />
               </div>
 
@@ -125,14 +126,27 @@ function ContactoContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGo
                   <h3 className="font-outfit font-semibold text-ink mb-3">{t('map_title')}</h3>
                   <div className="rounded-2xl overflow-hidden h-52 shadow-card">
                     <iframe
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=2.1772%2C41.4287%2C2.1824%2C41.4307&layer=mapnik&marker=41.4297%2C2.1798"
+                      src={BUSINESS.googleMapsEmbedUrl}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
                       loading="lazy"
-                      title="Mapa ABC Centre"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title={`${BUSINESS.name} — ${BUSINESS.streetAddress}, ${BUSINESS.city}`}
                     />
                   </div>
+                  <a
+                    href={BUSINESS.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal hover:underline mt-3"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    {t('map_link')}
+                  </a>
                   <p className="text-xs font-light text-gray mt-2">{t('map_metro')}</p>
                   <p className="text-xs font-light text-gray">{t('map_bus')}</p>
                 </div>

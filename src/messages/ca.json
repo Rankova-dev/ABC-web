@@ -22,7 +22,8 @@
     "gallery": "Galeria",
     "work_with_us": "Treballa amb nosaltres",
     "tagline": "Des de 1999 ajudant-te a donar un pas endavant.",
-    "adults_link": "Serveis per a adults"
+    "adults_link": "Serveis per a adults",
+    "pricing": "Tarifes"
   },
   "footer": {
     "tagline": "Des de 1999 ajudant-te a donar un pas endavant.",
@@ -36,7 +37,8 @@
     "hours": "Dilluns–Divendres, 9h–20h",
     "hours_note": "Amb cita prèvia",
     "metro": "Metro L1, L4, L5",
-    "copyright": "© {year} ABC Centre. Tots els drets reservats. Web per Rankova."
+    "copyright": "© {year} ABC Centre. Tots els drets reservats. Web per Rankova.",
+    "map_link": "Veure a Google Maps"
   },
   "home": {
     "hero_badge": "Des de 1999 · Barcelona",
@@ -121,7 +123,10 @@
     "faq_title": "Preguntes freqüents",
     "book_section_title": "Llest per donar el primer pas?",
     "book_section_body": "Contacta amb nosaltres i t'ajudem a trobar l'especialista adequat per a tu.",
-    "see_all_services": "Veure tots els serveis"
+    "see_all_services": "Veure tots els serveis",
+    "pricing_title": "Tarifes i bons",
+    "pricing_body": "Consulta el preu de cada sessió, els bons de 4 sessions i els packs de valoració amb informe. Els pots comprar directament des de la pàgina de tarifes.",
+    "pricing_cta": "Veure tarifes i comprar"
   },
   "services_page": {
     "h1": "Els nostres serveis",
@@ -176,11 +181,6 @@
         "q": "Treballeu amb l'escola o el metge del nen?",
         "a": "Sí. La coordinació amb l'entorn del nen és fonamental. Ens posem en contacte amb el centre escolar quan és necessari."
       }
-    ],
-    "team_members": [
-      "Laia Lahoz",
-      "Vanessa de Pedro",
-      "Noelia Torres"
     ]
   },
   "psicologia": {
@@ -230,12 +230,6 @@
         "q": "Feu informes per a l'escola o el jutjat?",
         "a": "Sí. Podem elaborar informes psicològics quan el procés terapèutic ho requereixi."
       }
-    ],
-    "team_members": [
-      "Laia Álvarez",
-      "Mª del Mar Aránega",
-      "Margot Moreno",
-      "Eulàlia Marquez"
     ]
   },
   "neuropsicologia": {
@@ -277,10 +271,6 @@
         "q": "Podeu fer el diagnòstic de TDAH?",
         "a": "Fem l'avaluació neuropsicològica que forma part del procés diagnòstic del TDAH. El diagnòstic final requereix coordinació amb el neuropediatra o psiquiatra."
       }
-    ],
-    "team_members": [
-      "Laia Álvarez",
-      "Silvia Marcó"
     ]
   },
   "psicopedagogia": {
@@ -317,9 +307,6 @@
         "q": "Quina diferència hi ha entre psicopedagogia i logopèdia?",
         "a": "La logopèdia se centra en els trastorns de la parla i el llenguatge, mentre que la psicopedagogia treballa els processos d'aprenentatge i el rendiment acadèmic. Sovint treballen de forma complementària."
       }
-    ],
-    "team_members": [
-      "Carla López"
     ]
   },
   "tea": {
@@ -363,11 +350,6 @@
         "q": "Teniu grups d'habilitats socials per a TEA?",
         "a": "Sí. Organitzem grups d'habilitats socials per a nens amb TEA en funció de l'edat i el nivell de desenvolupament."
       }
-    ],
-    "team_members": [
-      "Laia Álvarez",
-      "Laia Lahoz",
-      "Vanessa de Pedro"
     ]
   },
   "rehabilitacion_voz": {
@@ -408,10 +390,6 @@
         "q": "Treballeu amb cantants i professors?",
         "a": "Sí. Tenim experiència treballant amb professionals de la veu i adaptem el tractament a les demandes vocals específiques de cada perfil."
       }
-    ],
-    "team_members": [
-      "Laia Lahoz",
-      "Noelia Torres"
     ]
   },
   "terapia_familiar": {
@@ -449,10 +427,6 @@
         "q": "La teràpia de parella és per salvar la relació?",
         "a": "No necessàriament. La teràpia de parella pot ajudar tant a millorar la relació com a prendre decisions de forma més conscient, incloent la separació."
       }
-    ],
-    "team_members": [
-      "Mª del Mar Aránega",
-      "Margot Moreno"
     ]
   },
   "habilidades_sociales": {
@@ -495,9 +469,6 @@
         "q": "Quan comencen els nous grups?",
         "a": "Els grups nous comencen al setembre i al gener. Contacta'ns per informar-te de les places disponibles."
       }
-    ],
-    "team_members": [
-      "Silvia Marcó"
     ]
   },
   "equipo": {
@@ -535,47 +506,47 @@
       },
       "noelia_torres": {
         "role": "Logopeda",
-        "specialty": "Logopèdia adults i infantojuvenil",
+        "specialty": "Logopèdia infantojuvenil i adults",
         "bio": "Soc la Noelia Torres, soc logopeda desde l'any 2019 tinc menció en la intervenció en l'àmbit clínic que em dóna el coneixement per abordar patologies i dissenyar tractaments personalitzats en infants i adults. Tinc formació en dificultats dels aprenentatges, el qual m'ha donat coneixements per realitzar tractaments enfocats a la dislèxia, la disgrafia i altres dificultats d'aprenentatge. A l'hora, tinc formació i experiència amb adults, per treballar diferents patologies i dificultats relacionades amb la comunicació, el llenguatge, la respiració i la deglució. Em considero una persona empàtica que sap connectar amb el pacient i augmentar la seva motivació per assolir els objectius els quals volem arribar."
       },
       "maria_andres": {
         "role": "Psicòloga",
-        "specialty": "Psicologia infantojuvenil",
+        "specialty": "Psicologia infantojuvenil i adults",
         "bio": "Graduada en Psicologia · Màster en Psicologia General Sanitària · Màster en Psicologia Infanto-Juvenil"
       },
       "mar_aranega": {
         "role": "Psicòloga General Sanitària",
-        "specialty": "Psicologia infantil, juvenil i adults",
+        "specialty": "Psicologia infantojuvenil",
         "bio": "Sóc Psicòloga General Sanitària. Al llarg de la meva trajectòria he adquirit experiència en l'avaluació i intervenció psicològica amb infants, adolescents i les seves famílies, adaptant sempre el treball terapèutic a les necessitats individuals de cada persona. També he realitzat formació en l'àmbit d'adults, el que em permet abordar la intervenció psicològica en totes les edats. Una de les àrees en què em sento especialment còmoda és el treball amb adolescents. Considero que tinc facilitat per establir un vincle de confiança amb ells, comprendre les seves necessitats i acompanyar-los en processos relacionats amb la gestió emocional, l'autoestima, les relacions socials, les dificultats conductuals i els reptes propis d'aquesta etapa vital. Em defineixo com una professional propera, empàtica i compromesa, que valora el treball coordinat amb les famílies i altres professionals per oferir una atenció integral."
       },
       "margot_moreno": {
         "role": "Psicòloga General Sanitària · Neuropsicòloga",
-        "specialty": "Psicologia infantil, juvenil i adults",
+        "specialty": "Psicologia infantojuvenil, adults i online, psicopedagogia i neuropsicologia",
         "bio": "Soc Psicòloga General Sanitària i amb formació especialitzada en neuropsicologia, trastorns mentals crònics i intervenció en conducta suïcida. Actualment treballo amb infants, adolescents i adults, acompanyant-los en aquells moments en què les emocions, les dificultats personals o les situacions vitals poden generar malestar. Al llarg de la meva trajectòria he tingut l'oportunitat de treballar en diferents àmbits de la salut mental, una experiència que m'ha ajudat a entendre la importància d'adaptar cada procés terapèutic a les necessitats de la persona que tinc al davant. Per a mi, la teràpia és un espai de confiança, escolta i respecte, on poder sentir-se comprès i acompanyat sense judicis. M'agrada crear un vincle proper amb cada persona i caminar al seu costat perquè pugui entendre millor el que li està passant, descobrir les seves pròpies eines i avançar cap al benestar que busca. Tinc un especial interès en la prevenció i la intervenció en conducta suïcida, una àrea que m'apassiona i en la qual m'he format específicament, perquè crec en la importància d'oferir un espai segur on poder parlar del patiment i trobar noves formes d'afrontar-lo."
       },
       "silvia_marco": {
         "role": "Psicòloga General Sanitària · Neuropsicòloga",
-        "specialty": "Infantil, adults, TEA",
+        "specialty": "TEA i neuropsicologia",
         "bio": "Soc Psicòloga General Sanitaria, amb formació en neuropsicologia i acreditada com a Experta en Neuropsicologia pel COPC. En els darrers anys he obtingut el Doctorat Cum Laude en Psicologia a la Universitat de Barcelona. La meva trajectoria professional va enfocada al treball neuropsicològic i a la intervenció en trastorns de l'espectre de l'autisme, motiu pel qual he anat ampliant la meva formació fins haver obtingut la Certificació en el model DENVER d'Atenció Primerenca, l'acreditació en l'entrevista diagnòstica ADI-R pel Trastorn de l'Espectre Autista i l'acreditació en l'administració d'ADOS-2 pel Trastorn de l'Espectre Autista. La meva formació m'ha aportat una mirada clínica rigorosa, integradora i propera. El meu objectiu principal és que l'avaluació i la intervenció siguin útils, comprensibles i respectuoses, ajudant la persona i el seu entorn a entendre millor el seu funcionament i a disposar d'eines concretes per afavorir el seu desenvolupament, benestar i autonomia. Considero essencial el treball coordinat amb famílies, escoles i altres professionals, així com oferir orientacions pràctiques i ajustades a cada cas."
       },
       "eulalia_marquez": {
         "role": "Psicòloga General Sanitària",
-        "specialty": "Psicologia infantil, juvenil i adults",
+        "specialty": "Psicologia infantojuvenil, adults i online, psicopedagogia",
         "bio": "Soc Psicòloga General Sanitària, graduada en Psicologia per la Universitat Ramon Llull. Atenc infants, adolescents i adults, acompanyant persones en diferents moments del seu cicle vital. He desenvolupat la meva pràctica clínica acompanyant persones que travessen situacions de malestar emocional, dificultats personals o relacionals, així com processos de canvi i creixement personal. També he realitzat formació en trastorn mental greu, ampliant els meus coneixements dins l'àmbit de la salut mental. Entenc la teràpia com un espai segur de confiança, escolta i respecte, on poder comprendre allò que està generant malestar i trobar eines per afrontar les dificultats. Treballo des d'una perspectiva propera, empàtica i personalitzada, adaptant la intervenció a les necessitats i al ritme de cada persona."
       },
       "carla_lopez": {
         "role": "Psicopedagoga",
-        "specialty": "Trastorns d'aprenentatge, màster psicologia infantojuvenil",
+        "specialty": "Psicopedagogia i trastorns de l'aprenentatge",
         "bio": "Soc graduada en Mestra d'educació Primaria, amb els màsters de Psicopedagogia i Psicologia Clínica Infanto-Juvenil, formació que ha orientat la meva trajectòria professional cap a l'acompanyament emocional, educatiu i familiar. Actualment, continuo la meva formació cursant el Grau de Psicologia. La meva vocació sempre ha estat acompanyar infants i adolescents en el seu procés de creixement i aprenentatge. He exercit durant vuit anys com a professora, una experiència que em va permetre conèixer de prop el desenvolupament infantil, els processos d'aprenentatge i les necessitats educatives dels infants i adolescents. Com a psicopedagoga, treballo amb infants, adolescents i les seves famílies en aspectes relacionats amb les dificultats d'aprenentatge, les necessitats educatives, els hàbits d'estudi, l'atenció, les funcions executives, la gestió emocional i les habilitats socials. Em defineixo com una professional propera, empàtica i compromesa, que dona molta importància a la creació d'un vincle de confiança amb els infants i les seves famílies. Considero fonamental adaptar la intervenció a les necessitats de cada persona, potenciant els seus recursos i acompanyant-la en el seu procés de creixement i desenvolupament."
       },
       "raisa_pocino": {
         "role": "Psicòloga General Sanitària",
-        "specialty": "Infantojuvenil, TEA",
+        "specialty": "Psicologia infantojuvenil, TEA i psicopedagogia",
         "bio": "Sóc la Raisa Pocino, Psicòloga Infanto-juvenil i Psicòloga General Sanitària. Compto amb formació específica en Trastorn de l'Espectre de l'Autisme, havent obtingut el Diploma d'Especialització en Autisme. El meu objectiu és poder acompanyar infants, adolescents i les seves famílies des d'una mirada respectuosa i centrada en les seves necessitats. Treballo des d'una mirada individualitzada i integral, tenint en compte tant les dificultats com les fortaleses de cada infant o jove, amb l'objectiu d'afavorir el seu benestar emocional, desenvolupament personal i qualitat de vida."
       },
       "elia_huertas": {
         "role": "Psicòloga General Sanitària",
-        "specialty": "Infantojuvenil, adults, TEA",
+        "specialty": "Psicologia infantojuvenil, adults i online, TEA i psicopedagogia",
         "bio": "Sóc Psicòloga General Sanitària, amb Màster d'especialitat en Clínica Psicoanalítica de la Infància i l'Adolescència. He completat la meva formació amb diferents especialitzacions en salut mental, psicopatologia i atenció infantojuvenil, com són la teràpia familiar, l'hora del joc, formació en Trastorn de l'Espectre de l'Autisme i Llengua de Signes Catalana. D'altra banda, també compto amb formació específica en l'àmbit de la sexualitat i la protecció a la infància i l'adolescència: 'Abuso Sexual Infantil: identificación, actuación y prevención', realitzat a la Fundació Vicki Bernadet, i el 'Curs d'Atenció a la Sexualitat en l'Adolescència', realitzat al CJAS, Centre Jove d'Atenció a les Sexualitats. La meva trajectòria professional s'ha desenvolupat tant en l'àmbit privat com en diferents dispositius de la xarxa de salut mental pública, treballant amb infants, adolescents, adults i les seves famílies. Treballo des d'una orientació psicodinàmica, entenent la teràpia com un espai d'escolta, reflexió i acompanyament que permet comprendre el malestar emocional i potenciar els recursos propis de cada persona. Em defineix una mirada propera, sensible i respectuosa amb la singularitat de cada pacient. Actualment, continuo en formació permanent a través de seminaris de lectura teòrica entorn de la intervenció i la clínica."
       }
     }
@@ -585,6 +556,22 @@
     "meta_desc": "Articles i recursos sobre logopèdia, psicologia, neuropsicologia i criança de l'equip especialista d'ABC Centre, Barcelona.",
     "h1": "Blog",
     "subtitle": "Articles i recursos de l'equip d'ABC Centre."
+  },
+  "tarifas": {
+    "meta_title": "Tarifes, bons i packs — ABC Centre Barcelona",
+    "meta_desc": "Preus de psicologia, neuropsicologia i psicopedagogia a ABC Centre Barcelona: sessions, bons de 4 sessions i packs de valoració amb informe.",
+    "h1": "Tarifes, bons i packs",
+    "subtitle": "Tots els nostres serveis amb el seu preu i el que inclouen. Reserva la primera cita en línia i paga-la al centre.",
+    "free_first": "La sessió informativa, presencial o telefònica, sempre és gratuïta",
+    "includes": "Inclou",
+    "sessions": "sessions",
+    "online_tag": "Franja en línia",
+    "morning_tag": "Horari de matí",
+    "buy": "Comprar",
+    "other_title": "Logopèdia i resta de serveis",
+    "other_body": "Per a logopèdia, rehabilitació de la veu, teràpia familiar, habilitats socials, orientació familiar, cursos i Salut, la primera cita és una sessió informativa gratuïta en què valorem el cas i t'indiquem quin tractament necessites i quant costa.",
+    "other_cta": "Demanar sessió informativa gratuïta",
+    "payment_note": "El pagament es fa al centre, a la primera sessió. Reservant aquí només confirmes el dia i l'hora amb l'especialista: no es cobra res en línia."
   },
   "contacto": {
     "meta_title": "Contacte i Primera Cita — ABC Centre Barcelona",
@@ -611,7 +598,8 @@
     "info_title": "Informació de contacte",
     "map_title": "Com arribar",
     "map_metro": "Metro: L1 (Fabra i Puig), L4 (Via Júlia), L5 (Virrei Amat)",
-    "map_bus": "Bus: 11, 50, 76, 97"
+    "map_bus": "Bus: 11, 50, 76, 97",
+    "map_link": "Veure la fitxa a Google Maps"
   },
   "galeria": {
     "meta_title": "Galeria de Fotos — ABC Centre Barcelona",
@@ -660,11 +648,6 @@
         "q": "Podem combinar aquest servei amb la teràpia del nen?",
         "a": "Sí, i és molt recomanable. L'orientació familiar complementa el treball terapèutic individual del nen i millora els resultats."
       }
-    ],
-    "team_members": [
-      "Laia Álvarez",
-      "Mª del Mar Aránega",
-      "Margot Moreno"
     ]
   },
   "cursos_formacion": {
@@ -706,11 +689,6 @@
         "q": "On es realitzen els tallers?",
         "a": "Els tallers per a famílies es realitzen habitualment al nostre centre. Les formacions per a professionals poden realitzar-se al centre o in situ segons l'acord."
       }
-    ],
-    "team_members": [
-      "Laia Álvarez",
-      "Silvia Marcó",
-      "Carla López"
     ]
   },
   "salut": {
@@ -752,11 +730,6 @@
         "q": "També oferiu aquests programes per a empreses?",
         "a": "Sí. Dissenyem programes de benestar per a equips de treball, amb tallers de gestió emocional, salut vocal i mindfulness. Contacta'ns per a una proposta personalitzada."
       }
-    ],
-    "team_members": [
-      "Laia Álvarez",
-      "Margot Moreno",
-      "Noelia Torres"
     ]
   },
   "servicios_adultos": {

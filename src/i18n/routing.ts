@@ -40,6 +40,10 @@ export const routing = defineRouting({
       es: '/equipo',
       ca: '/equip',
     },
+    '/tarifas': {
+      es: '/tarifas',
+      ca: '/tarifes',
+    },
     '/contacto': {
       es: '/contacto',
       ca: '/contacte',

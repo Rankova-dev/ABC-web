@@ -128,6 +128,10 @@ export default function Navbar() {
               {t('gallery')}
             </Link>
 
+            <Link href="/tarifas" className="font-outfit font-semibold text-sm text-ink hover:text-teal transition-colors">
+              {t('pricing')}
+            </Link>
+
             <Link href="/contacto" className="font-outfit font-semibold text-sm text-ink hover:text-teal transition-colors">
               {t('contact')}
             </Link>
@@ -194,6 +198,9 @@ export default function Navbar() {
             </Link>
             <Link href={{ pathname: '/equipo', hash: 'unete' }} className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('work_with_us')}
+            </Link>
+            <Link href="/tarifas" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
+              {t('pricing')}
             </Link>
             <Link href="/contacto" className="block py-2 font-outfit font-semibold text-ink hover:text-teal">
               {t('contact')}

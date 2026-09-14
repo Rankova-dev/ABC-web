@@ -1,12 +1,12 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   MessageCircle, Brain, Activity, BookOpen,
   Sparkles, Mic, Users, Handshake, GraduationCap, Heart,
 } from 'lucide-react';
 import type { Service, AppointmentType } from '@/config/specialists';
-import { SERVICE_TEAM, APPOINTMENT_TYPES, SPECIALISTS } from '@/config/specialists';
+import { SERVICE_TEAM, SERVICE_APPOINTMENT_TYPES, getAppointmentTypeText, SPECIALISTS } from '@/config/specialists';
 import type { TimeSlot } from '@/lib/google-calendar';
 
 // ─── Static data ──────────────────────────────────────────────────────────────
@@ -22,12 +22,17 @@ const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: st
   { value: 'salut',                label: 'Salut',                  icon: <Heart          className="w-5 h-5" />, desc: 'Bienestar y prevención' },
 ];
 
-const APPOINTMENT_TYPE_LIST: { value: AppointmentType; label: string; detail: string }[] =
-  (Object.keys(APPOINTMENT_TYPES) as AppointmentType[]).map((value) => ({
+/** Tipos de cita (con su precio) que ofrece el servicio elegido */
+function appointmentTypesFor(
+  service: Service | '',
+  locale: string
+): { value: AppointmentType; label: string; detail: string }[] {
+  if (!service) return [];
+  return SERVICE_APPOINTMENT_TYPES[service].map((value) => ({
     value,
-    label: APPOINTMENT_TYPES[value].label,
-    detail: APPOINTMENT_TYPES[value].detail,
+    ...getAppointmentTypeText(value, locale),
   }));
+}
 
 const TODAY_STR = new Date().toISOString().split('T')[0];
 
@@ -222,6 +227,7 @@ interface Props {
 
 export default function BookingForm({ defaultService }: Props) {
   const t = useTranslations('contacto');
+  const locale = useLocale();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
@@ -249,26 +255,54 @@ export default function BookingForm({ defaultService }: Props) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const topRef = useRef<HTMLDivElement>(null);
 
+  // Llegada desde la página de tarifas: /contacto?service=psicologia&type=bono-…
+  // Se lee del propio navegador (no de useSearchParams) para no forzar el
+  // renderizado en cliente de toda la página de contacto.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const svc = params.get('service');
+    if (!svc || !(svc in SERVICE_APPOINTMENT_TYPES)) return;
+
+    const preselected = svc as Service;
+    setService(preselected);
+
+    const type = params.get('type');
+    if (type && SERVICE_APPOINTMENT_TYPES[preselected].includes(type as AppointmentType)) {
+      setAppointmentType(type as AppointmentType);
+    }
+  }, []);
+
+  /** Cada servicio ofrece unos tipos de cita: si el elegido ya no aplica, se limpia */
+  function selectService(value: Service) {
+    setService(value);
+    if (appointmentType && !SERVICE_APPOINTMENT_TYPES[value].includes(appointmentType)) {
+      setAppointmentType('');
+    }
+  }
+
   function goToStep(n: 1 | 2 | 3) {
     setStep(n);
     setTimeout(() => topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
   }
 
-  // Fetch slots (aggregated across every specialist's calendar) when date changes
+  // Huecos del día, agregando solo los calendarios de las especialistas que
+  // atienden el servicio elegido (ver SERVICE_TEAM en config/specialists.ts)
   useEffect(() => {
-    if (!selectedDate) {
+    if (!selectedDate || !service) {
       setAvailableSlots([]);
       setSelectedSlot(null);
       return;
     }
     setLoadingSlots(true);
     setSelectedSlot(null);
-    fetch(`/api/availability?date=${selectedDate}`)
+    const params = new URLSearchParams({ date: selectedDate, service });
+    if (appointmentType) params.set('type', appointmentType);
+    fetch(`/api/availability?${params}`)
       .then(r => r.json())
       .then(data => setAvailableSlots(data.slots ?? []))
       .catch(() => setAvailableSlots([]))
       .finally(() => setLoadingSlots(false));
-  }, [selectedDate]);
+  }, [selectedDate, service, appointmentType]);
 
   function handleFormChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
@@ -350,7 +384,8 @@ export default function BookingForm({ defaultService }: Props) {
 
   const freeSlots               = availableSlots.filter(s => s.available);
   const selectedServiceInfo     = SERVICES.find(s => s.value === service);
-  const selectedAppointmentType = APPOINTMENT_TYPE_LIST.find(a => a.value === appointmentType);
+  const appointmentTypeList     = appointmentTypesFor(service, locale);
+  const selectedAppointmentType = appointmentTypeList.find(a => a.value === appointmentType);
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -374,7 +409,7 @@ export default function BookingForm({ defaultService }: Props) {
                   <button
                     key={svc.value}
                     type="button"
-                    onClick={() => setService(svc.value)}
+                    onClick={() => selectService(svc.value)}
                     className={`flex items-start gap-3 p-3.5 rounded-xl border text-left transition-all duration-150 ${
                       isSelected
                         ? 'bg-teal text-white border-teal shadow-card'
@@ -404,8 +439,13 @@ export default function BookingForm({ defaultService }: Props) {
             <p className="text-sm font-semibold text-ink mb-3">
               ¿Qué tipo de cita necesitas? <span className="text-teal">*</span>
             </p>
+            {!service && (
+              <p className="text-xs font-light text-gray bg-cream rounded-xl px-4 py-3">
+                Elige primero el servicio para ver los tipos de cita y sus precios.
+              </p>
+            )}
             <div className="space-y-2">
-              {APPOINTMENT_TYPE_LIST.map((at) => {
+              {appointmentTypeList.map((at) => {
                 const isSelected = appointmentType === at.value;
                 return (
                   <button

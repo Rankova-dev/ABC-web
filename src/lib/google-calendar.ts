@@ -1,4 +1,11 @@
-import { resolveCalendarId, SPECIALISTS, SERVICE_LABELS, APPOINTMENT_TYPES } from '@/config/specialists';
+import {
+  resolveCalendarId,
+  SPECIALISTS,
+  SERVICE_LABELS,
+  APPOINTMENT_TYPES,
+  ONLINE_SLOT_KEYWORD,
+  getSpecialistsForAppointment,
+} from '@/config/specialists';
 import type { Service, SpecialistId, AppointmentType } from '@/config/specialists';
 
 // Re-export types used by other files
@@ -13,6 +20,8 @@ export interface TimeSlot {
   /** Google Calendar event ID of the "Primera consulta" availability slot.
    *  Sent back on booking so the route can delete it atomically. */
   eventId?: string;
+  /** El hueco está reservado a visitas online ("Primera cita online"). */
+  online?: boolean;
   /** Especialista dueña del calendario en el que se abrió este hueco. */
   specialistId?:   SpecialistId;
   specialistName?: string;
@@ -42,20 +51,56 @@ const TZ = 'Europe/Madrid';
 
 /**
  * Case-insensitive prefixes that identify an availability slot created by
- * the specialist in her own Google Calendar.
+ * the specialist in her own Google Calendar. Cada una usa su fórmula, así que
+ * se aceptan las tres que están en uso en el centro.
  *
  * Valid event titles (all matched):
  *   "Primera consulta"  "Primera consulta disponible"  "primera consulta 10h"
  *   "Primera cita"      "primera cita"
+ *   "Primera visita"    "Primera visita online"
  *
  * Not matched (existing appointments, notes, etc.):
- *   "Seguimiento Cita 1"  "NUEVA CITA — …"  etc.
+ *   "Seguimiento Cita 1"  "NUEVA CITA — …"  "Lliure"  etc.
  */
-const SLOT_KEYWORDS = ['primera consulta', 'primera cita'] as const;
+const SLOT_KEYWORDS = ['primera consulta', 'primera cita', 'primera visita'] as const;
 
 function isSlotEvent(title: string | null | undefined): boolean {
   const lower = (title ?? '').toLowerCase();
   return SLOT_KEYWORDS.some(kw => lower.startsWith(kw));
+}
+
+/**
+ * Franja reservada a las visitas online: la especialista añade la palabra
+ * "online" al título del hueco ("Primera cita online"). Esos huecos solo se
+ * ofrecen para citas online, y las citas online solo usan esos huecos.
+ */
+function isOnlineSlotEvent(title: string | null | undefined): boolean {
+  return new RegExp(`\\b${ONLINE_SLOT_KEYWORD}\\b`, 'i').test(title ?? '');
+}
+
+/** Hora (0-23) en la que empieza un hueco, en horario de Madrid */
+function madridHourOf(iso: string): number {
+  const hour = new Intl.DateTimeFormat('en', {
+    timeZone: TZ,
+    hour:     '2-digit',
+    hour12:   false,
+  }).format(new Date(iso));
+  return Number(hour);
+}
+
+/**
+ * ¿Sirve este hueco para el tipo de cita elegido? Cruza la franja online y la
+ * restricción horaria declaradas en APPOINTMENT_TYPES.
+ */
+function slotFitsAppointmentType(slot: TimeSlot, appointmentType?: AppointmentType): boolean {
+  const cfg = appointmentType ? APPOINTMENT_TYPES[appointmentType] : undefined;
+  const wantsOnline = cfg?.onlineOnly === true;
+
+  if (wantsOnline !== Boolean(slot.online)) return false;
+  if (cfg?.maxStartHour != null && slot.start) {
+    if (madridHourOf(slot.start) >= cfg.maxStartHour) return false;
+  }
+  return true;
 }
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
@@ -144,31 +189,45 @@ async function getSlotsFromCalendar(calendarId: string, dateStr: string): Promis
       end:       ev.end?.dateTime   ?? ev.end?.date   ?? '',
       available: true,
       eventId:   ev.id ?? undefined,
+      online:    isOnlineSlotEvent(ev.summary),
     }));
 }
 
 /**
- * Returns the first-consultation slots opened across every specialist's
- * Google Calendar for the given day, merged and sorted by start time.
+ * Returns the first-consultation slots opened on the specialists' Google
+ * Calendars for the given day, merged and sorted by start time.
  *
- * Laia Álvarez handles the vast majority of first appointments, so her
- * calendar is always checked; any other specialist who has also opened
- * "primera cita" slots on her own calendar gets folded into the same list.
- * If nobody else has opened slots, the result is naturally just Laia's.
+ * Con `service`, solo se consultan los calendarios de las profesionales que
+ * atienden ese servicio (SERVICE_TEAM en config/specialists.ts), para que
+ * nadie reciba una cita de un área que no trabaja. Con `appointmentType` se
+ * afina más: solo quien trabaja esa área concreta (psicología online, por
+ * ejemplo) y solo los huecos compatibles (franja online, horario de mañana).
+ * Sin `service` se consultan todos los calendarios.
  *
- * Falls back to mock data (tagged as Laia's) when credentials are not configured.
+ * Falls back to mock data (tagged as the service lead's) when credentials are
+ * not configured.
  */
-export async function getAllAvailableSlots(dateFrom: Date): Promise<TimeSlot[]> {
+export async function getAllAvailableSlots(
+  dateFrom: Date,
+  service?: Service,
+  appointmentType?: AppointmentType
+): Promise<TimeSlot[]> {
+  const ids: SpecialistId[] = service
+    ? [...getSpecialistsForAppointment(service, appointmentType)]
+    : (Object.keys(SPECIALISTS) as SpecialistId[]);
+
   if (!hasCredentials()) {
-    return getMockSlots(dateFrom).map(slot => ({
-      ...slot,
-      specialistId:   'laia_alvarez',
-      specialistName: SPECIALISTS.laia_alvarez.name,
-    }));
+    const mockId: SpecialistId = ids[0] ?? 'laia_alvarez';
+    return getMockSlots(dateFrom)
+      .filter(slot => slotFitsAppointmentType(slot, appointmentType))
+      .map(slot => ({
+        ...slot,
+        specialistId:   mockId,
+        specialistName: SPECIALISTS[mockId].name,
+      }));
   }
 
   const dateStr = toMadridDateStr(dateFrom);
-  const ids = Object.keys(SPECIALISTS) as SpecialistId[];
 
   const perSpecialist = await Promise.all(
     ids.map(async (id): Promise<TimeSlot[]> => {
@@ -176,11 +235,13 @@ export async function getAllAvailableSlots(dateFrom: Date): Promise<TimeSlot[]> 
       if (!calendarId) return [];
       try {
         const slots = await getSlotsFromCalendar(calendarId, dateStr);
-        return slots.map(slot => ({
-          ...slot,
-          specialistId:   id,
-          specialistName: SPECIALISTS[id].name,
-        }));
+        return slots
+          .filter(slot => slotFitsAppointmentType(slot, appointmentType))
+          .map(slot => ({
+            ...slot,
+            specialistId:   id,
+            specialistName: SPECIALISTS[id].name,
+          }));
       } catch (err) {
         console.error(`[GoogleCalendar] getAllAvailableSlots error for ${id}:`, err);
         return [];

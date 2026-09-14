@@ -45,15 +45,16 @@ loadEnv();
 const SPECIALIST_KEYS = [
   { id: 'celia_cruz',       name: 'Celia Cruz',        env: 'GOOGLE_CALENDAR_CELIA_CRUZ' },
   { id: 'laia_alvarez',     name: 'Laia Álvarez',       env: 'GOOGLE_CALENDAR_LAIA_ALVAREZ' },
-  { id: 'maria_andres',     name: 'Maria Andrés',       env: 'GOOGLE_CALENDAR_MARIA_ANDRES' },
+  { id: 'maria_andres',     name: 'María Andrés',       env: 'GOOGLE_CALENDAR_MARIA_ANDRES' },
   { id: 'laia_lahoz',       name: 'Laia Lahoz',         env: 'GOOGLE_CALENDAR_LAIA_LAHOZ' },
   { id: 'vanessa_pedro',    name: 'Vanessa de Pedro',   env: 'GOOGLE_CALENDAR_VANESSA_PEDRO' },
-  { id: 'mar_aranega',      name: 'Mª del Mar Aránega', env: 'GOOGLE_CALENDAR_MAR_ARANEGA' },
+  { id: 'mar_aranega',      name: 'Maria del Mar Aránega', env: 'GOOGLE_CALENDAR_MAR_ARANEGA' },
   { id: 'margot_moreno',    name: 'Margot Moreno',      env: 'GOOGLE_CALENDAR_MARGOT_MORENO' },
   { id: 'noelia_torres',    name: 'Noelia Torres',      env: 'GOOGLE_CALENDAR_NOELIA_TORRES' },
   { id: 'silvia_marco',     name: 'Silvia Marcó',       env: 'GOOGLE_CALENDAR_SILVIA_MARCO' },
-  { id: 'eulalia_marquez',  name: 'Eulàlia Marquez',    env: 'GOOGLE_CALENDAR_EULALIA_MARQUEZ' },
-  { id: 'sara_reyes',       name: 'Sara Reyes',         env: 'GOOGLE_CALENDAR_SARA_REYES' },
+  { id: 'eulalia_marquez',  name: 'Eulàlia Márquez',    env: 'GOOGLE_CALENDAR_EULALIA_MARQUEZ' },
+  { id: 'elia_huertas',     name: 'Èlia Huertas',       env: 'GOOGLE_CALENDAR_ELIA_HUERTAS' },
+  { id: 'raisa_pocino',     name: 'Raisa Pocino',       env: 'GOOGLE_CALENDAR_RAISA_POCINO' },
   { id: 'carla_lopez',      name: 'Carla López',        env: 'GOOGLE_CALENDAR_CARLA_LOPEZ' },
 ];
 
