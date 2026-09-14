@@ -68,6 +68,13 @@ export interface SpecialistConfig {
   initials: string;
   /** Áreas en las que atiende. Vacío = no entra en el reparto de citas online. */
   specialties: readonly Specialty[];
+  /**
+   * Áreas por las que acepta citas pedidas desde la web. Sin valor, todas las
+   * suyas. Sirve para quien trabaja varias áreas en el centro pero solo quiere
+   * recibir un tipo de cita por la web: sigue apareciendo en las páginas de sus
+   * áreas, pero el calendario solo le ofrece las que acepta.
+   */
+  bookableSpecialties?: readonly Specialty[];
   /** Google Calendar ID (email de la cuenta o c_xxx@group.calendar.google.com) */
   calendarId: string;
   /** Email que aparece como asistente en el evento creado */
@@ -199,6 +206,9 @@ export const SPECIALISTS = {
       'psicopedagogia',
       'asesoramiento-padres',
     ],
+    // Trabaja todas esas áreas en el centro, pero por la web solo coge citas de
+    // psicología online (dirección, 14/09/2026).
+    bookableSpecialties: ['psicologia-online'],
     calendarId: process.env.GOOGLE_CALENDAR_ELIA_HUERTAS ?? '',
     email: process.env.NOTIFY_ELIA_HUERTAS ?? DEFAULT_NOTIFY_EMAIL,
   },
@@ -604,17 +614,24 @@ export function getTeamForService(
  * Especialistas que pueden atender esta cita: las del servicio y, si el tipo
  * de cita exige un área concreta (psicología online, por ejemplo), solo las
  * que además trabajan esa área.
+ *
+ * Quien tiene `bookableSpecialties` solo entra si el tipo de cita es de una de
+ * esas áreas: sin área declarada (sesión informativa, valoración) se queda
+ * fuera, porque no hay forma de saber si esa cita es de las que acepta.
  */
 export function getSpecialistsForAppointment(
   service: Service,
   appointmentType?: AppointmentType
 ): readonly SpecialistId[] {
-  const team = SERVICE_TEAM[service];
   const required = appointmentType ? APPOINTMENT_TYPES[appointmentType]?.specialty : undefined;
-  if (!required) return team;
-  return team.filter((id) =>
-    (SPECIALISTS[id].specialties as readonly Specialty[]).includes(required)
-  );
+
+  return SERVICE_TEAM[service].filter((id) => {
+    const sp: SpecialistConfig = SPECIALISTS[id];
+    if (sp.bookableSpecialties) {
+      return required ? sp.bookableSpecialties.includes(required) : false;
+    }
+    return required ? (sp.specialties as readonly Specialty[]).includes(required) : true;
+  });
 }
 
 /** Devuelve las especialistas de un área concreta con su config completa */
