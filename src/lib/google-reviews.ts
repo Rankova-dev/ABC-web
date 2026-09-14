@@ -32,8 +32,11 @@ interface PlacesApiResponse {
 /**
  * Devuelve las reseñas para el carrusel, en dos modos:
  *
- *   1. Places API (New) — si hay GOOGLE_PLACES_API_KEY + GOOGLE_PLACE_ID.
- *      Automático, pero exige una cuenta de facturación con tarjeta en GCP.
+ *   1. Places API (New), con GOOGLE_PLACE_ID y una de estas dos credenciales:
+ *      · GOOGLE_PLACES_API_KEY, o
+ *      · la service account que ya se usa para Calendar (no hace falta key).
+ *      En ambos casos el proyecto de GCP necesita la Places API (New)
+ *      habilitada y una cuenta de facturación.
  *
  *   2. Reseñas manuales de `@/config/reviews` — gratis y sin dependencias.
  *
@@ -41,11 +44,10 @@ interface PlacesApiResponse {
  * que el carrusel simplemente no se renderiza.
  */
 export async function getGoogleReviews(locale = 'es'): Promise<GoogleReviewsData | null> {
-  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   const placeId = process.env.GOOGLE_PLACE_ID;
 
-  if (apiKey && placeId) {
-    const fromApi = await fetchFromPlacesApi(apiKey, placeId, locale);
+  if (placeId) {
+    const fromApi = await fetchFromPlacesApi(placeId, locale);
     // Si la API falla, seguimos con las manuales antes que dejar el hueco vacío
     if (fromApi) return fromApi;
   }
@@ -55,24 +57,61 @@ export async function getGoogleReviews(locale = 'es'): Promise<GoogleReviewsData
 
 // ─── Places API (New) ─────────────────────────────────────────────────────────
 
+/**
+ * Cabecera de autenticación: API key si la hay y, si no, un token de la service
+ * account de Calendar. Así el carrusel no obliga a crear ni guardar una key.
+ */
+async function placesAuthHeader(): Promise<Record<string, string> | null> {
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  if (apiKey) return { 'X-Goog-Api-Key': apiKey };
+
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  if (!email || !key) return null;
+
+  try {
+    const { google } = await import('googleapis');
+    const auth = new google.auth.JWT({
+      email,
+      key,
+      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    });
+    const { token } = await auth.getAccessToken();
+    return token ? { Authorization: `Bearer ${token}` } : null;
+  } catch (err) {
+    console.warn('[GoogleReviews] no se pudo firmar el token de la service account:', err);
+    return null;
+  }
+}
+
 async function fetchFromPlacesApi(
-  apiKey: string,
   placeId: string,
   locale: string
 ): Promise<GoogleReviewsData | null> {
   try {
+    const authHeader = await placesAuthHeader();
+    if (!authHeader) return null;
+
     const res = await fetch(
       `https://places.googleapis.com/v1/places/${placeId}?languageCode=${locale}`,
       {
         headers: {
-          'X-Goog-Api-Key': apiKey,
+          ...authHeader,
           'X-Goog-FieldMask': 'rating,userRatingCount,googleMapsUri,reviews',
         },
         next: { revalidate: 60 * 60 * 24 },
       }
     );
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      // El motivo importa: normalmente es "Places API (New) no habilitada" o
+      // falta de facturación en el proyecto. Queda en el log del contenedor.
+      console.warn(
+        `[GoogleReviews] Places API respondió ${res.status}:`,
+        (await res.text()).slice(0, 300)
+      );
+      return null;
+    }
 
     const data: PlacesApiResponse = await res.json();
     if (!data.reviews?.length) return null;
