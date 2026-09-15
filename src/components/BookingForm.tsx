@@ -6,7 +6,13 @@ import {
   Sparkles, Mic, Users, Handshake, GraduationCap, Heart,
 } from 'lucide-react';
 import type { Service, AppointmentType } from '@/config/specialists';
-import { SERVICE_TEAM, SERVICE_APPOINTMENT_TYPES, getAppointmentTypeText, SPECIALISTS } from '@/config/specialists';
+import {
+  SERVICE_APPOINTMENT_TYPES,
+  getBookableAppointmentTypes,
+  getBookingTeam,
+  getAppointmentTypeText,
+  SPECIALISTS,
+} from '@/config/specialists';
 import type { TimeSlot } from '@/lib/google-calendar';
 
 // ─── Static data ──────────────────────────────────────────────────────────────
@@ -22,13 +28,17 @@ const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: st
   { value: 'salut',                label: 'Salut',                  icon: <Heart          className="w-5 h-5" />, desc: 'Bienestar y prevención' },
 ];
 
-/** Tipos de cita (con su precio) que ofrece el servicio elegido */
+/**
+ * Tipos de cita (con su precio) que ofrece el servicio elegido. Solo los
+ * reservables: los que únicamente publican precio en /tarifas (valoraciones de
+ * TEA) no salen aquí, porque no hay huecos que ofrecer.
+ */
 function appointmentTypesFor(
   service: Service | '',
   locale: string
 ): { value: AppointmentType; label: string; detail: string }[] {
   if (!service) return [];
-  return SERVICE_APPOINTMENT_TYPES[service].map((value) => ({
+  return getBookableAppointmentTypes(service).map((value) => ({
     value,
     ...getAppointmentTypeText(value, locale),
   }));
@@ -267,7 +277,7 @@ export default function BookingForm({ defaultService }: Props) {
     setService(preselected);
 
     const type = params.get('type');
-    if (type && SERVICE_APPOINTMENT_TYPES[preselected].includes(type as AppointmentType)) {
+    if (type && getBookableAppointmentTypes(preselected).includes(type as AppointmentType)) {
       setAppointmentType(type as AppointmentType);
     }
   }, []);
@@ -275,7 +285,7 @@ export default function BookingForm({ defaultService }: Props) {
   /** Cada servicio ofrece unos tipos de cita: si el elegido ya no aplica, se limpia */
   function selectService(value: Service) {
     setService(value);
-    if (appointmentType && !SERVICE_APPOINTMENT_TYPES[value].includes(appointmentType)) {
+    if (appointmentType && !getBookableAppointmentTypes(value).includes(appointmentType)) {
       setAppointmentType('');
     }
   }
@@ -286,7 +296,7 @@ export default function BookingForm({ defaultService }: Props) {
   }
 
   // Huecos del día, agregando solo los calendarios de las especialistas que
-  // atienden el servicio elegido (ver SERVICE_TEAM en config/specialists.ts)
+  // reciben citas del servicio elegido (getBookingTeam en config/specialists.ts)
   useEffect(() => {
     if (!selectedDate || !service) {
       setAvailableSlots([]);
@@ -403,7 +413,7 @@ export default function BookingForm({ defaultService }: Props) {
             </p>
             <div className="grid grid-cols-2 gap-2">
               {SERVICES.map(svc => {
-                const count = SERVICE_TEAM[svc.value].length;
+                const count = getBookingTeam(svc.value).length;
                 const isSelected = service === svc.value;
                 return (
                   <button

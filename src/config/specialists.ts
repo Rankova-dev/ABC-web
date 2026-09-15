@@ -287,6 +287,25 @@ export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
   salut:                  ['laia_alvarez', 'margot_moreno', 'noelia_torres'],
 };
 
+/**
+ * Excepciones de quién recibe las citas pedidas por la web. Por defecto son
+ * las mismas profesionales que aparecen en la página del servicio
+ * (SERVICE_TEAM); aquí solo se anotan los servicios donde no coincide.
+ *
+ * TEA: dirección confirmó (15/09/2026) que en el calendario no hay nadie que
+ * haga valoración de TEA, así que la única cita del área es la sesión
+ * informativa y la atiende Laia Álvarez. El equipo que sale en /tea no cambia:
+ * Sílvia Marcó, Èlia Huertas y Raisa Pocino siguen siendo las especialistas.
+ */
+const SERVICE_BOOKING_TEAM: Partial<Record<Service, readonly SpecialistId[]>> = {
+  tea: ['laia_alvarez'],
+};
+
+/** Profesionales cuyos calendarios se consultan al pedir cita de un servicio */
+export function getBookingTeam(service: Service): readonly SpecialistId[] {
+  return SERVICE_BOOKING_TEAM[service] ?? SERVICE_TEAM[service];
+}
+
 /** Etiquetas legibles de cada servicio (usadas en emails y resúmenes) */
 export const SERVICE_LABELS: Record<Service, string> = {
   logopedia:               'Logopedia',
@@ -319,6 +338,8 @@ export type AppointmentType =
   | 'pack-dislexia-infanto-juvenil'
   | 'pack-completa-infanto-juvenil'
   | 'pack-completa-adultos'
+  | 'pack-tea-completa'
+  | 'pack-tea-pruebas'
   | 'asesoramiento-padres';
 
 /**
@@ -356,6 +377,12 @@ export interface AppointmentTypeConfig {
   includes?: string;
   /** Nº de sesiones del bono/pack. La cita reserva solo la primera. */
   sessions?: number;
+  /**
+   * `false` = el precio se publica en /tarifas pero la cita no se puede
+   * reservar por la web. Es el caso de las valoraciones de TEA: nadie abre
+   * huecos para ellas, así que se acuerdan en la sesión informativa.
+   */
+  bookable?: boolean;
 }
 
 /**
@@ -482,6 +509,32 @@ export const APPOINTMENT_TYPES: Record<AppointmentType, AppointmentTypeConfig> =
     includes:
       'Entrevista clínica inicial (anamnesis), 5 sesiones de valoración (administración de pruebas), sesión de devolución de resultados e informe.',
   },
+
+  // Valoraciones de TEA (dirección, 15/09/2026): en el calendario no hay
+  // huecos de valoración de TEA, así que solo se publica el precio y la cita
+  // se pide desde la sesión informativa. Las sesiones de valoración son las
+  // mismas que en los packs equivalentes: 5 en la completa y 3 en la de
+  // pruebas específicas (como TDAH/dislexia), sin cuestionarios a escuela.
+  'pack-tea-completa': {
+    label:    'Pack valoración completa TEA',
+    detail:   '450 € · Valoración completa con informe',
+    duration: 50,
+    price:    450,
+    sessions: 7,
+    bookable: false,
+    includes:
+      'Entrevista clínica inicial (anamnesis), 5 sesiones de valoración (valoración cognitiva y pruebas específicas de TEA), sesión de devolución de resultados e informe.',
+  },
+  'pack-tea-pruebas': {
+    label:    'Pack valoración pruebas específicas TEA',
+    detail:   '300 € · Pruebas específicas con informe',
+    duration: 50,
+    price:    300,
+    sessions: 5,
+    bookable: false,
+    includes:
+      'Entrevista clínica inicial (anamnesis), 3 sesiones de valoración (administración de pruebas específicas de TEA), sesión de devolución de resultados e informe.',
+  },
 };
 
 const INFORMATIVA = ['informativa-presencial', 'informativa-telefonica'] as const;
@@ -508,7 +561,10 @@ export const SERVICE_APPOINTMENT_TYPES: Record<Service, readonly AppointmentType
   ],
   psicopedagogia:  [...INFORMATIVA, 'valoracion-infanto-juvenil'],
   'orientacion-familiar': [...INFORMATIVA, 'asesoramiento-padres'],
-  tea:             [...INFORMATIVA, 'valoracion-infanto-juvenil', 'valoracion-adultos'],
+  // En el calendario no hay huecos de valoración de TEA: por la web solo se
+  // reserva la sesión informativa. Los packs salen en /tarifas con su precio,
+  // pero no son reservables (bookable: false).
+  tea:             [...INFORMATIVA, 'pack-tea-completa', 'pack-tea-pruebas'],
 
   // Sin tarifa de primera sesión facilitada: solo sesión informativa gratuita.
   logopedia:              INFORMATIVA,
@@ -518,6 +574,16 @@ export const SERVICE_APPOINTMENT_TYPES: Record<Service, readonly AppointmentType
   'cursos-formacion':     INFORMATIVA,
   salut:                  INFORMATIVA,
 };
+
+/** ¿Esta cita se puede reservar por la web, o solo se publica su precio? */
+export function isBookableAppointmentType(type: AppointmentType): boolean {
+  return APPOINTMENT_TYPES[type].bookable !== false;
+}
+
+/** Tipos de cita de un servicio que sí se pueden reservar desde el formulario */
+export function getBookableAppointmentTypes(service: Service): AppointmentType[] {
+  return SERVICE_APPOINTMENT_TYPES[service].filter(isBookableAppointmentType);
+}
 
 /** Versión catalana del catálogo: la web es bilingüe y los precios también */
 const APPOINTMENT_TYPES_CA: Record<
@@ -598,6 +664,18 @@ const APPOINTMENT_TYPES_CA: Record<
     includes:
       'Entrevista clínica inicial (anamnesi), 5 sessions de valoració (administració de proves), sessió de devolució de resultats i informe.',
   },
+  'pack-tea-completa': {
+    label:    'Pack valoració completa TEA',
+    detail:   '450 € · Valoració completa amb informe',
+    includes:
+      'Entrevista clínica inicial (anamnesi), 5 sessions de valoració (valoració cognitiva i proves específiques de TEA), sessió de devolució de resultats i informe.',
+  },
+  'pack-tea-pruebas': {
+    label:    'Pack valoració proves específiques TEA',
+    detail:   '300 € · Proves específiques amb informe',
+    includes:
+      'Entrevista clínica inicial (anamnesi), 3 sessions de valoració (administració de proves específiques de TEA), sessió de devolució de resultats i informe.',
+  },
 };
 
 /** Nombre, precio y contenido de un tipo de cita en el idioma de la web */
@@ -634,10 +712,11 @@ export function getSpecialistsForAppointment(
   service: Service,
   appointmentType?: AppointmentType
 ): readonly SpecialistId[] {
+  const team = getBookingTeam(service);
   const required = appointmentType ? APPOINTMENT_TYPES[appointmentType]?.specialty : undefined;
-  if (!required) return SERVICE_TEAM[service];
+  if (!required) return team;
 
-  return SERVICE_TEAM[service].filter((id) =>
+  return team.filter((id) =>
     (SPECIALISTS[id].specialties as readonly Specialty[]).includes(required)
   );
 }

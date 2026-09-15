@@ -3,7 +3,12 @@ import { createBooking } from '@/lib/google-calendar';
 import { sendPatientConfirmation, sendInternalNotification } from '@/lib/gmail';
 import type { BookingRequest } from '@/lib/google-calendar';
 import type { Service, SpecialistId, AppointmentType } from '@/config/specialists';
-import { SPECIALISTS, SERVICE_TEAM, APPOINTMENT_TYPES } from '@/config/specialists';
+import {
+  SPECIALISTS,
+  SERVICE_TEAM,
+  APPOINTMENT_TYPES,
+  getBookableAppointmentTypes,
+} from '@/config/specialists';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
 import { isValidEmail } from '@/lib/validation';
 
@@ -42,6 +47,15 @@ export async function POST(req: NextRequest) {
 
     if (!VALID_APPOINTMENT_TYPES.has(appointmentType as AppointmentType)) {
       return NextResponse.json({ error: 'Tipo de cita no válido' }, { status: 400 });
+    }
+
+    // El tipo de cita tiene que ser uno de los que ese servicio reserva online:
+    // los que solo publican precio (valoraciones de TEA) no se agendan por web.
+    if (!getBookableAppointmentTypes(service as Service).includes(appointmentType as AppointmentType)) {
+      return NextResponse.json(
+        { error: 'Ese tipo de cita no se puede reservar online para este servicio' },
+        { status: 400 }
+      );
     }
 
     if (!selectedSlot.start || !selectedSlot.end) {

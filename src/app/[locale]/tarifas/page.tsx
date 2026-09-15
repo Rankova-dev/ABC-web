@@ -84,7 +84,10 @@ export default function TarifasPage() {
                 {types.map((type, i) => {
                   const cfg = APPOINTMENT_TYPES[type];
                   const text = getAppointmentTypeText(type, locale);
-                  const team = getSpecialistsForAppointment(service, type);
+                  // Las tarifas que no se reservan online no anuncian equipo:
+                  // quién la hace se acuerda en la sesión informativa.
+                  const bookable = cfg.bookable !== false;
+                  const team = bookable ? getSpecialistsForAppointment(service, type) : [];
 
                   return (
                     <div
@@ -100,6 +103,11 @@ export default function TarifasPage() {
                           <p className="text-sm font-light text-gray leading-relaxed mt-2">
                             <span className="font-semibold text-ink">{t('includes')}: </span>
                             {text.includes}
+                          </p>
+                        )}
+                        {!bookable && (
+                          <p className="text-sm font-light text-gray/80 leading-relaxed mt-2">
+                            {t('by_info_session')}
                           </p>
                         )}
                         <div className="flex flex-wrap gap-2 mt-3">
@@ -131,10 +139,16 @@ export default function TarifasPage() {
                           {formatPrice(cfg.price)}
                         </p>
                         <Link
-                          href={{ pathname: '/contacto', query: { service, type }, hash: 'cita' }}
+                          href={{
+                            pathname: '/contacto',
+                            query: bookable
+                              ? { service, type }
+                              : { service, type: 'informativa-presencial' },
+                            hash: 'cita',
+                          }}
                           className="btn-primary text-sm py-2.5 px-5 whitespace-nowrap"
                         >
-                          {t('buy')}
+                          {bookable ? t('buy') : t('ask')}
                         </Link>
                       </div>
                     </div>

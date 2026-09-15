@@ -32,6 +32,8 @@ const {
   SERVICE_TEAM,
   SERVICE_LABELS,
   getTeamForSpecialty,
+  getBookingTeam,
+  getBookableAppointmentTypes,
 } = await import('../src/config/specialists.ts');
 
 console.log('\n=== Especialidades → profesionales ===\n');
@@ -50,6 +52,14 @@ for (const service of Object.keys(SERVICE_TEAM)) {
     const s = SPECIALISTS[id];
     console.log(`   · ${s.name.padEnd(24)} ${s.calendarId ? '✓ calendario' : '✗ SIN CALENDARIO'}`);
   }
+
+  // Servicios donde las citas no van al mismo equipo que sale en la página.
+  const booking = getBookingTeam(service);
+  if (booking.length !== ids.length || booking.some((id) => !ids.includes(id))) {
+    const names = booking.map((id) => SPECIALISTS[id].name).join(', ');
+    console.log(`   → las citas de este servicio las recibe: ${names || '(nadie)'}`);
+  }
+  console.log(`   → se reserva online: ${getBookableAppointmentTypes(service).join(', ')}`);
   console.log('');
 }
 
