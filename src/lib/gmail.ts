@@ -85,7 +85,10 @@ function formatSlotTime(isoStr: string): string {
 function buildPatientEmailHtml(request: BookingRequest, specialistName: string): string {
   const date = formatSlotDate(request.selectedSlot.start);
   const time = formatSlotTime(request.selectedSlot.start);
-  const appointmentTypeLabel = APPOINTMENT_TYPES[request.appointmentType]?.label ?? request.appointmentType;
+  const appointmentTypeCfg = APPOINTMENT_TYPES[request.appointmentType];
+  const appointmentTypeLabel = appointmentTypeCfg?.label ?? request.appointmentType;
+  // Las sesiones online no se dan en el centro: ni "te esperamos" ni dirección
+  const isOnline = Boolean(appointmentTypeCfg?.onlineOnly);
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -113,7 +116,9 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
 
       <h2 style="color:#246978;margin:0 0 8px;font-size:20px;text-align:center;">¡Tu cita está confirmada!</h2>
       <p style="color:#6D6E71;margin:0 0 28px;font-size:14px;text-align:center;line-height:1.6;">
-        Hemos recibido tu solicitud. Te esperamos en el centro.
+        ${isOnline
+          ? 'Hemos recibido tu reserva. Te enviaremos el enlace de la videollamada antes de la sesión.'
+          : 'Hemos recibido tu solicitud. Te esperamos en el centro.'}
       </p>
 
       <!-- Booking details -->
@@ -140,16 +145,29 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
             <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Hora</td>
             <td style="color:#2C2C2C;font-size:14px;font-weight:600;text-align:right;">${time}</td>
           </tr>
+          ${request.prepaid ? `<tr>
+            <td style="color:#6D6E71;font-size:14px;padding:5px 0;">Pagado</td>
+            <td style="color:#246978;font-size:14px;font-weight:700;text-align:right;">${appointmentTypeCfg?.price} €</td>
+          </tr>` : ''}
         </table>
       </div>
 
-      <!-- Location -->
+      ${request.prepaid ? `<!-- Cancelación -->
+      <div style="background:#F5F3EF;border-radius:12px;padding:16px 20px;margin-bottom:24px;">
+        <p style="color:#246978;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 8px;">Si no puedes venir</p>
+        <p style="color:#6D6E71;font-size:13px;margin:0;line-height:1.6;">
+          Avisándonos con más de 24 horas de antelación te devolvemos el importe íntegro.
+          Con menos de 24 horas no se devuelve, pero te lo guardamos como crédito para otra sesión.
+        </p>
+      </div>` : ''}
+
+      ${isOnline ? '' : `<!-- Location -->
       <div style="border-top:1px solid #e8e4dc;padding-top:24px;margin-bottom:8px;">
         <p style="color:#246978;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 10px;">Dónde encontrarnos</p>
         <p style="color:#2C2C2C;font-size:14px;margin:0 0 4px;">Carrer de Malgrat, 47 · 08016 Barcelona</p>
         <p style="color:#6D6E71;font-size:13px;margin:0 0 4px;">Metro: L1 (Trinitat Nova) · L4 (Via Júlia) · L5 (Virrei Amat)</p>
         <p style="color:#6D6E71;font-size:13px;margin:0;">Tel: <a href="tel:+34932434835" style="color:#246978;">93 243 48 35</a></p>
-      </div>
+      </div>`}
 
     </td>
   </tr>

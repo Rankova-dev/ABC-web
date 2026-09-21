@@ -37,6 +37,8 @@ export interface BookingRequest {
   phone:           string;
   message?:        string;
   selectedSlot:    TimeSlot & { specialistId: SpecialistId };
+  /** La cita ya está cobrada por Stripe (sesiones online) */
+  prepaid?:        boolean;
 }
 
 export interface BookingResult {
@@ -285,7 +287,10 @@ export async function getAllAvailableSlots(
  * same event, same calendar. Falls back to creating a new event only if the
  * original slot can no longer be found (e.g. race condition).
  */
-export async function createBooking(request: BookingRequest): Promise<BookingResult> {
+export async function createBooking(
+  request: BookingRequest,
+  opts: { stripeSessionId?: string } = {},
+): Promise<BookingResult> {
   const specialistId = request.selectedSlot.specialistId;
   const specialist = SPECIALISTS[specialistId];
   const calendarId = resolveCalendarId(specialistId);
@@ -328,6 +333,11 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
           { method: 'popup', minutes: 30 },
         ],
       },
+      // Deja el nº de sesión de Stripe pegado al evento: es lo que permite saber
+      // que un reintento del webhook ya se atendió (ver findBookingBySession).
+      ...(opts.stripeSessionId
+        ? { extendedProperties: { private: { stripeSessionId: opts.stripeSessionId } } }
+        : {}),
     };
 
     let eventId: string | undefined;
@@ -361,6 +371,124 @@ export async function createBooking(request: BookingRequest): Promise<BookingRes
   }
 }
 
+// ─── Huecos en espera mientras el paciente paga ──────────────────────────────
+
+/**
+ * Marca que se le antepone al título del hueco mientras hay un pago en curso.
+ *
+ * `isSlotEvent()` solo reconoce como hueco libre los títulos que **empiezan**
+ * por "Primera cita" y compañía, así que anteponer esto lo retira de las horas
+ * disponibles sin borrar nada: si el pago se cae o caduca, se le quita el
+ * prefijo y el hueco vuelve a ofrecerse. Es la forma de no vender dos veces la
+ * misma hora durante los 30 minutos del Checkout sin necesitar base de datos.
+ *
+ * La especialista lo ve tal cual en su calendario, que para eso está en claro.
+ */
+const HOLD_PREFIX = '[Reservando] ';
+
+export interface SlotHold {
+  held: boolean;
+  /** Título que tenía el hueco, para devolvérselo si el pago no llega */
+  previousSummary?: string;
+}
+
+/** Retira el hueco de la lista de horas libres mientras se completa el pago */
+export async function holdSlot(specialistId: SpecialistId, eventId: string): Promise<SlotHold> {
+  const calendarId = resolveCalendarId(specialistId);
+
+  if (!hasCredentials() || !calendarId) {
+    console.warn('[GoogleCalendar] Sin credenciales — hueco no bloqueado:', eventId);
+    return { held: true };
+  }
+
+  try {
+    const auth = await getCalendarAuth();
+    const { google } = await import('googleapis');
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const { data } = await calendar.events.get({ calendarId, eventId });
+    const summary = data.summary ?? '';
+
+    // Otro paciente lo está pagando, o ya no es un hueco libre (se reservó o se
+    // cambió el título). En los dos casos esta hora ya no se puede vender.
+    if (summary.startsWith(HOLD_PREFIX) || !isSlotEvent(summary)) return { held: false };
+
+    await calendar.events.patch({
+      calendarId,
+      eventId,
+      requestBody: { summary: `${HOLD_PREFIX}${summary}` },
+    });
+
+    return { held: true, previousSummary: summary };
+  } catch (err) {
+    console.error('[GoogleCalendar] holdSlot error:', err);
+    return { held: false };
+  }
+}
+
+/** Devuelve el hueco a la venta cuando el pago se cancela o caduca */
+export async function releaseSlot(
+  specialistId: SpecialistId,
+  eventId: string,
+  previousSummary: string,
+): Promise<void> {
+  const calendarId = resolveCalendarId(specialistId);
+  if (!hasCredentials() || !calendarId) return;
+
+  try {
+    const auth = await getCalendarAuth();
+    const { google } = await import('googleapis');
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const { data } = await calendar.events.get({ calendarId, eventId });
+
+    // Si ya no lleva la marca, es que el evento pasó a ser una cita de verdad:
+    // no se toca (un webhook que llega tarde no puede deshacer una reserva).
+    if (!(data.summary ?? '').startsWith(HOLD_PREFIX)) return;
+
+    await calendar.events.patch({
+      calendarId,
+      eventId,
+      requestBody: { summary: previousSummary },
+    });
+  } catch (err) {
+    console.error('[GoogleCalendar] releaseSlot error:', err);
+  }
+}
+
+/**
+ * ¿Ya se creó la cita de esta sesión de Stripe?
+ *
+ * Stripe reintenta los webhooks hasta que le respondes 200, así que el mismo
+ * pago puede llegar varias veces. El nº de sesión queda guardado en el propio
+ * evento (`extendedProperties.private`), que hace de registro de lo ya hecho.
+ */
+export async function findBookingBySession(
+  specialistId: SpecialistId,
+  stripeSessionId: string,
+): Promise<string | null> {
+  const calendarId = resolveCalendarId(specialistId);
+  if (!hasCredentials() || !calendarId) return null;
+
+  try {
+    const auth = await getCalendarAuth();
+    const { google } = await import('googleapis');
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const { data } = await calendar.events.list({
+      calendarId,
+      privateExtendedProperty: [`stripeSessionId=${stripeSessionId}`],
+      maxResults: 1,
+      showDeleted: false,
+    });
+
+    return data.items?.[0]?.id ?? null;
+  } catch (err) {
+    console.error('[GoogleCalendar] findBookingBySession error:', err);
+    return null;
+  }
+}
+
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
 function buildEventDescription(
@@ -374,6 +502,7 @@ function buildEventDescription(
     '',
     `Tipo de cita: ${appointmentType?.label ?? request.appointmentType} (${appointmentType?.detail ?? ''})`,
     `Servicio: ${SERVICE_LABELS[request.service] ?? request.service}`,
+    request.prepaid ? `PAGADA por la web: ${appointmentType?.price} EUR` : null,
     '',
     `Paciente: ${request.patientName}${request.patientAge ? `, ${request.patientAge} años` : ''}`,
     request.guardianName ? `Familiar: ${request.guardianName}` : null,

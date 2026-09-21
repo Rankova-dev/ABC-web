@@ -11,7 +11,8 @@
     "test:email": "node scripts/test-email.mjs",
     "test:reviews": "node scripts/test-reviews.mjs",
     "test:sheets": "node scripts/test-sheets.mjs",
-    "coolify": "node scripts/coolify.mjs"
+    "coolify": "node scripts/coolify.mjs",
+    "test:stripe": "node scripts/test-stripe.mjs"
   },
   "dependencies": {
     "googleapis": "^144.0.0",
@@ -20,7 +21,8 @@
     "next-intl": "^3.26.0",
     "nodemailer": "^7.0.13",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "stripe": "^22.6.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

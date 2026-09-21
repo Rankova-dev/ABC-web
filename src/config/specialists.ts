@@ -585,6 +585,22 @@ export function getBookableAppointmentTypes(service: Service): AppointmentType[]
   return SERVICE_APPOINTMENT_TYPES[service].filter(isBookableAppointmentType);
 }
 
+/**
+ * ¿Hay que pagar por adelantado para confirmar esta cita?
+ *
+ * Dirección (17/09/2026): el pago es **obligatorio en las sesiones online** —
+ * son las únicas que no pasan por el centro, así que no hay dónde cobrarlas— y
+ * **opcional en el resto**, que se siguen pagando en consulta.
+ *
+ * Coincide con los tipos `onlineOnly`, pero se deja como función aparte porque
+ * es una decisión comercial, no una propiedad del horario: el día que quieran
+ * cobrar también los bonos presenciales, se cambia aquí y solo aquí.
+ */
+export function requiresPrepayment(type: AppointmentType): boolean {
+  const cfg = APPOINTMENT_TYPES[type];
+  return Boolean(cfg.onlineOnly) && cfg.price > 0;
+}
+
 /** Versión catalana del catálogo: la web es bilingüe y los precios también */
 const APPOINTMENT_TYPES_CA: Record<
   AppointmentType,

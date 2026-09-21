@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createBooking } from '@/lib/google-calendar';
 import { sendPatientConfirmation, sendInternalNotification } from '@/lib/gmail';
-import type { BookingRequest } from '@/lib/google-calendar';
-import type { Service, SpecialistId, AppointmentType } from '@/config/specialists';
-import {
-  SPECIALISTS,
-  SERVICE_TEAM,
-  APPOINTMENT_TYPES,
-  getBookableAppointmentTypes,
-} from '@/config/specialists';
+import { SPECIALISTS, requiresPrepayment } from '@/config/specialists';
+import { parseBookingRequest } from '@/lib/booking-request';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
-import { isValidEmail } from '@/lib/validation';
-
-const VALID_SERVICES = new Set<Service>(Object.keys(SERVICE_TEAM) as Service[]);
-const VALID_APPOINTMENT_TYPES = new Set<AppointmentType>(Object.keys(APPOINTMENT_TYPES) as AppointmentType[]);
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,59 +16,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
-    const { patientName, email, phone, service, appointmentType, selectedSlot } = body;
+    const parsed = parseBookingRequest(await req.json());
+    if (!parsed.ok) {
+      return NextResponse.json({ error: parsed.error }, { status: parsed.status });
+    }
+    const bookingRequest = parsed.booking;
 
-    // ── Validation ────────────────────────────────────────────────────────────
-    if (!patientName || !email || !phone || !service || !appointmentType || !selectedSlot) {
+    // Las citas de pago obligatorio (sesiones online) no se confirman por aquí:
+    // su reserva la crea el webhook de Stripe cuando el cobro ha salido bien.
+    if (requiresPrepayment(bookingRequest.appointmentType)) {
       return NextResponse.json(
-        { error: 'Faltan campos obligatorios' },
+        { error: 'Esta cita se confirma al completar el pago' },
         { status: 400 }
       );
     }
-
-    if (!isValidEmail(email)) {
-      return NextResponse.json({ error: 'Email no válido' }, { status: 400 });
-    }
-
-    if (!VALID_SERVICES.has(service as Service)) {
-      return NextResponse.json({ error: 'Servicio no válido' }, { status: 400 });
-    }
-
-    if (!VALID_APPOINTMENT_TYPES.has(appointmentType as AppointmentType)) {
-      return NextResponse.json({ error: 'Tipo de cita no válido' }, { status: 400 });
-    }
-
-    // El tipo de cita tiene que ser uno de los que ese servicio reserva online:
-    // los que solo publican precio (valoraciones de TEA) no se agendan por web.
-    if (!getBookableAppointmentTypes(service as Service).includes(appointmentType as AppointmentType)) {
-      return NextResponse.json(
-        { error: 'Ese tipo de cita no se puede reservar online para este servicio' },
-        { status: 400 }
-      );
-    }
-
-    if (!selectedSlot.start || !selectedSlot.end) {
-      return NextResponse.json({ error: 'Franja horaria no válida' }, { status: 400 });
-    }
-
-    const specialistId = selectedSlot.specialistId as string | undefined;
-    if (!specialistId || !(specialistId in SPECIALISTS)) {
-      return NextResponse.json({ error: 'El horario elegido ya no está disponible' }, { status: 400 });
-    }
-
-    // ── Build typed request ───────────────────────────────────────────────────
-    const bookingRequest: BookingRequest = {
-      service:         service as Service,
-      appointmentType: appointmentType as AppointmentType,
-      patientName:     String(patientName).trim(),
-      patientAge:      body.patientAge ?? undefined,
-      guardianName:    body.guardianName?.trim() || undefined,
-      email:           String(email).trim().toLowerCase(),
-      phone:           String(phone).trim(),
-      message:         body.message?.trim() || undefined,
-      selectedSlot:    { ...selectedSlot, specialistId: specialistId as SpecialistId },
-    };
 
     // ── Create calendar event ─────────────────────────────────────────────────
     const result = await createBooking(bookingRequest);
@@ -100,7 +51,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       eventId: result.eventId,
-      specialist: SPECIALISTS[specialistId as SpecialistId].name,
+      specialist: SPECIALISTS[bookingRequest.selectedSlot.specialistId].name,
     });
   } catch (err) {
     console.error('[Appointment API Error]', err);

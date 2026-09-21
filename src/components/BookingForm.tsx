@@ -11,6 +11,8 @@ import {
   getBookableAppointmentTypes,
   getBookingTeam,
   getAppointmentTypeText,
+  requiresPrepayment,
+  APPOINTMENT_TYPES,
   SPECIALISTS,
 } from '@/config/specialists';
 import type { TimeSlot } from '@/lib/google-calendar';
@@ -263,6 +265,13 @@ export default function BookingForm({ defaultService }: Props) {
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  // Motivo concreto del fallo cuando el servidor lo explica (hueco ocupado,
+  // pago no disponible…). Si no, se cae al mensaje genérico de siempre.
+  const [errorMsg, setErrorMsg] = useState('');
+
+  // Pago por adelantado: hoy solo las sesiones online (ver config/specialists)
+  const needsPayment = appointmentType !== '' && requiresPrepayment(appointmentType);
+  const price = appointmentType === '' ? 0 : APPOINTMENT_TYPES[appointmentType].price;
   const topRef = useRef<HTMLDivElement>(null);
 
   // Llegada desde la página de tarifas: /contacto?service=psicologia&type=bono-…
@@ -326,13 +335,40 @@ export default function BookingForm({ defaultService }: Props) {
     e.preventDefault();
     if (!selectedSlot || !service || !appointmentType) return;
     setStatus('sending');
+    setErrorMsg('');
+
+    const payload = { ...form, service, appointmentType, selectedSlot, locale };
 
     try {
+      // Las sesiones online se pagan antes de quedar confirmadas: aquí no se
+      // reserva nada, se manda al paciente a Stripe y la cita la crea el
+      // webhook cuando el cobro entra.
+      if (needsPayment) {
+        const res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data.url) {
+          setErrorMsg(data.error ?? '');
+          setStatus('error');
+          return;
+        }
+        window.location.href = data.url;
+        return;
+      }
+
       const res = await fetch('/api/appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, service, appointmentType, selectedSlot }),
+        body: JSON.stringify(payload),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setErrorMsg(data.error ?? '');
+      }
       setStatus(res.ok ? 'success' : 'error');
     } catch {
       setStatus('error');
@@ -723,6 +759,19 @@ export default function BookingForm({ defaultService }: Props) {
           </div>
 
           {/* Privacy */}
+          {needsPayment && (
+            <div className="bg-cream rounded-xl px-4 py-3.5 space-y-1.5">
+              <p className="text-sm font-semibold text-ink">
+                Esta sesión se paga al reservar · {price} €
+              </p>
+              <p className="text-xs font-light text-gray leading-relaxed">
+                Al continuar se abre la pasarela de pago segura. La cita queda
+                confirmada en cuanto el pago se completa. Si cancelas con más de
+                24 horas de antelación te devolvemos el importe íntegro.
+              </p>
+            </div>
+          )}
+
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox" name="privacy"
@@ -743,7 +792,7 @@ export default function BookingForm({ defaultService }: Props) {
               <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
               </svg>
-              <p className="text-sm text-red-600">{t('form_error')}</p>
+              <p className="text-sm text-red-600">{errorMsg || t('form_error')}</p>
             </div>
           )}
 
@@ -763,11 +812,11 @@ export default function BookingForm({ defaultService }: Props) {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                   </svg>
-                  Confirmando…
+                  {needsPayment ? 'Abriendo el pago…' : 'Confirmando…'}
                 </>
               ) : (
                 <>
-                  {t('form_submit')}
+                  {needsPayment ? `Pagar ${price} € y confirmar` : t('form_submit')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                   </svg>
