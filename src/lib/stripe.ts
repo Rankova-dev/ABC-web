@@ -118,8 +118,8 @@ interface CheckoutParams {
  * Abre una sesión de Checkout por el importe íntegro de la cita.
  *
  * Sin impuestos (los servicios del centro están exentos de IVA) y sin factura
- * de Stripe: las facturas las emiten el centro y su gestoría, así que el recibo
- * de Stripe es solo un justificante de pago.
+ * de Stripe: las facturas las emite el propio centro, así que el recibo de
+ * Stripe es solo un justificante de pago.
  */
 export async function createCheckoutSession({
   booking,

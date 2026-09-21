@@ -9,10 +9,11 @@ import type { Metadata } from 'next';
  * políticas: el texto vive aquí, no en los ficheros de traducción, porque es
  * texto legal que se revisa entero y de una vez, no cadena a cadena.
  *
- * OJO: borrador pendiente de revisión por la gestoría. Lo que queda entre
- * corchetes son datos que solo tiene ABC (denominación social, NIF, número de
- * autorización sanitaria) y una decisión sin tomar (duración del crédito por
- * cancelación tardía). No publicar con los corchetes puestos.
+ * OJO: texto redactado por Rankova — ABC no tiene gestoría ni asesoría legal,
+ * así que nadie lo ha revisado jurídicamente. Lo que queda entre corchetes son
+ * datos que solo tiene ABC (titular, NIF, número de autorización sanitaria) y
+ * una decisión sin tomar (duración del crédito por cancelación tardía). No
+ * publicar con los corchetes puestos.
  */
 
 interface LegalSection {
