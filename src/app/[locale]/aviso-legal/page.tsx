@@ -76,18 +76,20 @@ export default async function AvisoLegalPage({ params }: Props) {
 
 const ES_CONTENT: LegalContent = {
   title: 'Aviso Legal',
-  lastUpdated: 'Última actualización: julio 2026',
+  lastUpdated: 'Última actualización: septiembre 2026',
   sections: [
     {
       heading: '1. Datos identificativos',
       paragraphs: [
         'En cumplimiento del deber de información recogido en el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE), se informa de los siguientes datos:',
-        'Titular: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia',
-        'Dirección: Carrer de Malgrat, 47, 08016 Barcelona',
-        'Correo electrónico: info@abccentre.es',
-        'Teléfono: 93 243 48 35',
+      ],
+      list: [
+        'Titular: [nombre y apellidos del titular o denominación social], con NIF [NIF/CIF].',
+        'Nombre comercial: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia.',
+        'Dirección: Carrer de Malgrat, 47, 08016 Barcelona.',
+        'Correo electrónico: info@abccentre.es. Teléfono: 93 243 48 35.',
         'Sitio web: www.abccentre.es',
-        'Para cualquier consulta sobre los datos de identificación completos del titular puede escribir a info@abccentre.es.',
+        'Centro sanitario inscrito en el Registro de centros, servicios y establecimientos sanitarios de la Generalitat de Catalunya con el número [número de autorización sanitaria].',
       ],
     },
     {
@@ -95,6 +97,7 @@ const ES_CONTENT: LegalContent = {
       paragraphs: [
         'El presente aviso legal regula el uso del sitio web www.abccentre.es, a través del cual ABC Centre informa sobre sus servicios de logopedia, psicología, psicopedagogia y neuropsicología, y permite a los usuarios solicitar una primera cita o sesión informativa.',
         'El acceso y uso de este sitio web atribuye la condición de usuario e implica la aceptación plena de las condiciones incluidas en este Aviso Legal.',
+        'La reserva y el pago de servicios a través del sitio web se rigen, además, por las Condiciones de contratación, disponibles en el pie de página.',
       ],
     },
     {
@@ -137,18 +140,20 @@ const ES_CONTENT: LegalContent = {
 
 const CA_CONTENT: LegalContent = {
   title: 'Avís Legal',
-  lastUpdated: 'Darrera actualització: juliol 2026',
+  lastUpdated: 'Darrera actualització: setembre 2026',
   sections: [
     {
       heading: '1. Dades identificatives',
       paragraphs: [
         'En compliment del deure d\'informació recollit a l\'article 10 de la Llei 34/2002, d\'11 de juliol, de Serveis de la Societat de la Informació i del Comerç Electrònic (LSSI-CE), s\'informa de les dades següents:',
-        'Titular: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia',
-        'Adreça: Carrer de Malgrat, 47, 08016 Barcelona',
-        'Correu electrònic: info@abccentre.es',
-        'Telèfon: 93 243 48 35',
+      ],
+      list: [
+        'Titular: [nom i cognoms del titular o denominació social], amb NIF [NIF/CIF].',
+        'Nom comercial: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia.',
+        'Adreça: Carrer de Malgrat, 47, 08016 Barcelona.',
+        'Correu electrònic: info@abccentre.es. Telèfon: 93 243 48 35.',
         'Lloc web: www.abccentre.es',
-        'Per a qualsevol consulta sobre les dades d\'identificació completes del titular pot escriure a info@abccentre.es.',
+        'Centre sanitari inscrit al Registre de centres, serveis i establiments sanitaris de la Generalitat de Catalunya amb el número [número d\'autorització sanitària].',
       ],
     },
     {
@@ -156,6 +161,7 @@ const CA_CONTENT: LegalContent = {
       paragraphs: [
         'Aquest avís legal regula l\'ús del lloc web www.abccentre.es, a través del qual ABC Centre informa sobre els seus serveis de logopèdia, psicologia, psicopedagogia i neuropsicologia, i permet als usuaris sol·licitar una primera cita o sessió informativa.',
         'L\'accés i l\'ús d\'aquest lloc web atribueix la condició d\'usuari i implica l\'acceptació plena de les condicions incloses en aquest Avís Legal.',
+        'La reserva i el pagament de serveis a través del lloc web es regeixen, a més, per les Condicions de contractació, disponibles al peu de pàgina.',
       ],
     },
     {
