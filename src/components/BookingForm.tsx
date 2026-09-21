@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import {
   MessageCircle, Brain, Activity, BookOpen,
   Sparkles, Mic, Users, Handshake, GraduationCap, Heart,
@@ -768,6 +769,14 @@ export default function BookingForm({ defaultService }: Props) {
                 Al continuar se abre la pasarela de pago segura. La cita queda
                 confirmada en cuanto el pago se completa. Si cancelas con más de
                 24 horas de antelación te devolvemos el importe íntegro.
+              </p>
+              <p className="text-xs font-light text-gray leading-relaxed">
+                {locale === 'ca' ? 'En pagar acceptes les ' : 'Al pagar aceptas las '}
+                <Link href="/condiciones-de-contratacion" target="_blank"
+                  className="text-teal underline underline-offset-2 hover:no-underline">
+                  {locale === 'ca' ? 'condicions de contractació' : 'condiciones de contratación'}
+                </Link>
+                .
               </p>
             </div>
           )}

@@ -63,6 +63,10 @@ export const routing = defineRouting({
       ca: '/avis-legal',
     },
     '/politica-de-cookies': '/politica-de-cookies',
+    '/condiciones-de-contratacion': {
+      es: '/condiciones-de-contratacion',
+      ca: '/condicions-de-contractacio',
+    },
     // Vuelta de Stripe. Mismo slug en los dos idiomas: la URL la construye
     // lib/stripe.ts como ${baseUrl}/${locale}/cita/... y así no hay que
     // traducirla en dos sitios.
