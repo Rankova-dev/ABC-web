@@ -84,12 +84,11 @@ const ES_CONTENT: LegalContent = {
         'En cumplimiento del deber de información recogido en el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE), se informa de los siguientes datos:',
       ],
       list: [
-        'Titular: [nombre y apellidos del titular o denominación social], con NIF [NIF/CIF].',
+        'Titular: ABC Centre de Logopedia, Psicologia, Psicopedagogía i Neuropsicología, S.L., con NIF B01915305.',
         'Nombre comercial: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia.',
         'Dirección: Carrer de Malgrat, 47, 08016 Barcelona.',
         'Correo electrónico: info@abccentre.es. Teléfono: 93 243 48 35.',
         'Sitio web: www.abccentre.es',
-        'Centro sanitario inscrito en el Registro de centros, servicios y establecimientos sanitarios de la Generalitat de Catalunya con el número [número de autorización sanitaria].',
       ],
     },
     {
@@ -148,12 +147,11 @@ const CA_CONTENT: LegalContent = {
         'En compliment del deure d\'informació recollit a l\'article 10 de la Llei 34/2002, d\'11 de juliol, de Serveis de la Societat de la Informació i del Comerç Electrònic (LSSI-CE), s\'informa de les dades següents:',
       ],
       list: [
-        'Titular: [nom i cognoms del titular o denominació social], amb NIF [NIF/CIF].',
+        'Titular: ABC Centre de Logopedia, Psicologia, Psicopedagogía i Neuropsicología, S.L., amb NIF B01915305.',
         'Nom comercial: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia.',
         'Adreça: Carrer de Malgrat, 47, 08016 Barcelona.',
         'Correu electrònic: info@abccentre.es. Telèfon: 93 243 48 35.',
         'Lloc web: www.abccentre.es',
-        'Centre sanitari inscrit al Registre de centres, serveis i establiments sanitaris de la Generalitat de Catalunya amb el número [número d\'autorització sanitària].',
       ],
     },
     {

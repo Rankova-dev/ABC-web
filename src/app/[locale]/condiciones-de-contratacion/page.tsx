@@ -10,10 +10,17 @@ import type { Metadata } from 'next';
  * texto legal que se revisa entero y de una vez, no cadena a cadena.
  *
  * OJO: texto redactado por Rankova — ABC no tiene gestoría ni asesoría legal,
- * así que nadie lo ha revisado jurídicamente. Lo que queda entre corchetes son
- * datos que solo tiene ABC (titular, NIF, número de autorización sanitaria) y
- * una decisión sin tomar (duración del crédito por cancelación tardía). No
- * publicar con los corchetes puestos.
+ * así que nadie lo ha revisado jurídicamente.
+ *
+ * Datos del titular confirmados por ABC el 21/09/2026 (SL y CIF). Falta la
+ * **autorización sanitaria**, que está en trámite: cuando llegue el número, hay
+ * que añadir aquí y en el aviso legal la línea "Centro sanitario inscrito en el
+ * Registro de centros, servicios y establecimientos sanitarios de la Generalitat
+ * de Catalunya con el número …". Mientras no exista, no se menciona: es
+ * preferible a publicar un dato a medias.
+ *
+ * El crédito por cancelar entre 24 h y 1 h antes se fijó en 2 meses, para que
+ * coincida con la caducidad de los bonos y no haya dos relojes distintos.
  */
 
 interface LegalSection {
@@ -91,7 +98,7 @@ export default async function CondicionesContratacionPage({ params }: Props) {
 
 const ES_CONTENT: LegalContent = {
   title: 'Condiciones de contratación',
-  lastUpdated: 'Última actualización: [fecha]',
+  lastUpdated: 'Última actualización: septiembre 2026',
   sections: [
     {
       heading: '1. Datos identificativos',
@@ -99,12 +106,11 @@ const ES_CONTENT: LegalContent = {
         'En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico, se informa de los siguientes datos:',
       ],
       list: [
-        'Titular: [denominación social completa], con NIF [NIF/CIF].',
+        'Titular: ABC Centre de Logopedia, Psicologia, Psicopedagogía i Neuropsicología, S.L., con NIF B01915305.',
         'Nombre comercial: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia.',
         'Domicilio: Carrer de Malgrat, 47, 08016 Barcelona.',
         'Correo electrónico: info@abccentre.es. Teléfono: 93 243 48 35.',
         'Sitio web: www.abccentre.es',
-        'Centro sanitario inscrito en el Registro de centros, servicios y establecimientos sanitarios de la Generalitat de Catalunya con el número [número de autorización sanitaria].',
       ],
     },
     {
@@ -166,7 +172,7 @@ const ES_CONTENT: LegalContent = {
       ],
       list: [
         'Con 24 horas o más de antelación: devolución íntegra del importe abonado o reprogramación de la cita sin coste, a elección del usuario.',
-        'Entre 24 horas y 1 hora antes de la cita: no se devuelve el importe, que queda a favor del usuario como crédito canjeable por otra sesión del mismo tipo durante los [3 meses] siguientes.',
+        'Entre 24 horas y 1 hora antes de la cita: no se devuelve el importe, que queda a favor del usuario como crédito canjeable por otra sesión del mismo tipo durante los 2 meses siguientes.',
         'Con menos de 1 hora de antelación o en caso de no presentarse: no se devuelve el importe ni genera crédito, al haberse reservado en exclusiva el tiempo de la profesional.',
       ],
     },
@@ -245,7 +251,7 @@ const ES_CONTENT: LegalContent = {
 
 const CA_CONTENT: LegalContent = {
   title: 'Condicions de contractació',
-  lastUpdated: 'Darrera actualització: [data]',
+  lastUpdated: 'Darrera actualització: setembre 2026',
   sections: [
     {
       heading: '1. Dades identificatives',
@@ -253,12 +259,11 @@ const CA_CONTENT: LegalContent = {
         "En compliment de l'article 10 de la Llei 34/2002, d'11 de juliol, de serveis de la societat de la informació i de comerç electrònic, s'informa de les dades següents:",
       ],
       list: [
-        'Titular: [denominació social completa], amb NIF [NIF/CIF].',
+        'Titular: ABC Centre de Logopedia, Psicologia, Psicopedagogía i Neuropsicología, S.L., amb NIF B01915305.',
         'Nom comercial: ABC Centre de Logopèdia, Psicologia, Psicopedagogia i Neuropsicologia.',
         'Domicili: Carrer de Malgrat, 47, 08016 Barcelona.',
         'Adreça electrònica: info@abccentre.es. Telèfon: 93 243 48 35.',
         'Lloc web: www.abccentre.es',
-        "Centre sanitari inscrit al Registre de centres, serveis i establiments sanitaris de la Generalitat de Catalunya amb el número [número d'autorització sanitària].",
       ],
     },
     {
@@ -320,7 +325,7 @@ const CA_CONTENT: LegalContent = {
       ],
       list: [
         "Amb 24 hores o més d'antelació: devolució íntegra de l'import abonat o reprogramació de la cita sense cost, a elecció de l'usuari.",
-        "Entre 24 hores i 1 hora abans de la cita: no es retorna l'import, que queda a favor de l'usuari com a crèdit bescanviable per una altra sessió del mateix tipus durant els [3 mesos] següents.",
+        "Entre 24 hores i 1 hora abans de la cita: no es retorna l'import, que queda a favor de l'usuari com a crèdit bescanviable per una altra sessió del mateix tipus durant els 2 mesos següents.",
         "Amb menys d'1 hora d'antelació o en cas de no presentar-se: no es retorna l'import ni genera crèdit, pel fet d'haver reservat en exclusiva el temps de la professional.",
       ],
     },
