@@ -383,6 +383,11 @@ export interface AppointmentTypeConfig {
    * huecos para ellas, así que se acuerdan en la sesión informativa.
    */
   bookable?: boolean;
+  /**
+   * Quién atiende esta cita, sea del servicio que sea. Manda sobre el equipo
+   * del servicio: es el caso de las sesiones informativas.
+   */
+  attendedBy?: readonly SpecialistId[];
 }
 
 /**
@@ -391,17 +396,21 @@ export interface AppointmentTypeConfig {
  * indicó: cambiarla aquí si la sesión es de 60.
  */
 export const APPOINTMENT_TYPES: Record<AppointmentType, AppointmentTypeConfig> = {
+  // Dirección (29/09/2026): las sesiones informativas de todos los servicios
+  // las atiende solo Laia Álvarez.
   'informativa-presencial': {
-    label:    'Sesión informativa presencial',
-    detail:   'Gratuita',
-    duration: 20,
-    price:    0,
+    label:      'Sesión informativa presencial',
+    detail:     'Gratuita',
+    duration:   20,
+    price:      0,
+    attendedBy: ['laia_alvarez'],
   },
   'informativa-telefonica': {
-    label:    'Sesión informativa telefónica',
-    detail:   'Gratuita',
-    duration: 30,
-    price:    0,
+    label:      'Sesión informativa telefónica',
+    detail:     'Gratuita',
+    duration:   30,
+    price:      0,
+    attendedBy: ['laia_alvarez'],
   },
   'psicologia-infanto-juvenil': {
     label:        '1ª sesión de psicología infanto-juvenil',
@@ -720,16 +729,20 @@ export function getTeamForService(
 }
 
 /**
- * Especialistas que pueden atender esta cita: las del servicio y, si el tipo
- * de cita exige un área concreta (psicología online, por ejemplo), solo las
- * que además trabajan esa área.
+ * Especialistas que pueden atender esta cita: las que fije el tipo de cita
+ * (`attendedBy`, p. ej. las informativas) o, si no, las del servicio y, si el
+ * tipo de cita exige un área concreta (psicología online, por ejemplo), solo
+ * las que además trabajan esa área.
  */
 export function getSpecialistsForAppointment(
   service: Service,
   appointmentType?: AppointmentType
 ): readonly SpecialistId[] {
+  const cfg = appointmentType ? APPOINTMENT_TYPES[appointmentType] : undefined;
+  if (cfg?.attendedBy) return cfg.attendedBy;
+
   const team = getBookingTeam(service);
-  const required = appointmentType ? APPOINTMENT_TYPES[appointmentType]?.specialty : undefined;
+  const required = cfg?.specialty;
   if (!required) return team;
 
   return team.filter((id) =>
