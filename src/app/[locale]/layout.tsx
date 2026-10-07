@@ -1,12 +1,8 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import ScrollAnimator from '@/components/ScrollAnimator';
-import FloatingCTA from '@/components/FloatingCTA';
-import LoadingScreen from '@/components/LoadingScreen';
 import ScrollProgress from '@/components/ScrollProgress';
 import type { Metadata } from 'next';
 
@@ -28,6 +24,13 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/**
+ * Lo común a toda la web: idioma, mensajes y animaciones de scroll.
+ *
+ * La cabecera, el pie y los botones flotantes viven en el layout de cada grupo
+ * de rutas: `(site)` es la web de siempre y `(landing)` son las landings de
+ * campaña, que van con su propia cabecera mínima y sin el menú general.
+ */
 export default async function LocaleLayout({
   children,
   params,
@@ -45,13 +48,9 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <LoadingScreen />
       <ScrollProgress />
-      <Navbar />
-      <main id="main-content" className="pb-16 lg:pb-0">{children}</main>
-      <Footer />
+      {children}
       <ScrollAnimator />
-      <FloatingCTA />
     </NextIntlClientProvider>
   );
 }

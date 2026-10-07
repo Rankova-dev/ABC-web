@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { holdSlot, releaseSlot } from '@/lib/google-calendar';
-import { requiresPrepayment } from '@/config/specialists';
+import { allowsOnlinePayment } from '@/config/specialists';
 import { parseBookingRequest } from '@/lib/booking-request';
 import { createCheckoutSession, hasStripeCredentials } from '@/lib/stripe';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
@@ -39,11 +39,20 @@ export async function POST(req: NextRequest) {
     }
     const booking = parsed.booking;
 
-    // Por la pasarela solo pasan las citas de pago obligatorio. El pago
-    // voluntario del resto de servicios está sin decidir con dirección.
-    if (!requiresPrepayment(booking.appointmentType)) {
+    // Por la pasarela pasan las citas de pago obligatorio (online) y las de
+    // pago voluntario que el paciente decide abonar ya (landing de psicología).
+    if (!allowsOnlinePayment(booking.appointmentType)) {
       return NextResponse.json(
-        { error: 'Esta cita no se paga por adelantado' },
+        { error: 'Esta cita no se puede pagar por la web' },
+        { status: 400 }
+      );
+    }
+
+    // Sin el consentimiento expreso para empezar dentro del plazo de
+    // desistimiento no se cobra: es lo que permite aplicar la cancelación.
+    if (body.withdrawalConsent !== true) {
+      return NextResponse.json(
+        { error: 'Falta aceptar las condiciones de desistimiento' },
         { status: 400 }
       );
     }

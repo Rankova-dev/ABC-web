@@ -45,7 +45,8 @@ export type Specialty =
   | 'logopedia-adultos'
   | 'psicopedagogia'
   | 'neuropsicologia'
-  | 'asesoramiento-padres';
+  | 'asesoramiento-padres'
+  | 'terapia-familiar-pareja';
 
 /** Etiquetas legibles de cada especialidad (es / ca) */
 export const SPECIALTY_LABELS: Record<Specialty, { es: string; ca: string }> = {
@@ -58,6 +59,7 @@ export const SPECIALTY_LABELS: Record<Specialty, { es: string; ca: string }> = {
   psicopedagogia:               { es: 'Psicopedagogia',              ca: 'Psicopedagogia' },
   neuropsicologia:              { es: 'Neuropsicología',             ca: 'Neuropsicologia' },
   'asesoramiento-padres':       { es: 'Asesoramiento a padres',       ca: 'Assessorament a pares' },
+  'terapia-familiar-pareja':    { es: 'Terapia familiar y de pareja', ca: 'Teràpia familiar i de parella' },
 };
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
@@ -220,6 +222,9 @@ export const SPECIALISTS = {
       'tea',
       'psicopedagogia',
       'asesoramiento-padres',
+      // Landing de psicología (dirección, 07/10/2026): terapia familiar y de
+      // pareja solo la lleva ella.
+      'terapia-familiar-pareja',
     ],
     // Martes de 15 a 20 solo atiende online; el resto de sus huecos valen para
     // cualquier cosa que ofrezca (dirección, 14/09/2026).
@@ -277,11 +282,16 @@ export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
   // "Adultos · Profesionales de la voz".
   'rehabilitacion-voz': bySpecialty('logopedia-adultos'),
 
-  // Orientación familiar = asesoramiento a padres.
-  'orientacion-familiar': bySpecialty('asesoramiento-padres'),
+  // Orientación familiar = asesoramiento a padres. El documento de la landing
+  // de psicología (dirección, 07/10/2026) añade como profesionales a Maria del
+  // Mar Aránega y Raisa Pocino, pero sin agenda: las citas siguen yendo solo a
+  // quien tiene la especialidad (ver SERVICE_BOOKING_TEAM).
+  'orientacion-familiar': [...bySpecialty('asesoramiento-padres'), 'mar_aranega', 'raisa_pocino'],
+
+  // Terapia familiar y de pareja: solo Èlia Huertas (dirección, 07/10/2026).
+  'terapia-familiar':     bySpecialty('terapia-familiar-pareja'),
 
   // ── Asignación directa (pendiente de confirmar con dirección) ──────────────
-  'terapia-familiar':     ['mar_aranega', 'margot_moreno'],
   'habilidades-sociales': ['silvia_marco'],
   'cursos-formacion':     ['laia_alvarez', 'silvia_marco', 'carla_lopez'],
   salut:                  ['laia_alvarez', 'margot_moreno', 'noelia_torres'],
@@ -299,6 +309,9 @@ export const SERVICE_TEAM: Record<Service, readonly SpecialistId[]> = {
  */
 const SERVICE_BOOKING_TEAM: Partial<Record<Service, readonly SpecialistId[]>> = {
   tea: ['laia_alvarez'],
+  // Asesoramiento: agendas solo de Margot, Eulàlia y Èlia (dirección,
+  // 07/10/2026), aunque en la página salgan también Mar y Raisa.
+  'orientacion-familiar': bySpecialty('asesoramiento-padres'),
 };
 
 /** Profesionales cuyos calendarios se consultan al pedir cita de un servicio */
@@ -340,7 +353,10 @@ export type AppointmentType =
   | 'pack-completa-adultos'
   | 'pack-tea-completa'
   | 'pack-tea-pruebas'
-  | 'asesoramiento-padres';
+  | 'asesoramiento-padres'
+  | 'bono-asesoramiento-padres'
+  | 'terapia-familiar-pareja'
+  | 'bono-terapia-familiar-pareja';
 
 /**
  * Hora (24h) a partir de la cual un hueco ya no cuenta como "de mañana".
@@ -509,6 +525,33 @@ export const APPOINTMENT_TYPES: Record<AppointmentType, AppointmentTypeConfig> =
     price:     55,
     specialty: 'asesoramiento-padres',
   },
+  // Bono y terapia familiar/pareja: precios de la landing de psicología
+  // (dirección, 07/10/2026). Duración igualada a las demás sesiones (50 min).
+  'bono-asesoramiento-padres': {
+    label:     'Bono de 4 sesiones · Asesoramiento a padres',
+    detail:    '200 € · 4 sesiones (50 €/sesión)',
+    duration:  50,
+    price:     200,
+    sessions:  4,
+    specialty: 'asesoramiento-padres',
+    includes:  '4 sesiones de asesoramiento a padres. Al reservar aquí se agenda la primera; el resto se acuerdan con la psicóloga.',
+  },
+  'terapia-familiar-pareja': {
+    label:     'Sesión de terapia familiar o de pareja',
+    detail:    '65 €',
+    duration:  50,
+    price:     65,
+    specialty: 'terapia-familiar-pareja',
+  },
+  'bono-terapia-familiar-pareja': {
+    label:     'Bono de 4 sesiones · Terapia familiar o de pareja',
+    detail:    '240 € · 4 sesiones (60 €/sesión)',
+    duration:  50,
+    price:     240,
+    sessions:  4,
+    specialty: 'terapia-familiar-pareja',
+    includes:  '4 sesiones de terapia familiar o de pareja. Al reservar aquí se agenda la primera; el resto se acuerdan con la psicóloga.',
+  },
   'pack-completa-adultos': {
     label:    'Pack valoración neuropsicológica completa adultos',
     detail:   '480 € · Dislexia, TDAH, discalculia, lenguaje…',
@@ -569,7 +612,8 @@ export const SERVICE_APPOINTMENT_TYPES: Record<Service, readonly AppointmentType
     'pack-completa-adultos',
   ],
   psicopedagogia:  [...INFORMATIVA, 'valoracion-infanto-juvenil'],
-  'orientacion-familiar': [...INFORMATIVA, 'asesoramiento-padres'],
+  'orientacion-familiar': [...INFORMATIVA, 'asesoramiento-padres', 'bono-asesoramiento-padres'],
+  'terapia-familiar':     [...INFORMATIVA, 'terapia-familiar-pareja', 'bono-terapia-familiar-pareja'],
   // En el calendario no hay huecos de valoración de TEA: por la web solo se
   // reserva la sesión informativa. Los packs salen en /tarifas con su precio,
   // pero no son reservables (bookable: false).
@@ -578,7 +622,6 @@ export const SERVICE_APPOINTMENT_TYPES: Record<Service, readonly AppointmentType
   // Sin tarifa de primera sesión facilitada: solo sesión informativa gratuita.
   logopedia:              INFORMATIVA,
   'rehabilitacion-voz':   INFORMATIVA,
-  'terapia-familiar':     INFORMATIVA,
   'habilidades-sociales': INFORMATIVA,
   'cursos-formacion':     INFORMATIVA,
   salut:                  INFORMATIVA,
@@ -608,6 +651,16 @@ export function getBookableAppointmentTypes(service: Service): AppointmentType[]
 export function requiresPrepayment(type: AppointmentType): boolean {
   const cfg = APPOINTMENT_TYPES[type];
   return Boolean(cfg.onlineOnly) && cfg.price > 0;
+}
+
+/**
+ * ¿Se puede pagar esta cita por la web? Toda cita de pago reservable admite
+ * pasarela: obligatoria en las online (`requiresPrepayment`) y voluntaria en
+ * el resto, que también se pueden pagar en el centro (dirección, 17/09/2026).
+ * Hoy el pago voluntario solo se ofrece en la landing de psicología.
+ */
+export function allowsOnlinePayment(type: AppointmentType): boolean {
+  return APPOINTMENT_TYPES[type].price > 0 && isBookableAppointmentType(type);
 }
 
 /** Versión catalana del catálogo: la web es bilingüe y los precios también */
@@ -650,6 +703,22 @@ const APPOINTMENT_TYPES_CA: Record<
   'asesoramiento-padres': {
     label:  'Sessió assessorament a pares',
     detail: '55 €',
+  },
+  'bono-asesoramiento-padres': {
+    label:    'Bo de 4 sessions · Assessorament a pares',
+    detail:   '200 € · 4 sessions (50 €/sessió)',
+    includes:
+      "4 sessions d'assessorament a pares. En reservar aquí s'agenda la primera; la resta s'acorden amb la psicòloga.",
+  },
+  'terapia-familiar-pareja': {
+    label:  'Sessió de teràpia familiar o de parella',
+    detail: '65 €',
+  },
+  'bono-terapia-familiar-pareja': {
+    label:    'Bo de 4 sessions · Teràpia familiar o de parella',
+    detail:   '240 € · 4 sessions (60 €/sessió)',
+    includes:
+      "4 sessions de teràpia familiar o de parella. En reservar aquí s'agenda la primera; la resta s'acorden amb la psicòloga.",
   },
   'valoracion-infanto-juvenil': {
     label:  '1a sessió de valoració neuropsicològica/psicopedagògica infantojuvenil',

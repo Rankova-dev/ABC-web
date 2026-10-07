@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import {
   MessageCircle, Brain, Activity, BookOpen,
   Sparkles, Mic, Users, Handshake, GraduationCap, Heart,
+  User, Video, HeartHandshake,
 } from 'lucide-react';
 import type { Service, AppointmentType } from '@/config/specialists';
 import {
@@ -13,6 +14,9 @@ import {
   getBookingTeam,
   getAppointmentTypeText,
   requiresPrepayment,
+  allowsOnlinePayment,
+  isBookableAppointmentType,
+  getSpecialistsForAppointment,
   APPOINTMENT_TYPES,
   SPECIALISTS,
 } from '@/config/specialists';
@@ -30,6 +34,33 @@ const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: st
   { value: 'cursos-formacion',     label: 'Cursos y Formación',     icon: <GraduationCap  className="w-5 h-5" />, desc: 'Talleres y formación' },
   { value: 'salut',                label: 'Salut',                  icon: <Heart          className="w-5 h-5" />, desc: 'Bienestar y prevención' },
 ];
+
+/**
+ * Área de una landing: agrupa los tipos de cita de un servicio con otro nombre
+ * (p. ej. "Psicología online" = las citas online del servicio psicología).
+ * Con áreas, el paso 1 del formulario las muestra en lugar de los servicios.
+ */
+export interface BookingArea {
+  key:     string;
+  label:   string;
+  desc:    string;
+  icon:    'adults' | 'online' | 'family' | 'parents';
+  service: Service;
+  types:   readonly AppointmentType[];
+}
+
+const AREA_ICONS: Record<BookingArea['icon'], React.ReactNode> = {
+  adults:  <User           className="w-5 h-5" />,
+  online:  <Video          className="w-5 h-5" />,
+  family:  <HeartHandshake className="w-5 h-5" />,
+  parents: <Users          className="w-5 h-5" />,
+};
+
+/**
+ * Evento con el que un botón de la página preselecciona área y tipo de cita
+ * en el formulario: `detail = { area, type }`.
+ */
+export const BOOKING_PRESELECT_EVENT = 'abc:booking-preselect';
 
 /**
  * Tipos de cita (con su precio) que ofrece el servicio elegido. Solo los
@@ -236,9 +267,16 @@ function MiniCalendar({
 
 interface Props {
   defaultService?: Service;
+  /** Áreas a ofrecer en vez del listado general de servicios (landings) */
+  areas?: BookingArea[];
+  /**
+   * Deja pagar por la web, si el paciente quiere, las citas que normalmente se
+   * pagan en el centro. Las online se pagan siempre al reservar.
+   */
+  optionalPayment?: boolean;
 }
 
-export default function BookingForm({ defaultService }: Props) {
+export default function BookingForm({ defaultService, areas, optionalPayment = false }: Props) {
   const t = useTranslations('contacto');
   const locale = useLocale();
 
@@ -247,6 +285,8 @@ export default function BookingForm({ defaultService }: Props) {
   // Step 1 — service & appointment type
   const [service,         setService]         = useState<Service | ''>(defaultService ?? '');
   const [appointmentType, setAppointmentType] = useState<AppointmentType | ''>('');
+  const [areaKey,         setAreaKey]         = useState('');
+  const area = areas?.find(a => a.key === areaKey);
 
   // Step 2 — date & slot
   const [selectedDate,    setSelectedDate]    = useState('');
@@ -263,15 +303,24 @@ export default function BookingForm({ defaultService }: Props) {
     phone:        '',
     message:      '',
     privacy:      false,
+    // Consentimiento para empezar dentro del plazo de desistimiento (art. 103 a
+    // LGDCU). Solo se pide en las citas que se pagan al reservar.
+    withdrawal:   false,
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   // Motivo concreto del fallo cuando el servidor lo explica (hueco ocupado,
   // pago no disponible…). Si no, se cae al mensaje genérico de siempre.
   const [errorMsg, setErrorMsg] = useState('');
+  // Pago voluntario (solo con optionalPayment): pagar ya o en el centro
+  const [payNow, setPayNow] = useState(true);
 
-  // Pago por adelantado: hoy solo las sesiones online (ver config/specialists)
-  const needsPayment = appointmentType !== '' && requiresPrepayment(appointmentType);
+  // Pago por adelantado: obligatorio en las sesiones online (ver
+  // config/specialists) y, con optionalPayment, cuando el paciente lo elige.
+  const mustPay = appointmentType !== '' && requiresPrepayment(appointmentType);
+  const canChoosePayment =
+    optionalPayment && appointmentType !== '' && !mustPay && allowsOnlinePayment(appointmentType);
+  const needsPayment = mustPay || (canChoosePayment && payNow);
   const price = appointmentType === '' ? 0 : APPOINTMENT_TYPES[appointmentType].price;
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -291,6 +340,30 @@ export default function BookingForm({ defaultService }: Props) {
       setAppointmentType(type as AppointmentType);
     }
   }, []);
+
+  // Botones de precio de la landing: eligen área y tipo de cita
+  useEffect(() => {
+    if (!areas) return;
+    function onPreselect(e: Event) {
+      const { area: key, type } = (e as CustomEvent<{ area: string; type?: AppointmentType }>).detail ?? {};
+      const target = areas?.find(a => a.key === key);
+      if (!target) return;
+      setAreaKey(target.key);
+      setService(target.service);
+      setAppointmentType(type && target.types.includes(type) ? type : '');
+      setStep(1);
+    }
+    window.addEventListener(BOOKING_PRESELECT_EVENT, onPreselect);
+    return () => window.removeEventListener(BOOKING_PRESELECT_EVENT, onPreselect);
+  }, [areas]);
+
+  function selectArea(target: BookingArea) {
+    setAreaKey(target.key);
+    setService(target.service);
+    if (appointmentType && !target.types.includes(appointmentType)) {
+      setAppointmentType('');
+    }
+  }
 
   /** Cada servicio ofrece unos tipos de cita: si el elegido ya no aplica, se limpia */
   function selectService(value: Service) {
@@ -338,7 +411,10 @@ export default function BookingForm({ defaultService }: Props) {
     setStatus('sending');
     setErrorMsg('');
 
-    const payload = { ...form, service, appointmentType, selectedSlot, locale };
+    const { withdrawal, ...patient } = form;
+    const payload = needsPayment
+      ? { ...patient, withdrawalConsent: withdrawal, service, appointmentType, selectedSlot, locale }
+      : { ...patient, service, appointmentType, selectedSlot, locale };
 
     try {
       // Las sesiones online se pagan antes de quedar confirmadas: aquí no se
@@ -430,8 +506,14 @@ export default function BookingForm({ defaultService }: Props) {
   }
 
   const freeSlots               = availableSlots.filter(s => s.available);
-  const selectedServiceInfo     = SERVICES.find(s => s.value === service);
-  const appointmentTypeList     = appointmentTypesFor(service, locale);
+  const selectedServiceInfo     = area
+    ? { icon: AREA_ICONS[area.icon], label: area.label }
+    : SERVICES.find(s => s.value === service);
+  const appointmentTypeList     = area
+    ? area.types.filter(isBookableAppointmentType).map(value => ({ value, ...getAppointmentTypeText(value, locale) }))
+    : areas
+    ? []
+    : appointmentTypesFor(service, locale);
   const selectedAppointmentType = appointmentTypeList.find(a => a.value === appointmentType);
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -443,8 +525,48 @@ export default function BookingForm({ defaultService }: Props) {
       {step === 1 && (
         <div className="space-y-6">
 
+          {/* Area selector (landings) */}
+          {areas && (
+            <div>
+              <p className="text-sm font-semibold text-ink mb-3">
+                {locale === 'ca' ? 'Què necessites?' : '¿Qué necesitas?'} <span className="text-teal">*</span>
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {areas.map(a => {
+                  const count = new Set(a.types.flatMap(type => getSpecialistsForAppointment(a.service, type))).size;
+                  const isSelected = areaKey === a.key;
+                  return (
+                    <button
+                      key={a.key}
+                      type="button"
+                      onClick={() => selectArea(a)}
+                      className={`flex items-start gap-3 p-3.5 rounded-xl border text-left transition-all duration-150 ${
+                        isSelected
+                          ? 'bg-teal text-white border-teal shadow-card'
+                          : 'bg-cream border-gray/15 text-ink hover:border-teal/40 hover:bg-teal/5'
+                      }`}
+                    >
+                      <span className={`mt-0.5 flex-shrink-0 ${isSelected ? 'text-white' : 'text-teal'}`}>
+                        {AREA_ICONS[a.icon]}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold leading-tight">{a.label}</p>
+                        <p className={`text-xs mt-0.5 leading-tight ${isSelected ? 'text-white/70' : 'text-gray/70'}`}>
+                          {a.desc}
+                        </p>
+                        <p className={`text-xs mt-1 font-medium ${isSelected ? 'text-white/60' : 'text-teal/70'}`}>
+                          {count} {count === 1 ? 'especialista' : 'especialistas'}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Service selector */}
-          <div>
+          {!areas && <div>
             <p className="text-sm font-semibold text-ink mb-3">
               ¿Qué servicio necesitas? <span className="text-teal">*</span>
             </p>
@@ -479,16 +601,18 @@ export default function BookingForm({ defaultService }: Props) {
                 );
               })}
             </div>
-          </div>
+          </div>}
 
           {/* Appointment type selector */}
           <div>
             <p className="text-sm font-semibold text-ink mb-3">
               ¿Qué tipo de cita necesitas? <span className="text-teal">*</span>
             </p>
-            {!service && (
+            {(areas ? !area : !service) && (
               <p className="text-xs font-light text-gray bg-cream rounded-xl px-4 py-3">
-                Elige primero el servicio para ver los tipos de cita y sus precios.
+                {areas
+                  ? (locale === 'ca' ? 'Tria primer què necessites per veure les sessions i els preus.' : 'Elige primero qué necesitas para ver las sesiones y sus precios.')
+                  : 'Elige primero el servicio para ver los tipos de cita y sus precios.'}
               </p>
             )}
             <div className="space-y-2">
@@ -759,6 +883,45 @@ export default function BookingForm({ defaultService }: Props) {
             />
           </div>
 
+          {/* Pagar ahora o en el centro (pago voluntario) */}
+          {canChoosePayment && (
+            <fieldset className="space-y-2">
+              <legend className="text-sm font-semibold text-ink mb-2">
+                {locale === 'ca' ? 'Com vols pagar?' : '¿Cómo quieres pagar?'}
+              </legend>
+              {[
+                {
+                  value: true,
+                  title: locale === 'ca' ? `Pagar ara amb targeta · ${price} €` : `Pagar ahora con tarjeta · ${price} €`,
+                  desc:  locale === 'ca' ? 'Pagament segur. La cita queda confirmada en completar-lo.' : 'Pago seguro. La cita queda confirmada al completarlo.',
+                },
+                {
+                  value: false,
+                  title: locale === 'ca' ? 'Pagar al centre' : 'Pagar en el centro',
+                  desc:  locale === 'ca' ? 'Reserves ara i pagues el dia de la sessió.' : 'Reservas ahora y pagas el día de la sesión.',
+                },
+              ].map(opt => (
+                <label
+                  key={String(opt.value)}
+                  className={`flex items-start gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-colors ${
+                    payNow === opt.value ? 'bg-teal/5 border-teal' : 'bg-cream border-gray/15 hover:border-teal/40'
+                  }`}
+                >
+                  <input
+                    type="radio" name="payNow"
+                    checked={payNow === opt.value}
+                    onChange={() => setPayNow(opt.value)}
+                    className="mt-1 accent-teal flex-shrink-0"
+                  />
+                  <span>
+                    <span className="block text-sm font-semibold text-ink">{opt.title}</span>
+                    <span className="block text-xs font-light text-gray">{opt.desc}</span>
+                  </span>
+                </label>
+              ))}
+            </fieldset>
+          )}
+
           {/* Privacy */}
           {needsPayment && (
             <div className="bg-cream rounded-xl px-4 py-3.5 space-y-1.5">
@@ -779,6 +942,21 @@ export default function BookingForm({ defaultService }: Props) {
                 .
               </p>
             </div>
+          )}
+
+          {needsPayment && (
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox" name="withdrawal"
+                checked={form.withdrawal} onChange={handleFormChange}
+                required className="mt-0.5 w-4 h-4 accent-teal flex-shrink-0"
+              />
+              <span className="text-sm font-light text-gray leading-relaxed">
+                {locale === 'ca'
+                  ? "Demano que la sessió es presti dins del termini de 14 dies de desistiment i accepto que, un cop prestada completament, perdré el dret a desistir. Si desisteixo quan ja ha començat, abonaré la part ja prestada."
+                  : 'Solicito que la sesión se preste dentro del plazo de 14 días de desistimiento y acepto que, una vez prestada por completo, perderé el derecho a desistir. Si desisto cuando ya ha empezado, abonaré la parte ya prestada.'}
+              </span>
+            </label>
           )}
 
           <label className="flex items-start gap-3 cursor-pointer">
@@ -812,7 +990,7 @@ export default function BookingForm({ defaultService }: Props) {
             </button>
             <button
               type="submit"
-              disabled={status === 'sending' || !form.privacy || !form.patientName || !form.email || !form.phone}
+              disabled={status === 'sending' || !form.privacy || (needsPayment && !form.withdrawal) || !form.patientName || !form.email || !form.phone}
               className="btn-primary flex-1 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {status === 'sending' ? (

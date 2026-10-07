@@ -806,5 +806,174 @@
     "subtitle": "Reseñas reales de pacientes en nuestra ficha de Google.",
     "see_all": "Ver todas las reseñas en Google",
     "based_on": "basado en {count} reseñas"
+  },
+  "landing_psicologia": {
+    "meta_title": "Psicólogo para adultos en Barcelona — Presencial y online",
+    "meta_desc": "Psicología de adultos, terapia de pareja y familiar, psicología online y asesoramiento a padres en Barcelona (Nou Barris). Reserva y paga tu sesión online.",
+    "header_book": "Reservar",
+    "header_call": "Llamar",
+    "hero_tag": "Psicología para adultos · Presencial y online",
+    "h1": "Psicólogas para adultos en Barcelona, presencial y online",
+    "subtitle": "Te acompañamos en momentos de ansiedad, cambios vitales, crisis de pareja o dificultades familiares. Ven a nuestro centro de Nou Barris o haz la sesión desde casa por videollamada.",
+    "hero_cta": "Reservar sesión",
+    "hero_prices": "Ver tarifas",
+    "trust": [
+      "26 años de experiencia",
+      "Psicólogas generales sanitarias",
+      "Presencial en Nou Barris y online",
+      "Reserva y pago online"
+    ],
+    "areas_title": "¿En qué podemos ayudarte?",
+    "areas": {
+      "adultos": {
+        "title": "Psicología de adultos",
+        "desc": "Ansiedad, estado de ánimo, duelo, autoestima y cambios vitales."
+      },
+      "online": {
+        "title": "Psicología online",
+        "desc": "El mismo acompañamiento, por videollamada y desde donde estés."
+      },
+      "familia": {
+        "title": "Terapia familiar y de pareja",
+        "desc": "Para recuperar la comunicación y afrontar juntos las crisis."
+      },
+      "padres": {
+        "title": "Asesoramiento a padres",
+        "desc": "Apoyo a la familia para entender y acompañar a sus hijos."
+      }
+    },
+    "see_more": "Ver más",
+    "team_title": "Quién te atiende",
+    "prices_title": "Tarifas",
+    "book": "Reservar",
+    "adults_title": "Psicología de adultos",
+    "adults_intro": "La terapia psicológica es un espacio confidencial para entender lo que te pasa y encontrar herramientas para afrontarlo. Trabajamos desde un enfoque integrador, adaptando las técnicas a cada persona y a su momento vital.",
+    "adults_items_title": "Te podemos ayudar con",
+    "adults_items": [
+      "Ansiedad y estrés",
+      "Depresión y estado de ánimo bajo",
+      "Duelo y pérdidas",
+      "Autoestima y desarrollo personal",
+      "Trastornos alimentarios",
+      "Cambios vitales y crisis personales"
+    ],
+    "process_title": "Cómo trabajamos",
+    "process": [
+      {
+        "title": "Primera sesión",
+        "body": "Escuchamos tu situación y lo que te ha traído hasta aquí."
+      },
+      {
+        "title": "Evaluación",
+        "body": "Entendemos juntas qué está pasando y qué lo mantiene."
+      },
+      {
+        "title": "Plan de trabajo",
+        "body": "Acordamos los objetivos y la frecuencia de las sesiones."
+      },
+      {
+        "title": "Seguimiento",
+        "body": "Revisamos tu evolución y ajustamos el proceso cuando hace falta."
+      }
+    ],
+    "online_title": "Psicología online",
+    "online_intro": "Facilitamos el acceso al acompañamiento psicológico a jóvenes y adultos cuando la distancia, el tiempo o la organización personal no permiten venir al centro. El procedimiento es el mismo que en la consulta presencial: misma psicóloga, mismo método, sesiones de 50 minutos.",
+    "online_points": [
+      "Sesiones por videollamada, en una plataforma segura y confidencial",
+      "Solo necesitas conexión a internet y un espacio tranquilo",
+      "Horarios de mañana y tarde",
+      "La sesión se paga al reservar"
+    ],
+    "family_title": "Terapia familiar y de pareja",
+    "family_therapy_title": "Terapia familiar",
+    "family_therapy_intro": "La terapia familiar es un enfoque terapéutico que se centra en el sistema familiar como unidad de análisis e intervención, y como elemento clave para comprender y abordar los problemas.",
+    "family_therapy_when_intro": "Puede ser útil ante conflictos familiares, problemas de comunicación, trastornos de la alimentación, problemas de pareja o trastornos del estado de ánimo, entre otros:",
+    "family_therapy_when": [
+      "Tristeza durante el embarazo, el parto o el posparto",
+      "Sensación de haber perdido el control y no entender qué pasa",
+      "Aparición de nuevos problemas o conflictos familiares",
+      "Dificultades para adaptarse a nuevas situaciones familiares",
+      "Necesidad de mejorar la relación con tus hijos",
+      "Revisión del estilo educativo",
+      "Revisión del estilo de vida familiar",
+      "Dificultades con los límites y las normas familiares"
+    ],
+    "family_therapy_note": "No hace falta que venga toda la familia. Se puede valorar incluir en el seguimiento a algunos miembros como apoyo a la persona interesada, siempre respetando su confidencialidad.",
+    "family_benefits_title": "Beneficios de la terapia familiar",
+    "family_benefits": [
+      "Mejora la comunicación dentro de la familia",
+      "Mejora las relaciones y fortalece los vínculos",
+      "Desarrolla la autoestima",
+      "Más bienestar familiar",
+      "Ayuda a superar los problemas"
+    ],
+    "couple_title": "Terapia de pareja",
+    "couple_intro": "La terapia de pareja aborda los problemas y conflictos que surgen en una relación. Consiste en dar a la pareja herramientas que favorezcan su propia evolución y con las que puedan afrontar juntos las distintas etapas de la vida y sus crisis.",
+    "couple_when_intro": "Puede ser necesaria cuando hay conflictos que los dos miembros de la pareja no consiguen resolver sin ayuda:",
+    "couple_when": [
+      "Dificultades de comunicación",
+      "Sensación de monotonía",
+      "Discrepancias en los planes de futuro",
+      "Problemas de convivencia",
+      "Pérdida de confianza",
+      "Paternidad y maternidad",
+      "Problemas en las relaciones sexuales",
+      "Infidelidad"
+    ],
+    "couple_note": "La convivencia, los años de relación, los cambios vitales, la sexualidad, la maternidad y la paternidad o la monotonía son algunos de los procesos que pueden desgastar el vínculo entre dos personas. Pero no hace falta una causa concreta: cualquier momento es bueno para revisar qué duele en una relación y cómo se puede mejorar.",
+    "parents_title": "Asesoramiento familiar y a padres",
+    "parents_intro": "No siempre es necesario que el niño, la niña o el adolescente venga a consulta para valorar qué está pasando. Los asesoramientos puntuales son un recurso muy útil para contar con apoyo profesional y que la familia pueda afrontar situaciones concretas.",
+    "parents_intro2": "Creemos imprescindible acompañar a las familias para entender qué hay detrás de un comportamiento, de manera que puedan encontrar recursos y estrategias para hacer frente a ese malestar.",
+    "parents_help_title": "Cómo podemos ayudaros",
+    "parents_help": [
+      "Mejorar la comprensión y la gestión emocional de niños y adolescentes",
+      "Aprender a acompañar a vuestros hijos en cambios vitales importantes",
+      "Mejorar la convivencia en casa",
+      "Aprender a poner límites y a gestionar los conflictos",
+      "Acompañar a la familia después de un diagnóstico médico, neuropsicológico o psicológico de uno de sus miembros",
+      "Acompañar a los cuidadores de personas con dependencia"
+    ],
+    "pricing_title": "Tarifas y bonos",
+    "pricing_body": "Sesiones de 50 minutos. Las sesiones online se pagan al reservar; el resto puedes pagarlas online al reservar o en el centro el día de la sesión. Los bonos de 4 sesiones caducan a los 2 meses de la compra.",
+    "pricing_conditions": "Condiciones de contratación",
+    "pricing_online_badge": "Online",
+    "booking_title": "Reserva tu sesión",
+    "booking_body": "Elige qué necesitas, el día y la hora. Solo verás los horarios libres de las psicólogas que atienden cada servicio.",
+    "faq": [
+      {
+        "q": "¿Cuánto dura una sesión?",
+        "a": "Las sesiones duran 50 minutos, tanto presenciales como online."
+      },
+      {
+        "q": "¿Necesito derivación médica?",
+        "a": "No. Puedes reservar directamente. Somos psicólogas generales sanitarias habilitadas para ejercer de forma autónoma."
+      },
+      {
+        "q": "¿Cómo funciona la psicología online?",
+        "a": "Las sesiones se hacen por videollamada en una plataforma segura. El procedimiento es el mismo que en la consulta presencial: misma psicóloga, mismo método y misma duración."
+      },
+      {
+        "q": "¿Tiene que venir toda la familia a la terapia familiar?",
+        "a": "No. Se valora en cada caso si conviene incluir a algún miembro de la familia como apoyo, siempre respetando la confidencialidad de la persona interesada."
+      },
+      {
+        "q": "¿Mi hijo tiene que venir al asesoramiento a padres?",
+        "a": "No necesariamente. El asesoramiento está pensado para que los padres cuenten con apoyo profesional y estrategias para situaciones concretas, sin que el niño o adolescente tenga que venir a consulta."
+      },
+      {
+        "q": "¿Puedo pagar en el centro?",
+        "a": "Sí, excepto las sesiones online, que se pagan al reservar. En el resto puedes elegir pagar online al reservar o en el centro el día de la sesión."
+      },
+      {
+        "q": "¿Y si no puedo venir?",
+        "a": "Si cancelas con más de 24 horas de antelación te devolvemos el importe íntegro. Con menos de 24 horas no se devuelve, pero lo guardamos como crédito para otra sesión. Si no vienes sin avisar, la sesión se da por realizada."
+      }
+    ],
+    "footer_tagline": "Centre de logopedia, psicología, psicopedagogía y neuropsicología en Barcelona desde 1999.",
+    "footer_main_site": "Ir a la web de ABC Centre",
+    "footer_legal": "Aviso legal",
+    "footer_privacy": "Privacidad",
+    "footer_cookies": "Cookies",
+    "footer_conditions": "Condiciones de contratación"
   }
 }

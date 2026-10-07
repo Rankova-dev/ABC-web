@@ -9,6 +9,11 @@ export const routing = defineRouting({
       es: '/servicios',
       ca: '/serveis',
     },
+    // Landing de campaña de psicología (layout propio, fuera del menú)
+    '/psicologia-adultos': {
+      es: '/psicologia-adultos',
+      ca: '/psicologia-adults',
+    },
     '/servicios-adultos': {
       es: '/servicios-adultos',
       ca: '/serveis-adults',

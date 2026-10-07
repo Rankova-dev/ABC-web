@@ -159,6 +159,11 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
           Avisándonos con más de 24 horas de antelación te devolvemos el importe íntegro.
           Con menos de 24 horas no se devuelve, pero te lo guardamos como crédito para otra sesión.
         </p>
+        <p style="color:#6D6E71;font-size:13px;margin:8px 0 0;line-height:1.6;">
+          Al reservar pediste que la sesión se prestara dentro del plazo de 14 días de desistimiento
+          y aceptaste que, una vez prestada por completo, pierdes el derecho a desistir. Si desistes
+          cuando ya ha empezado, se abona la parte ya prestada.
+        </p>
       </div>` : ''}
 
       ${isOnline ? '' : `<!-- Location -->

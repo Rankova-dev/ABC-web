@@ -29,6 +29,7 @@ const PRICED_SERVICES: Service[] = [
   'psicopedagogia',
   'tea',
   'orientacion-familiar',
+  'terapia-familiar',
 ];
 
 /** Clave del nombre del servicio en el menú (nav.services_menu.*) */

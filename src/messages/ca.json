@@ -806,5 +806,174 @@
     "subtitle": "Ressenyes reals de pacients a la nostra fitxa de Google.",
     "see_all": "Veure totes les ressenyes a Google",
     "based_on": "basat en {count} ressenyes"
+  },
+  "landing_psicologia": {
+    "meta_title": "Psicòleg per a adults a Barcelona — Presencial i en línia",
+    "meta_desc": "Psicologia d'adults, teràpia de parella i familiar, psicologia en línia i assessorament a pares a Barcelona (Nou Barris). Reserva i paga la teva sessió en línia.",
+    "header_book": "Reservar",
+    "header_call": "Trucar",
+    "hero_tag": "Psicologia per a adults · Presencial i en línia",
+    "h1": "Psicòlogues per a adults a Barcelona, presencial i en línia",
+    "subtitle": "T'acompanyem en moments d'ansietat, canvis vitals, crisis de parella o dificultats familiars. Vine al nostre centre de Nou Barris o fes la sessió des de casa per videotrucada.",
+    "hero_cta": "Reservar sessió",
+    "hero_prices": "Veure tarifes",
+    "trust": [
+      "26 anys d'experiència",
+      "Psicòlogues generals sanitàries",
+      "Presencial a Nou Barris i en línia",
+      "Reserva i pagament en línia"
+    ],
+    "areas_title": "En què et podem ajudar?",
+    "areas": {
+      "adultos": {
+        "title": "Psicologia d'adults",
+        "desc": "Ansietat, estat d'ànim, dol, autoestima i canvis vitals."
+      },
+      "online": {
+        "title": "Psicologia en línia",
+        "desc": "El mateix acompanyament, per videotrucada i des d’on siguis."
+      },
+      "familia": {
+        "title": "Teràpia familiar i de parella",
+        "desc": "Per recuperar la comunicació i afrontar junts les crisis."
+      },
+      "padres": {
+        "title": "Assessorament a pares",
+        "desc": "Suport a la família per entendre i acompanyar els fills."
+      }
+    },
+    "see_more": "Veure més",
+    "team_title": "Qui t'atén",
+    "prices_title": "Tarifes",
+    "book": "Reservar",
+    "adults_title": "Psicologia d'adults",
+    "adults_intro": "La teràpia psicològica és un espai confidencial per entendre què et passa i trobar eines per afrontar-ho. Treballem des d'un enfocament integrador, adaptant les tècniques a cada persona i al seu moment vital.",
+    "adults_items_title": "T'hi podem ajudar",
+    "adults_items": [
+      "Ansietat i estrès",
+      "Depressió i estat d'ànim baix",
+      "Dol i pèrdues",
+      "Autoestima i desenvolupament personal",
+      "Trastorns alimentaris",
+      "Canvis vitals i crisis personals"
+    ],
+    "process_title": "Com treballem",
+    "process": [
+      {
+        "title": "Primera sessió",
+        "body": "Escoltem la teva situació i què t'ha portat fins aquí."
+      },
+      {
+        "title": "Avaluació",
+        "body": "Entenem juntes què està passant i què ho manté."
+      },
+      {
+        "title": "Pla de treball",
+        "body": "Acordem els objectius i la freqüència de les sessions."
+      },
+      {
+        "title": "Seguiment",
+        "body": "Revisem la teva evolució i ajustem el procés quan cal."
+      }
+    ],
+    "online_title": "Psicologia en línia",
+    "online_intro": "Facilitem l'accés a l'acompanyament psicològic a joves i adults quan la distància, el temps o l'organització personal no permeten venir al centre. El procediment és el mateix que a la consulta presencial: la mateixa psicòloga, el mateix mètode, sessions de 50 minuts.",
+    "online_points": [
+      "Sessions per videotrucada, en una plataforma segura i confidencial",
+      "Només cal connexió a internet i un espai tranquil",
+      "Horaris de matí i tarda",
+      "La sessió es paga en reservar"
+    ],
+    "family_title": "Teràpia familiar i de parella",
+    "family_therapy_title": "Teràpia familiar",
+    "family_therapy_intro": "La teràpia familiar és un enfocament terapèutic que se centra en el sistema familiar com a unitat d'anàlisi i intervenció, i com a element clau per comprendre i abordar els problemes.",
+    "family_therapy_when_intro": "Pot ser útil davant de conflictes familiars, problemes de comunicació, trastorns de l'alimentació, problemes de parella o trastorns de l'estat d'ànim, entre d'altres:",
+    "family_therapy_when": [
+      "Tristesa durant l'embaràs, el part o el postpart",
+      "Sensació d'haver perdut el control i no entendre què passa",
+      "Aparició de nous problemes o conflictes familiars",
+      "Dificultats per adaptar-se a noves situacions familiars",
+      "Necessitat de millorar la relació amb els teus fills",
+      "Revisió de l'estil educatiu",
+      "Revisió de l'estil de vida familiar",
+      "Dificultats amb els límits i les normes familiars"
+    ],
+    "family_therapy_note": "No cal que vingui tota la família. Es pot valorar incloure en el seguiment alguns membres com a suport de la persona interessada, sempre respectant-ne la confidencialitat.",
+    "family_benefits_title": "Beneficis de la teràpia familiar",
+    "family_benefits": [
+      "Millora la comunicació dins de la família",
+      "Millora les relacions i enforteix els vincles",
+      "Desenvolupa l'autoestima",
+      "Més benestar familiar",
+      "Ajuda a superar els problemes"
+    ],
+    "couple_title": "Teràpia de parella",
+    "couple_intro": "La teràpia de parella aborda els problemes i conflictes que sorgeixen en una relació. Consisteix a facilitar a la parella eines que afavoreixin la seva pròpia evolució i amb les quals puguin afrontar conjuntament les diferents etapes de la vida i les seves crisis.",
+    "couple_when_intro": "Pot ser necessària quan hi ha conflictes que els dos membres de la parella no aconsegueixen resoldre sense ajuda:",
+    "couple_when": [
+      "Dificultats en la comunicació",
+      "Sensació de monotonia",
+      "Discrepàncies en els plans de futur",
+      "Problemes de convivència",
+      "Pèrdua de confiança",
+      "Paternitat i maternitat",
+      "Problemes en les relacions sexuals",
+      "Infidelitat"
+    ],
+    "couple_note": "La convivència, els anys de relació, els canvis vitals, la sexualitat, la maternitat i la paternitat o la monotonia són alguns dels processos que poden desgastar el vincle entre dues persones. Però no cal una causa concreta: qualsevol moment és bo per revisar què fa mal en una relació i com es pot millorar.",
+    "parents_title": "Assessorament familiar i a pares",
+    "parents_intro": "No sempre és necessari que el nen, la nena o l'adolescent vingui a consulta per valorar què passa. Els assessoraments puntuals són un recurs molt útil per comptar amb suport professional i que la família pugui afrontar situacions concretes.",
+    "parents_intro2": "Creiem imprescindible acompanyar les famílies per entendre què hi ha darrere d'un comportament, de manera que puguin trobar recursos i estratègies per fer front a aquest malestar.",
+    "parents_help_title": "Com us podem ajudar",
+    "parents_help": [
+      "Millorar la comprensió i la gestió emocional dels infants i adolescents",
+      "Aprendre a acompanyar els vostres fills en canvis vitals importants",
+      "Millorar la convivència a casa",
+      "Aprendre a posar límits i a gestionar els conflictes",
+      "Acompanyar la família després d'un diagnòstic mèdic, neuropsicològic o psicològic d'un dels seus membres",
+      "Acompanyar els cuidadors de persones amb dependència"
+    ],
+    "pricing_title": "Tarifes i bons",
+    "pricing_body": "Sessions de 50 minuts. Les sessions en línia es paguen en reservar; la resta les pots pagar en línia en reservar o al centre el dia de la sessió. Els bons de 4 sessions caduquen als 2 mesos de la compra.",
+    "pricing_conditions": "Condicions de contractació",
+    "pricing_online_badge": "En línia",
+    "booking_title": "Reserva la teva sessió",
+    "booking_body": "Tria què necessites, el dia i l'hora. Només veuràs els horaris lliures de les psicòlogues que atenen cada servei.",
+    "faq": [
+      {
+        "q": "Quant dura una sessió?",
+        "a": "Les sessions duren 50 minuts, tant presencials com en línia."
+      },
+      {
+        "q": "Necessito derivació mèdica?",
+        "a": "No. Pots reservar directament. Som psicòlogues generals sanitàries habilitades per exercir de manera autònoma."
+      },
+      {
+        "q": "Com funciona la psicologia en línia?",
+        "a": "Les sessions es fan per videotrucada en una plataforma segura. El procediment és el mateix que a la consulta presencial: la mateixa psicòloga, el mateix mètode i la mateixa durada."
+      },
+      {
+        "q": "Ha de venir tota la família a la teràpia familiar?",
+        "a": "No. Es valora en cada cas si convé incloure algun membre de la família com a suport, sempre respectant la confidencialitat de la persona interessada."
+      },
+      {
+        "q": "El meu fill ha de venir a l'assessorament a pares?",
+        "a": "No necessàriament. L'assessorament està pensat perquè els pares comptin amb suport professional i estratègies per a situacions concretes, sense que l'infant o l'adolescent hagi de venir a consulta."
+      },
+      {
+        "q": "Puc pagar al centre?",
+        "a": "Sí, excepte les sessions en línia, que es paguen en reservar. En la resta pots triar pagar en línia en reservar o al centre el dia de la sessió."
+      },
+      {
+        "q": "I si no puc venir?",
+        "a": "Si cancel·les amb més de 24 hores d'antelació et retornem l'import íntegre. Amb menys de 24 hores no es retorna, però el guardem com a crèdit per a una altra sessió. Si no véns sense avisar, la sessió es dona per feta."
+      }
+    ],
+    "footer_tagline": "Centre de logopèdia, psicologia, psicopedagogia i neuropsicologia a Barcelona des de 1999.",
+    "footer_main_site": "Anar al web d'ABC Centre",
+    "footer_legal": "Avís legal",
+    "footer_privacy": "Privacitat",
+    "footer_cookies": "Galetes",
+    "footer_conditions": "Condicions de contractació"
   }
 }

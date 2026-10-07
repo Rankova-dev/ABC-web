@@ -6,6 +6,7 @@ const BASE = 'https://abccentre.es';
 const ES_PATHS = [
   '',
   '/servicios',
+  '/psicologia-adultos',
   '/logopedia',
   '/psicologia',
   '/neuropsicologia',
@@ -24,6 +25,7 @@ const ES_PATHS = [
 const CA_PATHS = [
   '',
   '/serveis',
+  '/psicologia-adults',
   '/logopedia',
   '/psicologia',
   '/neuropsicologia',

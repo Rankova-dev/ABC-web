@@ -41,7 +41,7 @@ function clip(value: string): string {
 
 export function bookingToMetadata(
   booking: BookingRequest,
-  extra: { slotSummary?: string } = {}
+  extra: { slotSummary?: string; withdrawalConsentAt?: string } = {}
 ): Record<string, string> {
   const slot = booking.selectedSlot;
   const metadata: Record<string, string> = {
@@ -62,6 +62,8 @@ export function bookingToMetadata(
   if (slot.online)                  metadata.slotOnline   = 'true';
   // Título original del hueco, para poder devolverlo a su sitio si el pago caduca
   if (extra.slotSummary)            metadata.slotSummary  = clip(extra.slotSummary);
+  // Constancia del consentimiento de desistimiento, visible en el cobro del panel
+  if (extra.withdrawalConsentAt)    metadata.withdrawalConsentAt = extra.withdrawalConsentAt;
 
   return metadata;
 }
@@ -130,7 +132,11 @@ export async function createCheckoutSession({
   const cfg = APPOINTMENT_TYPES[booking.appointmentType];
   const text = getAppointmentTypeText(booking.appointmentType, locale);
   const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
-  const metadata = bookingToMetadata(booking, { slotSummary });
+  // Solo se llega aquí con la casilla marcada (lo comprueba /api/checkout)
+  const metadata = bookingToMetadata(booking, {
+    slotSummary,
+    withdrawalConsentAt: new Date().toISOString(),
+  });
 
   return stripe.checkout.sessions.create({
     mode:           'payment',
