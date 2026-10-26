@@ -24,15 +24,16 @@ import type { TimeSlot } from '@/lib/google-calendar';
 
 // ─── Static data ──────────────────────────────────────────────────────────────
 
-const SERVICES: { value: Service; label: string; icon: React.ReactNode; desc: string }[] = [
-  { value: 'logopedia',            label: 'Logopedia',              icon: <MessageCircle className="w-5 h-5" />, desc: 'Voz, habla y lenguaje' },
-  { value: 'psicologia',           label: 'Psicología',             icon: <Brain          className="w-5 h-5" />, desc: 'Bienestar emocional' },
-  { value: 'neuropsicologia',      label: 'Neuropsicología',        icon: <Activity       className="w-5 h-5" />, desc: 'Evaluación cognitiva' },
-  { value: 'psicopedagogia',       label: 'Psicopedagogia',         icon: <BookOpen       className="w-5 h-5" />, desc: 'Aprendizaje y desarrollo' },
-  { value: 'tea',                  label: 'TEA (Autismo)',           icon: <Sparkles       className="w-5 h-5" />, desc: 'Trastorno del espectro' },
-  { value: 'orientacion-familiar', label: 'Orientación Familiar',   icon: <Users          className="w-5 h-5" />, desc: 'Asesoramiento y orientación' },
-  { value: 'cursos-formacion',     label: 'Cursos y Formación',     icon: <GraduationCap  className="w-5 h-5" />, desc: 'Talleres y formación' },
-  { value: 'salut',                label: 'Salut',                  icon: <Heart          className="w-5 h-5" />, desc: 'Bienestar y prevención' },
+// Nombre y descripción de cada servicio: messages `booking.svc_<value>` y `svc_<value>_desc`
+const SERVICES: { value: Service; icon: React.ReactNode }[] = [
+  { value: 'logopedia',            icon: <MessageCircle className="w-5 h-5" /> },
+  { value: 'psicologia',           icon: <Brain          className="w-5 h-5" /> },
+  { value: 'neuropsicologia',      icon: <Activity       className="w-5 h-5" /> },
+  { value: 'psicopedagogia',       icon: <BookOpen       className="w-5 h-5" /> },
+  { value: 'tea',                  icon: <Sparkles       className="w-5 h-5" /> },
+  { value: 'orientacion-familiar', icon: <Users          className="w-5 h-5" /> },
+  { value: 'cursos-formacion',     icon: <GraduationCap  className="w-5 h-5" /> },
+  { value: 'salut',                icon: <Heart          className="w-5 h-5" /> },
 ];
 
 /**
@@ -80,22 +81,37 @@ function appointmentTypesFor(
 
 const TODAY_STR = new Date().toISOString().split('T')[0];
 
-const WEEK_DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const MONTHS = [
-  'Enero','Febrero','Marzo','Abril','Mayo','Junio',
-  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre',
-];
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatTime(iso: string) {
-  return new Date(iso).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+// Fechas con Intl en el idioma de la página: en catalán resuelve solo el
+// "d'octubre" / "de novembre" y los nombres de los días (dl., dt.…)
+const intlLocale = (locale: string) => (locale === 'ca' ? 'ca-ES' : 'es-ES');
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+/** Iniciales de los días empezando en domingo, como getDay() */
+function weekDayNames(locale: string) {
+  const fmt = new Intl.DateTimeFormat(intlLocale(locale), { weekday: 'short' });
+  // 4 de enero de 2026 es domingo
+  return Array.from({ length: 7 }, (_, i) =>
+    capitalize(fmt.format(new Date(2026, 0, 4 + i)).replace('.', ''))
+  );
 }
 
-function formatDateDisplay(dateStr: string) {
+function formatMonthYear(year: number, month: number, locale: string) {
+  const month_ = new Intl.DateTimeFormat(intlLocale(locale), { month: 'long' }).format(new Date(year, month, 1));
+  return `${capitalize(month_)} ${year}`;
+}
+
+function formatTime(iso: string, locale: string) {
+  return new Date(iso).toLocaleTimeString(intlLocale(locale), { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatDateDisplay(dateStr: string, locale: string) {
   if (!dateStr) return '';
   const d = new Date(dateStr + 'T12:00:00');
-  return `${WEEK_DAYS[d.getDay()]} ${d.getDate()} de ${MONTHS[d.getMonth()]}`;
+  return capitalize(new Intl.DateTimeFormat(intlLocale(locale), {
+    weekday: 'short', day: 'numeric', month: 'long',
+  }).format(d));
 }
 
 function getInitials(name: string) {
@@ -111,10 +127,11 @@ function getInitials(name: string) {
 // ─── Step indicator ───────────────────────────────────────────────────────────
 
 function StepIndicator({ step }: { step: 1 | 2 | 3 }) {
+  const tb = useTranslations('booking');
   const steps = [
-    { n: 1, label: 'Servicio' },
-    { n: 2, label: 'Fecha y hora' },
-    { n: 3, label: 'Tus datos' },
+    { n: 1, label: tb('step_service') },
+    { n: 2, label: tb('step_datetime') },
+    { n: 3, label: tb('step_details') },
   ];
   return (
     <div className="flex items-center justify-center mb-8 select-none">
@@ -159,6 +176,7 @@ function MiniCalendar({
   onChange: (d: string) => void;
   disabled?: boolean;
 }) {
+  const locale = useLocale();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const todayYear  = today.getFullYear();
@@ -206,7 +224,7 @@ function MiniCalendar({
           </svg>
         </button>
         <span className="text-sm font-semibold text-ink">
-          {MONTHS[viewMonth]} {viewYear}
+          {formatMonthYear(viewYear, viewMonth, locale)}
         </span>
         <button type="button" onClick={nextMonth}
           className="w-8 h-8 rounded-lg hover:bg-cream flex items-center justify-center text-gray hover:text-teal transition-colors">
@@ -218,7 +236,7 @@ function MiniCalendar({
 
       {/* Day names */}
       <div className="grid grid-cols-7 mb-1">
-        {WEEK_DAYS.map(d => (
+        {weekDayNames(locale).map(d => (
           <div key={d} className="text-center text-xs font-semibold text-gray/40 py-1">{d}</div>
         ))}
       </div>
@@ -278,6 +296,7 @@ interface Props {
 
 export default function BookingForm({ defaultService, areas, optionalPayment = false }: Props) {
   const t = useTranslations('contacto');
+  const tb = useTranslations('booking');
   const locale = useLocale();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -462,9 +481,9 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
           </svg>
         </div>
-        <h3 className="font-outfit font-semibold text-2xl text-ink mb-2">¡Reserva confirmada!</h3>
+        <h3 className="font-outfit font-semibold text-2xl text-ink mb-2">{tb('success_title')}</h3>
         <p className="text-sm font-light text-gray mb-6 max-w-xs mx-auto leading-relaxed">
-          Hemos enviado la confirmación a{' '}
+          {tb('success_sent')}{' '}
           <strong className="text-ink font-semibold">{form.email}</strong>.
         </p>
 
@@ -477,7 +496,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               </div>
             )}
             <div>
-              <p className="text-sm font-semibold text-ink">{specialist?.name ?? 'Especialista ABC'}</p>
+              <p className="text-sm font-semibold text-ink">{specialist?.name ?? tb('specialist_fallback')}</p>
               <p className="text-xs text-gray">{specialist?.role.split('·')[0].trim()}</p>
             </div>
           </div>
@@ -486,19 +505,19 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <span className="text-ink font-medium">{formatDateDisplay(selectedDate)}</span>
+              <span className="text-ink font-medium">{formatDateDisplay(selectedDate, locale)}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-ink font-medium">{selectedSlot && formatTime(selectedSlot.start)}</span>
+              <span className="text-ink font-medium">{selectedSlot && formatTime(selectedSlot.start, locale)}</span>
             </div>
           </div>
         </div>
 
         <p className="text-xs font-light text-gray">
-          ¿Necesitas cambiar la cita? Llámanos al{' '}
+          {tb('change_call')}{' '}
           <a href="tel:+34932434835" className="text-teal font-semibold">93 243 48 35</a>
         </p>
       </div>
@@ -508,7 +527,9 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
   const freeSlots               = availableSlots.filter(s => s.available);
   const selectedServiceInfo     = area
     ? { icon: AREA_ICONS[area.icon], label: area.label }
-    : SERVICES.find(s => s.value === service);
+    : service
+    ? { icon: SERVICES.find(s => s.value === service)?.icon, label: tb(`svc_${service}`) }
+    : undefined;
   const appointmentTypeList     = area
     ? area.types.filter(isBookableAppointmentType).map(value => ({ value, ...getAppointmentTypeText(value, locale) }))
     : areas
@@ -529,7 +550,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {areas && (
             <div>
               <p className="text-sm font-semibold text-ink mb-3">
-                {locale === 'ca' ? 'Què necessites?' : '¿Qué necesitas?'} <span className="text-teal">*</span>
+                {tb('what_you_need')} <span className="text-teal">*</span>
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {areas.map(a => {
@@ -555,7 +576,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                           {a.desc}
                         </p>
                         <p className={`text-xs mt-1 font-medium ${isSelected ? 'text-white/60' : 'text-teal/70'}`}>
-                          {count} {count === 1 ? 'especialista' : 'especialistas'}
+                          {tb('specialists_count', { count })}
                         </p>
                       </div>
                     </button>
@@ -568,7 +589,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {/* Service selector */}
           {!areas && <div>
             <p className="text-sm font-semibold text-ink mb-3">
-              ¿Qué servicio necesitas? <span className="text-teal">*</span>
+              {tb('which_service')} <span className="text-teal">*</span>
             </p>
             <div className="grid grid-cols-2 gap-2">
               {SERVICES.map(svc => {
@@ -589,12 +610,12 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                       {svc.icon}
                     </span>
                     <div className="min-w-0">
-                      <p className="text-xs font-semibold leading-tight">{svc.label}</p>
+                      <p className="text-xs font-semibold leading-tight">{tb(`svc_${svc.value}`)}</p>
                       <p className={`text-xs mt-0.5 leading-tight ${isSelected ? 'text-white/70' : 'text-gray/70'}`}>
-                        {svc.desc}
+                        {tb(`svc_${svc.value}_desc`)}
                       </p>
                       <p className={`text-xs mt-1 font-medium ${isSelected ? 'text-white/60' : 'text-teal/70'}`}>
-                        {count} {count === 1 ? 'especialista' : 'especialistas'}
+                        {tb('specialists_count', { count })}
                       </p>
                     </div>
                   </button>
@@ -606,13 +627,11 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {/* Appointment type selector */}
           <div>
             <p className="text-sm font-semibold text-ink mb-3">
-              ¿Qué tipo de cita necesitas? <span className="text-teal">*</span>
+              {tb('which_type')} <span className="text-teal">*</span>
             </p>
             {(areas ? !area : !service) && (
               <p className="text-xs font-light text-gray bg-cream rounded-xl px-4 py-3">
-                {areas
-                  ? (locale === 'ca' ? 'Tria primer què necessites per veure les sessions i els preus.' : 'Elige primero qué necesitas para ver las sesiones y sus precios.')
-                  : 'Elige primero el servicio para ver los tipos de cita y sus precios.'}
+                {areas ? tb('pick_area_first') : tb('pick_service_first')}
               </p>
             )}
             <div className="space-y-2">
@@ -652,7 +671,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
             onClick={() => goToStep(2)}
             className="btn-primary w-full justify-center disabled:opacity-40 disabled:cursor-not-allowed mt-2"
           >
-            Continuar
+            {tb('continue')}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
@@ -674,7 +693,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               </div>
               <button type="button" onClick={() => goToStep(1)}
                 className="text-xs text-teal font-semibold hover:underline flex-shrink-0 ml-2">
-                Cambiar
+                {tb('change')}
               </button>
             </div>
           )}
@@ -682,8 +701,8 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {/* Calendar */}
           <div>
             <p className="text-sm font-semibold text-ink mb-3">
-              Elige una fecha <span className="text-teal">*</span>
-              <span className="text-xs font-light text-gray ml-2">Lunes–Viernes</span>
+              {tb('pick_date')} <span className="text-teal">*</span>
+              <span className="text-xs font-light text-gray ml-2">{tb('weekdays')}</span>
             </p>
             <div className="bg-cream rounded-2xl p-4">
               <MiniCalendar
@@ -700,13 +719,13 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p className="text-sm font-light text-gray">
-                Selecciona un día para ver los horarios disponibles
+                {tb('pick_day_hint')}
               </p>
             </div>
           ) : (
             <div>
               <p className="text-sm font-semibold text-ink mb-3">
-                Horarios — <span className="text-teal">{formatDateDisplay(selectedDate)}</span>
+                {tb('slots_for')} <span className="text-teal">{formatDateDisplay(selectedDate, locale)}</span>
               </p>
 
               {loadingSlots ? (
@@ -720,8 +739,8 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                   <svg className="w-8 h-8 text-gray/30 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  <p className="text-sm font-light text-gray">No hay horarios libres este día.</p>
-                  <p className="text-xs text-gray/50 mt-1">Elige otra fecha en el calendario.</p>
+                  <p className="text-sm font-light text-gray">{tb('no_slots')}</p>
+                  <p className="text-xs text-gray/50 mt-1">{tb('no_slots_hint')}</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
@@ -738,7 +757,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                             : 'bg-white border-gray/15 text-ink hover:border-teal hover:text-teal hover:bg-teal/5'
                         }`}
                       >
-                        {formatTime(slot.start)}
+                        {formatTime(slot.start, locale)}
                       </button>
                     );
                   })}
@@ -750,7 +769,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
                   </svg>
-                  {formatDateDisplay(selectedDate)} a las {formatTime(selectedSlot.start)}
+                  {tb('slot_at', { date: formatDateDisplay(selectedDate, locale), time: formatTime(selectedSlot.start, locale) })}
                   {selectedSlot.specialistName && ` · ${selectedSlot.specialistName}`}
                 </div>
               )}
@@ -760,7 +779,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={() => goToStep(1)}
               className="btn-secondary px-5 py-2.5 text-sm">
-              ← Atrás
+              {tb('back')}
             </button>
             <button
               type="button"
@@ -768,7 +787,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               onClick={() => goToStep(3)}
               className="btn-primary flex-1 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              Continuar
+              {tb('continue')}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
               </svg>
@@ -785,9 +804,9 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {selectedSlot && selectedServiceInfo && selectedAppointmentType && (
             <div className="bg-teal/5 border border-teal/20 rounded-xl px-4 py-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-semibold text-gray uppercase tracking-wider">Tu cita</span>
+                <span className="text-xs font-semibold text-gray uppercase tracking-wider">{tb('your_appointment')}</span>
                 <button type="button" onClick={() => goToStep(2)}
-                  className="text-xs text-teal font-semibold hover:underline">Cambiar fecha</button>
+                  className="text-xs text-teal font-semibold hover:underline">{tb('change_date')}</button>
               </div>
               <div className="flex items-center gap-3">
                 {selectedSlot.specialistName && (
@@ -798,7 +817,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-ink">{selectedAppointmentType.label}</p>
                   <p className="text-xs text-gray">
-                    {selectedServiceInfo.label} · {formatDateDisplay(selectedDate)} · {formatTime(selectedSlot.start)}
+                    {selectedServiceInfo.label} · {formatDateDisplay(selectedDate, locale)} · {formatTime(selectedSlot.start, locale)}
                     {selectedSlot.specialistName && ` · ${selectedSlot.specialistName}`}
                   </p>
                 </div>
@@ -814,7 +833,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               </label>
               <input
                 id="patientName" name="patientName" type="text" required
-                placeholder="Nombre completo"
+                placeholder={tb('ph_name')}
                 value={form.patientName} onChange={handleFormChange}
                 className="field-base"
               />
@@ -825,7 +844,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               </label>
               <input
                 id="patientAge" name="patientAge" type="number" min="0" max="99"
-                placeholder="Ej: 8"
+                placeholder={tb('ph_age')}
                 value={form.patientAge} onChange={handleFormChange}
                 className="field-base"
               />
@@ -835,11 +854,10 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           <div>
             <label htmlFor="guardianName" className="block text-sm font-semibold text-ink mb-1.5">
               {t('form_guardian')}
-              <span className="text-xs font-light text-gray ml-1">(si el paciente es menor)</span>
             </label>
             <input
               id="guardianName" name="guardianName" type="text"
-              placeholder="Nombre del familiar o tutor"
+              placeholder={tb('ph_guardian')}
               value={form.guardianName} onChange={handleFormChange}
               className="field-base"
             />
@@ -852,7 +870,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               </label>
               <input
                 id="email" name="email" type="email" required
-                placeholder="correo@ejemplo.com"
+                placeholder={tb('ph_email')}
                 value={form.email} onChange={handleFormChange}
                 className="field-base"
               />
@@ -873,11 +891,11 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           <div>
             <label htmlFor="message" className="block text-sm font-semibold text-ink mb-1.5">
               {t('form_message')}
-              <span className="text-xs font-light text-gray ml-1">(opcional)</span>
+              <span className="text-xs font-light text-gray ml-1">{tb('optional')}</span>
             </label>
             <textarea
               id="message" name="message" rows={3}
-              placeholder="Cuéntanos brevemente el motivo de la consulta..."
+              placeholder={tb('ph_message')}
               value={form.message} onChange={handleFormChange}
               className="w-full px-4 py-3 bg-cream border border-gray/20 rounded-xl text-sm font-light focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors resize-none placeholder:text-gray/40"
             />
@@ -887,19 +905,11 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {canChoosePayment && (
             <fieldset className="space-y-2">
               <legend className="text-sm font-semibold text-ink mb-2">
-                {locale === 'ca' ? 'Com vols pagar?' : '¿Cómo quieres pagar?'}
+                {tb('how_to_pay')}
               </legend>
               {[
-                {
-                  value: true,
-                  title: locale === 'ca' ? `Pagar ara amb targeta · ${price} €` : `Pagar ahora con tarjeta · ${price} €`,
-                  desc:  locale === 'ca' ? 'Pagament segur. La cita queda confirmada en completar-lo.' : 'Pago seguro. La cita queda confirmada al completarlo.',
-                },
-                {
-                  value: false,
-                  title: locale === 'ca' ? 'Pagar al centre' : 'Pagar en el centro',
-                  desc:  locale === 'ca' ? 'Reserves ara i pagues el dia de la sessió.' : 'Reservas ahora y pagas el día de la sesión.',
-                },
+                { value: true,  title: tb('pay_now', { price }), desc: tb('pay_now_desc') },
+                { value: false, title: tb('pay_center'),         desc: tb('pay_center_desc') },
               ].map(opt => (
                 <label
                   key={String(opt.value)}
@@ -926,18 +936,16 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           {needsPayment && (
             <div className="bg-cream rounded-xl px-4 py-3.5 space-y-1.5">
               <p className="text-sm font-semibold text-ink">
-                Esta sesión se paga al reservar · {price} €
+                {tb('prepaid_title', { price })}
               </p>
               <p className="text-xs font-light text-gray leading-relaxed">
-                Al continuar se abre la pasarela de pago segura. La cita queda
-                confirmada en cuanto el pago se completa. Si cancelas con más de
-                24 horas de antelación te devolvemos el importe íntegro.
+                {tb('prepaid_body')}
               </p>
               <p className="text-xs font-light text-gray leading-relaxed">
-                {locale === 'ca' ? 'En pagar acceptes les ' : 'Al pagar aceptas las '}
+                {tb('terms_prefix')}
                 <Link href="/condiciones-de-contratacion" target="_blank"
                   className="text-teal underline underline-offset-2 hover:no-underline">
-                  {locale === 'ca' ? 'condicions de contractació' : 'condiciones de contratación'}
+                  {tb('terms_link')}
                 </Link>
                 .
               </p>
@@ -952,9 +960,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                 required className="mt-0.5 w-4 h-4 accent-teal flex-shrink-0"
               />
               <span className="text-sm font-light text-gray leading-relaxed">
-                {locale === 'ca'
-                  ? "Demano que la sessió es presti dins del termini de 14 dies de desistiment i accepto que, un cop prestada completament, perdré el dret a desistir. Si desisteixo quan ja ha començat, abonaré la part ja prestada."
-                  : 'Solicito que la sesión se preste dentro del plazo de 14 días de desistimiento y acepto que, una vez prestada por completo, perderé el derecho a desistir. Si desisto cuando ya ha empezado, abonaré la parte ya prestada.'}
+                {tb('withdrawal')}
               </span>
             </label>
           )}
@@ -966,11 +972,11 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
               required className="mt-0.5 w-4 h-4 accent-teal flex-shrink-0"
             />
             <span className="text-sm font-light text-gray leading-relaxed">
-              He leído y acepto la{' '}
-              <a href="/politica-de-privacidad" target="_blank"
+              {tb('privacy_prefix')}
+              <Link href="/politica-de-privacidad" target="_blank"
                 className="text-teal underline underline-offset-2 hover:no-underline">
-                política de privacidad
-              </a>
+                {tb('privacy_link')}
+              </Link>
             </span>
           </label>
 
@@ -986,7 +992,7 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={() => goToStep(2)}
               className="btn-secondary px-5 py-2.5 text-sm">
-              ← Atrás
+              {tb('back')}
             </button>
             <button
               type="submit"
@@ -999,11 +1005,11 @@ export default function BookingForm({ defaultService, areas, optionalPayment = f
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                   </svg>
-                  {needsPayment ? 'Abriendo el pago…' : 'Confirmando…'}
+                  {needsPayment ? tb('opening_payment') : tb('confirming')}
                 </>
               ) : (
                 <>
-                  {needsPayment ? `Pagar ${price} € y confirmar` : t('form_submit')}
+                  {needsPayment ? tb('pay_and_confirm', { price }) : t('form_submit')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                   </svg>

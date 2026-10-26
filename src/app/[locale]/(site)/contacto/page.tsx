@@ -22,6 +22,7 @@ export default async function ContactoPage({ params }: Props) {
 
 function ContactoContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGoogleReviews>> }) {
   const t = useTranslations('contacto');
+  const tf = useTranslations('footer');
 
   return (
     <>
@@ -114,8 +115,8 @@ function ContactoContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGo
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <div>
-                        <p className="text-sm font-semibold text-ink">Lunes–Viernes, 9h–20h</p>
-                        <p className="text-xs font-light text-gray">Con cita previa</p>
+                        <p className="text-sm font-semibold text-ink">{tf('hours')}</p>
+                        <p className="text-xs font-light text-gray">{tf('hours_note')}</p>
                       </div>
                     </div>
                   </div>
