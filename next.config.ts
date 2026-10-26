@@ -13,7 +13,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https://pixel-p2.s3.eu-central-1.amazonaws.com https://lh3.googleusercontent.com",
-  "frame-src https://www.openstreetmap.org",
+  "frame-src https://maps.google.com https://www.google.com",
   "connect-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
