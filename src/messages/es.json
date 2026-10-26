@@ -37,7 +37,7 @@
     "address": "Carrer de Malgrat, 47\n08016 Barcelona",
     "hours": "Lunes–Viernes, 9h–20h",
     "hours_note": "Con cita previa",
-    "metro": "Metro L1, L4, L5",
+    "metro": "Metro L1, L5",
     "copyright": "© {year} ABC Centre. Todos los derechos reservados. Web por Rankova.",
     "map_link": "Ver en Google Maps"
   },
@@ -80,7 +80,7 @@
     "why_personal_title": "Atención personalizada",
     "why_personal_body": "Cada persona tiene un plan de trabajo adaptado a sus necesidades y objetivos.",
     "why_location_title": "Centro de referencia",
-    "why_location_body": "En Barcelona. Accesible con metro L1, L4 y L5.",
+    "why_location_body": "En Barcelona. Accesible con metro L1 y L5.",
     "team_title": "Nuestro equipo",
     "team_subtitle": "Profesionales especializados comprometidos con tu bienestar.",
     "team_cta": "Conoce al equipo completo",
@@ -600,8 +600,8 @@
     "calendar_coming_soon": "El sistema de reservas online estará disponible próximamente. Mientras tanto, contáctanos por teléfono o WhatsApp.",
     "info_title": "Información de contacto",
     "map_title": "Cómo llegar",
-    "map_metro": "Metro: L1 (Fabra i Puig), L4 (Via Júlia), L5 (Virrei Amat)",
-    "map_bus": "Bus: 11, 50, 76, 97",
+    "map_metro": "Metro: L1 (Fabra i Puig), L5 (Virrei Amat)",
+    "map_bus": "Bus: H6, D40, D50, V27, V29, 34, 47, 62, 96",
     "map_link": "Ver la ficha en Google Maps"
   },
   "galeria": {

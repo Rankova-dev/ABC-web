@@ -170,7 +170,7 @@ function buildPatientEmailHtml(request: BookingRequest, specialistName: string):
       <div style="border-top:1px solid #e8e4dc;padding-top:24px;margin-bottom:8px;">
         <p style="color:#246978;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 10px;">Dónde encontrarnos</p>
         <p style="color:#2C2C2C;font-size:14px;margin:0 0 4px;">Carrer de Malgrat, 47 · 08016 Barcelona</p>
-        <p style="color:#6D6E71;font-size:13px;margin:0 0 4px;">Metro: L1 (Trinitat Nova) · L4 (Via Júlia) · L5 (Virrei Amat)</p>
+        <p style="color:#6D6E71;font-size:13px;margin:0 0 4px;">Metro: L1 (Fabra i Puig) · L5 (Virrei Amat)</p>
         <p style="color:#6D6E71;font-size:13px;margin:0;">Tel: <a href="tel:+34932434835" style="color:#246978;">93 243 48 35</a></p>
       </div>`}
 

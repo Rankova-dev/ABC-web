@@ -157,7 +157,7 @@ function HomeContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGoogle
             <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl px-5 py-4 shadow-card">
               <p className="text-xs font-semibold text-gray uppercase tracking-wider mb-1">Centro en</p>
               <p className="text-sm font-semibold text-ink">Barcelona</p>
-              <p className="text-xs text-gray">Metro L1 · L4 · L5</p>
+              <p className="text-xs text-gray">Metro L1 · L5</p>
             </div>
           </div>
         </div>
@@ -436,7 +436,7 @@ function HomeContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGoogle
                   <svg className="w-5 h-5 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                   </svg>
-                  <p className="text-sm font-light text-gray">Metro L1 (Trinitat Nova) · L4 (Via Júlia) · L5 (Virrei Amat)</p>
+                  <p className="text-sm font-light text-gray">Metro L1 (Fabra i Puig) · L5 (Virrei Amat)</p>
                 </div>
               </div>
 
@@ -449,7 +449,7 @@ function HomeContent({ reviews }: { reviews: Awaited<ReturnType<typeof getGoogle
 
             <div className="animate-on-scroll rounded-3xl overflow-hidden h-80 lg:h-96 shadow-card">
               <iframe
-                src="https://www.openstreetmap.org/export/embed.html?bbox=2.1742%2C41.4459%2C2.1794%2C41.4479&layer=mapnik&marker=41.4469%2C2.1768"
+                src={BUSINESS.googleMapsEmbedUrl}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
